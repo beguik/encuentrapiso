@@ -1,0 +1,47 @@
+#cabecera-fondo{
+	background-color: #012e67;
+}
+
+#cabecera-frente{
+	background-color: #012e67;
+	padding:10px 0px;
+}
+
+#tdcabecera{
+
+	width:10%; 
+	border-left:solid 2px #ffffff; 
+	padding:0 1%;
+	color:#ffffff;
+	text-align:center
+}
+
+#tdcabeceraregis{
+
+	width:20%;
+	border-left:solid 2px #ffffff; 
+	padding:0 1%;
+	color:#ffffff;
+	text-align:center
+
+}
+
+#texto{
+	color:#ffffff;
+}
+
+#tdfiltro{
+	width: 20%;
+	padding: 0px 20px;
+}
+
+#tdcabecera a {
+  color: white;
+  text-decoration: none;
+}
+
+h2{
+	color:#012e67; 
+	padding-top:20px;
+
+}

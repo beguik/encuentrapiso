@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+{% load static %}
+{% load humanize %}
+
+{% block title %}Encuentra Piso{% endblock %}
+
+{% block head %}
+ {% include 'cabecera.html' %}
+{% endblock head %}
+{% block content %}
+<div style=" width:60%;margin:25px auto;">
+  <h2>Piso en venta en {{inmueble.inmueble.get_localizacion_display|upper}}</h2>
+</div>
+
+
+
+<table width="50%" style="margin:10px auto;">
+  <tr>
+    <td colspan="3" style="background-color:#c5dcf6; padding:10px 10px">
+      <a target="_self" href="{{inmueble.inmueble.imagenPrincipal.url}}">
+        <img src="{{inmueble.inmueble.imagenPrincipal.url}}" width="600px"alt="{{inmueble.direccion}}" />
+      </a>
+    </td>
+    <td style="background-color:#c5dcf6; padding:10px 10px">
+      <table>
+        <tr>
+          <td style="padding:10px;" ><u>CARACTERÍSTICAS: </u></td>
+        </tr>
+        <tr>
+          <td style="padding:2px;"> {{inmueble.inmueble.planta}}ª Planta</td>
+        </tr>
+        <tr>
+          <td style="padding:2px;"> {{inmueble.inmueble.metros}} Metros</td>
+        </tr>
+        <tr>
+          <td style="padding:2px;">{{inmueble.inmueble.get_habitacion_display}}</td>
+        </tr>
+        <tr>
+          <td style="padding:2px;">{{inmueble.inmueble.wc}} Baños</td>
+        </tr>
+        <tr>
+          <td style="padding:2px;">Orientación {{inmueble.inmueble.get_orientacion_display}}</td>
+        </tr>
+        <tr>
+          <td style="padding:2px;">Construido en: {{inmueble.inmueble.construccion}}</td>
+        </tr>
+        <tr>
+          <td style="padding:2px;">Comunidad: {{inmueble.inmueble.comunidad}}€ </td>
+        </tr>
+        <tr>
+          <td style="padding:2px;">Ascensor:
+            {%if inmueble.inmueble.ascensor%}
+              Si
+            {%else%}
+              No
+            {%endif%}
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:2px;">Terraza:
+              {%if inmueble.inmueble.terraza%}
+              Si
+            {%else%}
+              No
+            {%endif%}
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:2px;">Patio:
+              {%if inmueble.inmueble.patio%}
+              Si
+            {%else%}
+              No
+            {%endif%}
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:2px;">Precio: <b>{{inmueble.precio|floatformat:0|intcomma }}€</b>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding-top:25px; padding-left:10px;">Referencia:
+            EP{{inmueble.id}}
+          </td>
+        </tr>
+                    
+        </table>
+
+      </td>
+  </tr>
+  <tr>
+      <td style="width:25%;background-color:#c5dcf6; padding:10px 10px">
+        <a target="_self" href="{{inmueble.inmueble.imagen1.url}}">
+                <img src="{{inmueble.inmueble.imagen1.url}}" width="200px"alt="{{inmueble.direccion}}" />
+        </a>
+      </td>
+       <td style="width:25%;background-color:#c5dcf6; padding:10px 10px">
+        <a target="_self" href="{{inmueble.inmueble.imagen2.url}}">
+                <img src="{{inmueble.inmueble.imagen2.url}}" width="200px"alt="{{inmueble.direccion}}" />
+        </a>
+      </td>
+       <td style="width:25%;background-color:#c5dcf6; padding:10px 10px">
+        <a target="_self" href="{{inmueble.inmueble.imagen3.url}}">
+                <img src="{{inmueble.inmueble.imagen3.url}}" width="200px"alt="{{inmueble.direccion}}" />
+        </a>
+      </td>
+       <td style="width:25%;background-color:#c5dcf6; padding:10px 10px">
+        <a target="_self" href="{{inmueble.inmueble.imagen4.url}}">
+                <img src="{{inmueble.inmueble.imagen4.url}}" width="200px"alt="{{inmueble.direccion}}" />
+        </a>
+      </td>
+</tr>
+<tr>
+  <td colspan="4" style="background-color:#c5dcf6; padding:10px 10px">
+    Más información:<br/><br/>
+            {{inmueble.inmueble.observacion}}
+  </tr>
+
+</table>
+<center>
+  <a href="{% url 'app_inmuebles:home'%}">
+<button type="button" class="btn btn-primary btn-lg" style="margin:20px;background-color: #012e67">Volver</button>
+</a>
+</center>
+{% endblock content %}

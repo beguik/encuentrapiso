@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% load static %}
+{% load humanize %}
+
+{% block title %}Encuentra Piso{% endblock %}
+
+
+{% block head %}
+{% include 'cabecera.html' %}
+{% endblock head %}
+
+
+{% block content %}
+
+
+<div style="width:60%; margin:auto">  
+    <form action="" enctype="multipart/form-data" method="POST">
+    {%csrf_token %} 
+        <h2><b>Simulador Bancario:</b></h2>
+        <table  class="table">
+            <tr>
+                <td colspan="3"style="text-align:center;">
+                    <b style="color:#012e67">Datos</b>
+                </td>
+            </tr> 
+            <tr>
+                <td>
+                    <div class="form-group">
+                        <label>Capital</label>
+                        <input type="number"  class="form-control" name="capital" placeholder="{{respuesta.capital}}">                    
+                    </div>
+                </td>
+                <td>
+                    <div class="form-group">
+                        <label>Intereses (%)</label>
+                        <input type="number"  class="form-control" name="intereses" placeholder="{{respuesta.interes}}">
+                    </div>
+                </td>
+                <td>
+                    <div class="form-group">
+                        <label>Plazo (Años)</label>
+                        <input type="number"  class="form-control" name="plazo" placeholder="{{respuesta.plazo}}">
+                    </div>
+                
+                </td> 
+            </tr>
+            <tr>
+                <td colspan="3"style="text-align:center">
+                     <button class="btn btn-primary"style="background-color: #012e67">Calcular</button>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3">
+                    <center>
+                        <div style="width:30%">
+                            <div class="form-group">
+                                <label>Cuota Mensual</label>
+                                <input class="form-control" name="plazo" placeholder="{{cuota|floatformat:2|intcomma}}" disabled style="text-align:center">
+                            </div>
+                        <div>
+                    </center>
+                </td>
+            </tr> 
+        </table>
+    </form>
+</div>
+
+{% endblock content %}

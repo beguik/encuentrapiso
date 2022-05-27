@@ -1,0 +1,31 @@
+{% load static %}
+<div class="container-mx-0" id="cabecera-fondo">
+	<div class="container" id="cabecera-frente">
+		<table style="width:100%;">
+			<tr>
+				<td style="width:20%; ">
+					<a href="{% url 'app_inmuebles:home'%}">
+  					<img id="logo" style="width:100px;padding:10px"src="{% static 'images/logo.png' %}">
+  				</a>
+  				</td>
+  				
+					<td id="tdcabecera">
+						<a href="{% url 'app_inmuebles:Ofertas'%}">
+						Ofertas	
+					</a>	
+				</td>
+				
+				<td id="tdcabecera" >Novedades</td>
+
+				<td id="tdcabecera" >
+					<a href="{% url 'app_operaciones:Simulador'%}">
+						Simulador<br/> Bancario</td>
+					</a>
+				<td id="tdcabecera" >Sobre Nosotros</td>
+				<td id="tdcabeceraregis">Registrate <br/> <br/>Inicia Sesión <br/>
+				</td>
+						
+			</tr>
+		</table>
+	</div>
+</div>
