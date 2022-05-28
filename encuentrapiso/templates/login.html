@@ -1,0 +1,66 @@
+{% load static %}
+{% load humanize %}
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="{% static 'css/estilos.css' %}">
+        {%load bootstrap4%}
+        {%bootstrap_css%}
+
+        <title>Encuentra Piso</title>
+
+    </head>
+    <body style="background-color:#012e67">
+
+        <p style="text-align:center;margin:40px; color:#ffffff">
+            <b>
+                Bienvenidos a Encuentra Piso
+            </b>   
+        </p>
+        <div style="width:40%; margin:40px auto;background-color: #ffffff; text-align:center">
+            <h2 class="cell" style="text-align:center;">Inicio de Sesión</h2>
+                <form method="POST" style="margin:auto;padding-top:15px;width: 80%;">
+                    {% csrf_token %}
+
+                    <label>Nombre Usuario:
+                    </label>
+                    <br/>
+                    {{form.username }} 
+                    <br/>
+                    <label>Contraseña: 
+                    </label>
+                    <br/>
+                    {{ form.password }}
+                    <br/>
+                    {% if form.non_field_errors %}
+                        {% for error in form.non_field_errors %}
+                            <p id="errores">Por favor, introduzca un nombre de usuario y clave correctos.<br/> Observe que ambos campos pueden ser sensibles a mayúsculas.</p>
+                        {% endfor %}
+                    {% endif %}
+                    <div class:"form-control">
+                        <input type="submit" name="submit" class="btn btn-primary btn-lg" value="Iniciar Sesión" style="margin:30px auto;background-color: #012e67">
+                    </div>
+                </form>
+                <hr/>
+                <a href="{% url 'app_administracion:registroCliente'%}">
+                    <button class="btn btn-primary btn-lg" style="margin:20px 30px;background-color: #012e67">
+                    Registrese <br/>como Cliente
+                    </button> 
+                </a>
+
+                <button class="btn btn-primary btn-lg" style="margin:20px 30px ;background-color: #012e67">
+                    Registrese<br/>como Vendedor
+                </button> 
+        </div> 
+        <p style="text-align:center"> 
+            <a href="{% url 'app_inmuebles:home'%}">
+                <button type="button" class="btn btn-primary btn-lg" style=";background-color: #ffffff; color:#012e67">
+                Volver
+                </button>
+            </a>
+        </p>
+    </body>
+</html>

@@ -45,3 +45,31 @@ h2{
 	padding-top:20px;
 
 }
+
+#info td{
+	background-color:#c5dcf6; 
+	padding:10px 10px
+}
+#errores {
+	font-size:10px;
+	color: #FF0000;
+} 
+
+#registro{
+	width: 50%;
+	margin: auto;
+	margin-top: 3%;
+	margin-bottom: 3%;
+	border-radius:15px;
+	border: solid 2px #919191;
+	padding: 30px;
+}
+#tablaRegistro td{
+	width: 50%;
+	padding: 0px 5px;
+}
+
+#tablaregistrouser td{
+	
+	padding: 0px 5px;
+}

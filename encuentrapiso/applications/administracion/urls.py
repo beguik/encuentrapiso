@@ -6,5 +6,7 @@ app_name = "app_administracion"
 
 urlpatterns =[ 
 	
-	
+	path('login/', views.SignInView.as_view(), name='login'),
+	path('logout/', views.SignOutView.as_view(), name='logout'),
+	path('registro/', views.Registro.as_view(), name="registroCliente"),
 ]

@@ -14,14 +14,14 @@
 
 
 
-<table width="50%" style="margin:10px auto;">
+<table width="50%" id="info" style="margin:10px auto;">
   <tr>
-    <td colspan="3" style="background-color:#c5dcf6; padding:10px 10px">
+    <td colspan="3">
       <a target="_self" href="{{inmueble.inmueble.imagenPrincipal.url}}">
         <img src="{{inmueble.inmueble.imagenPrincipal.url}}" width="600px"alt="{{inmueble.direccion}}" />
       </a>
     </td>
-    <td style="background-color:#c5dcf6; padding:10px 10px">
+    <td>
       <table>
         <tr>
           <td style="padding:10px;" ><u>CARACTERÍSTICAS: </u></td>
@@ -84,39 +84,87 @@
           </td>
         </tr>
                     
-        </table>
+      </table>
 
       </td>
   </tr>
   <tr>
-      <td style="width:25%;background-color:#c5dcf6; padding:10px 10px">
-        <a target="_self" href="{{inmueble.inmueble.imagen1.url}}">
-                <img src="{{inmueble.inmueble.imagen1.url}}" width="200px"alt="{{inmueble.direccion}}" />
-        </a>
-      </td>
-       <td style="width:25%;background-color:#c5dcf6; padding:10px 10px">
-        <a target="_self" href="{{inmueble.inmueble.imagen2.url}}">
-                <img src="{{inmueble.inmueble.imagen2.url}}" width="200px"alt="{{inmueble.direccion}}" />
-        </a>
-      </td>
-       <td style="width:25%;background-color:#c5dcf6; padding:10px 10px">
-        <a target="_self" href="{{inmueble.inmueble.imagen3.url}}">
-                <img src="{{inmueble.inmueble.imagen3.url}}" width="200px"alt="{{inmueble.direccion}}" />
-        </a>
-      </td>
-       <td style="width:25%;background-color:#c5dcf6; padding:10px 10px">
-        <a target="_self" href="{{inmueble.inmueble.imagen4.url}}">
-                <img src="{{inmueble.inmueble.imagen4.url}}" width="200px"alt="{{inmueble.direccion}}" />
-        </a>
-      </td>
-</tr>
-<tr>
-  <td colspan="4" style="background-color:#c5dcf6; padding:10px 10px">
-    Más información:<br/><br/>
-            {{inmueble.inmueble.observacion}}
+    <td style="width:25%;">
+      <a target="_self" href="{{inmueble.inmueble.imagen1.url}}">
+        <img src="{{inmueble.inmueble.imagen1.url}}" width="200px"alt="{{inmueble.direccion}}" />
+      </a>
+    </td>
+    <td style="width:25%;">
+      <a target="_self" href="{{inmueble.inmueble.imagen2.url}}">
+        <img src="{{inmueble.inmueble.imagen2.url}}" width="200px"alt="{{inmueble.direccion}}" />
+      </a>
+    </td>
+    <td style="width:25%;">
+      <a target="_self" href="{{inmueble.inmueble.imagen3.url}}">
+        <img src="{{inmueble.inmueble.imagen3.url}}" width="200px"alt="{{inmueble.direccion}}" />
+      </a>
+    </td>
+    <td style="width:25%;">
+      <a target="_self" href="{{inmueble.inmueble.imagen4.url}}">
+        <img src="{{inmueble.inmueble.imagen4.url}}" width="200px"alt="{{inmueble.direccion}}" />
+      </a>
+    </td>
   </tr>
-
+  <tr>
+    <td colspan="4">
+      Más información:<br/><br/> {{inmueble.inmueble.observacion}}
+    </td>           
+  </tr>
+  <tr>
+    <td colspan="4" style="text-align:center"> 
+      Contactar para más información:<br/>
+      <b>{{inmueble.vendedor.nombre}}</b>:{{inmueble.vendedor.telefono}}<br/>
+      Inmobiliaria {{inmueble.vendedor.empresa|upper}}
+    </td>
+  </tr>
 </table>
+
+<hr>
+<div style="text-align:center">
+Quizás le interese también:
+</div>
+
+{%for o in opciones%}
+  {%if o.inmueble.localizacion == inmueble.inmueble.localizacion %}
+    {% if not o.inmueble.id == inmueble.inmueble.id%}
+   
+      <div style="text-align:center">
+        <table width="50%" id="info" style="margin:10px auto;">
+          <tr>
+            <td width="25%" style="text-align:right">
+              <a href="{% url 'app_inmuebles:Info' o.id %}"class="text-decoration-none">
+                <img src={{o.inmueble.imagenPrincipal.url}} width="300px">
+              </a>
+            </td> 
+            <td style="text-align:center">
+              <h4>{{o.inmueble.get_localizacion_display|upper}}</h4>
+               {{o.inmueble.planta}}ª Planta <br/>
+               {{o.inmueble.get_habitacion_display}} <br/>
+               {{o.inmueble.wc}} Baños <br/>
+               Precio: <b>{{o.precio|floatformat:0|intcomma }}€</b><br/>
+               {{o.referencia}}
+               Referencia:EP{{0.id}}
+              
+
+            </td> 
+          </tr>
+        </table>
+      </div>
+    {%endif%}
+  {%endif%}
+{%endfor%}
+
+<hr/>
+
+
+
+
+
 <center>
   <a href="{% url 'app_inmuebles:home'%}">
 <button type="button" class="btn btn-primary btn-lg" style="margin:20px;background-color: #012e67">Volver</button>

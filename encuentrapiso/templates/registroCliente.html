@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+{% load static %}
+{% load humanize %}
+
+{% block title %}Encuentra Piso{% endblock %}
+
+
+{% block head %}
+{% include 'cabecera.html' %}
+{% endblock head %}
+
+
+{% block content %}
+
+
+<div id="registro" class="card">
+    <form action="" enctype="multipart/form-data" method="POST">
+        {%csrf_token %} 
+        <table width="100%" id="tablaregistrouser">
+
+            <tr >
+            {% for field in form %}
+                <td style="text-align:left; width:50%" >
+                    {{ field.label_tag }}<br/>
+                    {{ field }}
+
+                    {% if forloop.counter|divisibleby:"3" %}
+                        <spam id="errorPass1"style="font-size:10px;color: #FF0000;"></spam>
+                    {%endif%}
+                
+                    {% for error in field.errors %}
+                        <spam style="color: red" id="errores">{{ error }}<br/>
+                        </spam>
+                    {% endfor %}
+               
+
+                    {% if forloop.last %}
+                        <spam id="errorPass2"style="font-size:10px;color: #FF0000;"></spam>
+                    {%endif%}
+                </td> 
+                
+                {% if forloop.counter|divisibleby:"2" %}
+            </tr>
+            <tr style="background-color:#FFFFFF;;">
+
+                {% endif %}
+                {% endfor %}
+
+            </tr>
+        </table>
+          
+        <hr/>     
+        <table id="tablaRegistro" width="100%">
+            <tr>
+                <td>
+                    <label>DNI: </label>
+                    {{formDatos.dni}}
+                    <p id="errores">
+                        <span id="errorDni">{{mensaje}}</span>
+                         <span id="errorDni">{{mensajedni}}</span>
+                    </p>
+                </td>
+                <td>
+                    <label>Nombre: </label>
+                    {{formDatos.nombre}}
+                    <p id="errores">
+                        <span id="errorNombre">{{mensaje}}</span>
+                    </p>
+                </td>
+            </tr>
+             <tr>
+                <td>
+                    <label>Primer Apellido: </label>
+                    {{formDatos.primer_apellido}}
+                    <p id="errores">
+                        <span id="errorPrimerApellido">{{mensaje}}</span>
+                    </p>
+                </td>
+                <td>
+                    <label>Segundo Apellido: </label>
+                    {{formDatos.segundo_apellido}}
+                    <p id="errores">
+                        <span id="errorSegundoApellido">{{mensaje}}</span>
+                    </p>
+
+                </td>
+            </tr>
+             <tr>
+                <td>
+                    <label>Telefono: </label>
+                    {{formDatos.telefono}}
+                    <p id="errores">
+                        <span id="errortelefono">{{mensaje}}</span>
+                    </p>
+                </td>
+                <td style="text-align:right">
+                    <button class="btn btn-primary btn-lg" id="enviar" type="submit" 
+                    style= "background-color: #012e67">Enviar</button>
+                </td>
+            </tr>
+             
+        </table>
+       
+    </form>
+</div>
+
+{% endblock %}
