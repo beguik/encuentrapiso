@@ -8,16 +8,18 @@ from applications.administracion.models import *
 
 class Inicio(View):
 
-   
-
     def get(self,request):
+
         clientes=Cliente.objects.all()
         trabajadores=Trabajador.objects.all()
         #cargamos con la función lista_fuc los valores de los choices para poder usuarlos en los select del template
         provincia= lista_fuc(PROVINCE_CHOICES)
         habitaciones= lista_fuc(HABITACIONES_CHOICES)
-        #limitamos la busqueda de inmuebles a 50 para no sobrecargar los recursos de la página
-        ofertas=ofertaVenta.objects.all().filter(activa=True).order_by("inmueble_id")
+        #limitamos la busqueda de inmuebles a 20 para no sobrecargar los recursos de la página
+        #filtramos por activa y ordenamos por fecha de creación
+        ofertas=Oferta.objects.all().filter(activa=True).order_by("created_at")[:20]
+
+        #paginación
         paginator=Paginator(ofertas,8)
         page_number=request.GET.get('page')
         resultado =paginator.get_page(page_number)
@@ -25,20 +27,23 @@ class Inicio(View):
         return render(request,"home.html",{"provincia":provincia,"habitaciones":habitaciones, "ofertas":ofertas,"resultado":resultado,"clientes":clientes,"trabajadores":trabajadores})
  
 
-
-
 class Informacion(View):
     model=Inmueble
     
     def get(self,request,pk):
         clientes=Cliente.objects.all()
         trabajadores=Trabajador.objects.all()
-        inmueble=ofertaVenta.objects.get(id=pk)
-        opciones=ofertaVenta.objects.all()
-        return render(request,"informacion.html",{"inmueble":inmueble,"opciones":opciones,"clientes":clientes,"trabajadores":trabajadores})
+        #paso una oferta de venta y de alquiler para poder mostrar por defecto en la página de información
+        venta=Oferta.objects.filter(activa=True).filter(tipo=2).order_by("precio")[0]
+        alquiler=Oferta.objects.filter(activa=True).filter(tipo=1).order_by("precio")[0]
 
 
-class Ofertas(View):
+        inmueble=Oferta.objects.get(id=pk)
+        opciones=Oferta.objects.all().filter(activa=True)
+        return render(request,"informacion.html",{"inmueble":inmueble,"opciones":opciones,"clientes":clientes,"trabajadores":trabajadores,"venta":venta,"alquiler":alquiler})
+
+
+class Ventas(View):
     model=Inmueble
     
     def get(self, request):
@@ -46,11 +51,28 @@ class Ofertas(View):
         trabajadores=Trabajador.objects.all()
         provincia= lista_fuc(PROVINCE_CHOICES)
         habitaciones= lista_fuc(HABITACIONES_CHOICES)
-        ofertas=ofertaVenta.objects.all().filter(activa=True).order_by("precio")
+        #para poder reutilizar el home nombramos la variable con el mismo nombre "ofertas"
+        ofertas=Oferta.objects.all().filter(activa=True).filter(tipo=2).order_by("precio")
         paginator=Paginator(ofertas,8)
         page_number=request.GET.get('page')
         resultado =paginator.get_page(page_number)
-        titulo="Estas son nuestras mejores ofertas:"
+        titulo="Estas son nuestras mejores ofertas de Venta:"
+        return render(request,"home.html",{"provincia":provincia,"habitaciones":habitaciones, "ofertas":ofertas,"resultado":resultado,"titulo":titulo,"clientes":clientes,"trabajadores":trabajadores})
+
+class Alquileres(View):
+    model=Inmueble
+    
+    def get(self, request):
+        clientes=Cliente.objects.all()
+        trabajadores=Trabajador.objects.all()
+        provincia= lista_fuc(PROVINCE_CHOICES)
+        habitaciones= lista_fuc(HABITACIONES_CHOICES)
+        #para poder reutilizar el home nombramos la variable con el mismo nombre "ofertas"
+        ofertas=Oferta.objects.all().filter(activa=True).filter(tipo=1).order_by("precio")
+        paginator=Paginator(ofertas,8)
+        page_number=request.GET.get('page')
+        resultado =paginator.get_page(page_number)
+        titulo="Estas son nuestras mejores ofertas de Alquileres:"
         return render(request,"home.html",{"provincia":provincia,"habitaciones":habitaciones, "ofertas":ofertas,"resultado":resultado,"titulo":titulo,"clientes":clientes,"trabajadores":trabajadores})
 
 

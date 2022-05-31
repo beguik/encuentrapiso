@@ -8,6 +8,7 @@ urlpatterns =[
 	
 	path('', views.Inicio.as_view(), name="home"),
 	path('info/<pk>',views.Informacion.as_view(),name="Info"),
-	path('ofertas/',views.Ofertas.as_view(),name="Ofertas"),
+	path('ventas/',views.Ventas.as_view(),name="Ventas"),
+	path('alquileres/',views.Alquileres.as_view(),name="Alquileres"),
 
 ]

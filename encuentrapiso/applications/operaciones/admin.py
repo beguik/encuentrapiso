@@ -3,10 +3,13 @@ from .models import *
 from applications.administracion.models import *
 from applications.inmuebles.models import *
 
-class OfertaVentaAdmin(admin.ModelAdmin):
+class OfertaAdmin(admin.ModelAdmin):
 	list_display=(
+		'id',
 		'inmueble',
 		'vendedor',
+		'precio',
+		'tipo',
 		'activa',
 		)
 	search_fields=(
@@ -17,12 +20,13 @@ class OfertaVentaAdmin(admin.ModelAdmin):
 		'inmueble',
 		'vendedor',
 		)
-admin.site.register(ofertaVenta,OfertaVentaAdmin)
+admin.site.register(Oferta,OfertaAdmin)
 
 class VentaAdmin(admin.ModelAdmin):
 	list_display=(
 		'oferta',
 		'comprador',
+		'precio_final',
 		'fecha',
 		)
 	search_fields=(
@@ -37,29 +41,6 @@ class VentaAdmin(admin.ModelAdmin):
 		'fecha'
 		)
 admin.site.register(Venta,VentaAdmin)
-
-class OfertaAlquilerAdmin(admin.ModelAdmin):
-	list_display=(
-		'inmueble',
-		'vendedor',
-		'precio_mes',
-		'descuento',
-		'comision',
-		'activa'
-		)
-	search_fields=(
-		'inmueble',
-		'vendedor',
-		'precio_mes',
-		
-		)
-	list_filter=(
-		'inmueble',
-		'vendedor',
-		'precio_mes',
-		)
-admin.site.register(ofertaAlquiler,OfertaAlquilerAdmin)
-
 
 class AlquilerAdmin(admin.ModelAdmin):
 	list_display=(

@@ -8,8 +8,16 @@
  {% include 'cabecera.html' %}
 {% endblock head %}
 {% block content %}
+
+
 <div style=" width:60%;margin:25px auto;">
+
+  {%if inmueble.tipo == "2" %}
   <h2>Piso en venta en {{inmueble.inmueble.get_localizacion_display|upper}}</h2>
+  
+  {%else%}
+<h2>Piso en alquiler en {{inmueble.inmueble.get_localizacion_display|upper}}</h2>
+  {%endif%}
 </div>
 
 
@@ -125,40 +133,116 @@
 </table>
 
 <hr>
-<div style="text-align:center">
-Quizás le interese también:
-</div>
+{%if inmueble.tipo == "1" %}
+  <div style="text-align:center">
+    <b style="color:#012e67">Quizás le interese también estos alquileres:<b/><br/><br/>
+  </div>
 
-{%for o in opciones%}
-  {%if o.inmueble.localizacion == inmueble.inmueble.localizacion %}
-    {% if not o.inmueble.id == inmueble.inmueble.id%}
+  {%for o in opciones%}
+    {%if o.inmueble.localizacion == inmueble.inmueble.localizacion and o.tipo == "1" %}
+      {% if not o.inmueble.id == inmueble.inmueble.id%}
    
-      <div style="text-align:center">
-        <table width="50%" id="info" style="margin:10px auto;">
-          <tr>
-            <td width="25%" style="text-align:right">
-              <a href="{% url 'app_inmuebles:Info' o.id %}"class="text-decoration-none">
-                <img src={{o.inmueble.imagenPrincipal.url}} width="300px">
-              </a>
-            </td> 
-            <td style="text-align:center">
-              <h4>{{o.inmueble.get_localizacion_display|upper}}</h4>
-               {{o.inmueble.planta}}ª Planta <br/>
-               {{o.inmueble.get_habitacion_display}} <br/>
-               {{o.inmueble.wc}} Baños <br/>
-               Precio: <b>{{o.precio|floatformat:0|intcomma }}€</b><br/>
-               {{o.referencia}}
-               Referencia:EP{{0.id}}
-              
-
-            </td> 
-          </tr>
-        </table>
-      </div>
+        <div style="text-align:center">
+          <table width="50%" id="info" style="margin:10px auto;">
+            <tr>
+              <td width="25%" style="text-align:right">
+                <a href="{% url 'app_inmuebles:Info' o.id %}"class="text-decoration-none">
+                  <img src={{o.inmueble.imagenPrincipal.url}} width="300px">
+                </a>
+              </td> 
+              <td style="text-align:center">
+                <h4>{{o.inmueble.get_localizacion_display|upper}}</h4>
+                    {{o.inmueble.planta}}ª Planta <br/>
+                    {{o.inmueble.get_habitacion_display}} <br/>
+                    {{o.inmueble.wc}} Baños <br/>
+                    Precio: <b>{{o.precio|floatformat:0|intcomma }}€</b><br/>
+                    {{o.referencia}}
+                    Referencia:EP{{o.id}}
+              </td> 
+            </tr>
+          </table>
+        </div>
+      {%endif%}
     {%endif%}
-  {%endif%}
-{%endfor%}
+  {%endfor%}
+  <div style="text-align:center">
+    <table width="50%" id="info" style="margin:10px auto;">
+      <tr>
+        <td width="25%" style="text-align:right">
+          <a href="{% url 'app_inmuebles:Info' alquiler.id %}"class="text-decoration-none">
+            <img src={{alquiler.inmueble.imagenPrincipal.url}} width="300px">
+          </a>
+        </td> 
+        <td style="text-align:center">
+          <h4>{{alquiler.inmueble.get_localizacion_display|upper}}</h4>
+              {{alquiler.inmueble.planta}}ª Planta <br/>
+              {{alquiler.inmueble.get_habitacion_display}} <br/>
+              {{alquiler.inmueble.wc}} Baños <br/>
+              Precio: <b>{{alquiler.precio|floatformat:0|intcomma }}€</b><br/>
+              {{alquiler.referencia}}
+              Referencia:EP{{alquiler.id}}
+        </td> 
+      </tr>
+    </table>
+  </div>
 
+{%else %}
+  <div style="text-align:center">
+    <b style="color:#012e67">Quizás le interese también estos pisos en venta:<b/><br/><br/>
+  </div>
+
+  {%for o in opciones%}
+    {%if o.inmueble.localizacion == inmueble.inmueble.localizacion and o.tipo == "2" %}
+      {% if not o.inmueble.id == inmueble.inmueble.id%}
+   
+        <div style="text-align:center">
+          <table width="50%" id="info" style="margin:10px auto;">
+            <tr>
+              <td width="25%" style="text-align:right">
+                <a href="{% url 'app_inmuebles:Info' o.id %}"class="text-decoration-none">
+                  <img src={{o.inmueble.imagenPrincipal.url}} width="300px">
+                </a>
+              </td> 
+              <td style="text-align:center">
+                <h4>{{o.inmueble.get_localizacion_display|upper}}</h4>
+                    {{o.inmueble.planta}}ª Planta <br/>
+                    {{o.inmueble.get_habitacion_display}} <br/>
+                    {{o.inmueble.wc}} Baños <br/>
+                    Precio: <b>{{o.precio|floatformat:0|intcomma }}€</b><br/>
+                    {{o.referencia}}
+                    Referencia:EP{{0.id}}
+              </td> 
+            </tr>
+          </table>
+        </div>
+      {%endif%}
+    {%endif%}
+  {%endfor%}
+  <div style="text-align:center">
+    <table width="50%" id="info" style="margin:10px auto;">
+      <tr>
+        <td width="25%" style="text-align:right">
+          <a href="{% url 'app_inmuebles:Info' venta.id %}"class="text-decoration-none">
+            <img src={{venta.inmueble.imagenPrincipal.url}} width="300px">
+          </a>
+        </td> 
+        <td style="text-align:center">
+          <h4>{{venta.inmueble.get_localizacion_display|upper}}</h4>
+              {{venta.inmueble.planta}}ª Planta <br/>
+              {{venta.inmueble.get_habitacion_display}} <br/>
+              {{venta.inmueble.wc}} Baños <br/>
+              Precio: <b>{{venta.precio|floatformat:0|intcomma }}€</b><br/>
+              {{venta.referencia}}
+              Referencia:EP{{venta.id}}
+        </td> 
+      </tr>
+    </table>
+  </div>
+
+
+
+
+{%endif%}
 <hr/>
 
 

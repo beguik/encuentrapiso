@@ -65,4 +65,47 @@
     </form>
 </div>
 
+{% comment %} Esto es un listado de ocho sugerencias de ofertas de ventas, ordenadas por precios{% endcomment %}
+<hr/>
+
+<div style="text-align:center">
+    <b style="color:#012e67">Quizás le interese también:<b/><br/><br/>
+</div>
+
+<table style="margin:auto;"width="75%">
+    <tr>
+        {% for o in oportunidades%}
+        <td width="20%" align="center" style="padding:5px">
+            <div id="ficha" style="background-color:#c5dcf6; padding:10px 10px">
+                <div id="foto">
+                    <a href="{% url 'app_inmuebles:Info' o.id %}"class="text-decoration-none">
+                        {% comment %} Aqui determinamos si es venta o alquiler para ponerle una u otra etiqueta{% endcomment %}
+                        <img src={{o.inmueble.imagenPrincipal.url}} width="200px">
+                        {% if o.tipo == "1" %}
+                        <button class="btn btn-primary">Alquiler</button>   
+                        {% else %}
+                        <button class="btn btn-primary">&nbsp;Venta&nbsp;</button>  
+                        {% endif %}
+                    </a>
+                </div>
+                <div>
+                    <hr style="width:80%;" />
+                    <p stytle="font-weight:bold;padding-button:15px"><u><b>{{o.inmueble.get_localizacion_display|upper}}</b></u>
+                    </p>
+                    {{o.precio|floatformat:0|intcomma }}€<br/>
+                    {{o.inmueble.get_habitacion_display}}<br/>
+                    {{o.inmueble.metros}} mtrs<br/>
+                    Ref:EP{{o.id}}
+                </div>
+            </div>         
+        </td>
+        {% if forloop.counter|divisibleby:"4" %}
+        </tr>
+        <tr>
+        {% endif %}
+       
+        {% endfor %}
+    </tr>
+</table>
+
 {% endblock content %}

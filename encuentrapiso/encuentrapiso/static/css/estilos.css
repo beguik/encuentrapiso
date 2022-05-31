@@ -73,3 +73,17 @@ h2{
 	
 	padding: 0px 5px;
 }
+#foto{
+	position:relative;
+	display:inline-block;
+	
+}
+
+#foto button{
+
+	position: absolute;
+	top: 100%;
+  left: 85%;
+  transform: translate(-50%, -50%);
+	
+}

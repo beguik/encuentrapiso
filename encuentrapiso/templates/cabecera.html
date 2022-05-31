@@ -6,22 +6,25 @@
 				<td style="width:20%; ">
 					<a href="{% url 'app_inmuebles:home'%}">
   					<img id="logo" style="width:100px;padding:10px"src="{% static 'images/logo.png' %}">
-  				</a>
+  					</a>
   				</td>
-  				
-					<td id="tdcabecera">
-						<a href="{% url 'app_inmuebles:Ofertas'%}">
-						Ofertas	
+				<td id="tdcabecera">
+					<a href="{% url 'app_inmuebles:Ventas'%}">
+						Venta
 					</a>	
 				</td>
 				
-				<td id="tdcabecera" >Novedades</td>
+				<td id="tdcabecera" >
+					<a href="{% url 'app_inmuebles:Alquileres'%}">
+						Alquiler
+					</a>
+				</td>
 
 				<td id="tdcabecera" >
 					<a href="{% url 'app_operaciones:Simulador'%}">
 						Simulador<br/> Bancario</td>
 					</a>
-				<td id="tdcabecera" >Sobre Nosotros</td>
+				<td id="tdcabecera" ></td>
 				<td id="tdcabecera">
 					{% if user.is_authenticated %}
 
