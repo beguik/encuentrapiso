@@ -1,4 +1,5 @@
 from django.db import models
+from applications.operaciones.models import *
 from django.contrib.auth.models import User
 
 
@@ -75,5 +76,9 @@ class Inmueble(models.Model):
 		return referencia
 
 class Favoritos(models.Model):
-	inmueble=models.ForeignKey(Inmueble, related_name='favoritos',on_delete=models.CASCADE)
+	oferta=models.ForeignKey("operaciones.Oferta",on_delete=models.CASCADE)
 	usuario=models.ForeignKey("administracion.Cliente",on_delete=models.CASCADE)
+
+	def __str__(self):
+		referencia=str(self.oferta)+"-"+str(self.usuario)
+		return referencia

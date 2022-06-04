@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% load static %}
+{% load humanize %}
+{% block title %}Encuentra Piso{% endblock %}
+
+
+{% block head %}
+{% include 'cabecera.html' %}
+{% endblock head %}
+
+
+
+{% block content %}
+<center>
+<h3>
+{%if contador %}
+Actualmente tienes {{contador}} ofertas guardadas
+{%endif%}
+</h3>
+</center>
+<ul>
+	{% for f in favoritos %}
+	<ol style="margin:20px">
+		<table style="margin:auto;"width="75%">
+			<tr style="padding:10px">
+				<td width="20%" align="center" style="background-color:#c5dcf6; padding:20px 10px; margin:10px 10px">
+					<div id="foto">
+    					<a href="{% url 'app_inmuebles:Info' f.oferta.id %}"class="text-decoration-none">
+    						<img src={{f.oferta.inmueble.imagenPrincipal.url}} width="200px">
+    					{% if f.oferta.tipo == "1" %}
+    							<button class="btn btn-primary">Alquiler</button>	
+    					{% else %}
+    							<button class="btn btn-primary">&nbsp;Venta&nbsp;</button>	
+    					{% endif %}
+          				</a>
+        			</div>
+        		</td>
+        		<td width="20%" align="center" style="background-color:#c5dcf6; padding:10px 10px">
+        			<div>
+          				<p stytle="font-weight:bold;padding-button:15px"><u><b>{{f.oferta.inmueble.get_localizacion_display|upper}}</b></u></p>
+          				{{f.oferta.precio|floatformat:0|intcomma }}€<br/>
+          				{{f.oferta.inmueble.get_habitacion_display}}<br/>
+          				{{f.oferta.inmueble.metros}} mtrs<br/>
+          				Ref:EP{{o.id}}
+       				</div>  	 
+				</td>
+				<td width="20%" align="center" style="background-color:#c5dcf6; padding:10px 10px">
+					 <form action="" method="post">
+					 	{% csrf_token %}
+					 	<input id="fav" name="fav" type="hidden" value={{f.id}}>
+							<button type="submit" id="favorito"class="btn btn-danger" >Eliminar de Favoritos </button>
+					</form>
+
+				</td>
+        	</tr>
+   		</table>
+
+
+	</ol>
+	{% endfor %}
+</ul>
+
+
+{% endblock content %}

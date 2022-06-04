@@ -119,15 +119,43 @@
     </td>
   </tr>
   <tr>
-    <td colspan="4">
+    <td colspan="3">
       Más información:<br/><br/> {{inmueble.inmueble.observacion}}
-    </td>           
+    </td>  
+    <td>
+      <form action="{% url 'app_operaciones:addFavorito' %}" method="post">
+        {% csrf_token %}
+        <input id="oferta" name="oferta" type="hidden" value={{inmueble.id}}>
+        <input id="usuario" name="usuario" type="hidden" value={{user.id}}>
+         {% if user.is_authenticated %}
+         <button type="submit" id="favorito"class="btn btn-light" >Agregar a Favoritos </button>
+        {%endif%}
+      </form>
+    </td>
   </tr>
   <tr>
     <td colspan="4" style="text-align:center"> 
       Contactar para más información:<br/>
       <b>{{inmueble.vendedor.nombre}}</b>:{{inmueble.vendedor.telefono}}<br/>
       Inmobiliaria {{inmueble.vendedor.empresa|upper}}
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="4" style="text-align:center"> 
+      {% if user.is_authenticated %}
+        {% for c in clientes %}
+            {% if c.usuario.username == user.username %}
+              {%if inmueble.tipo == "2" %}
+              <a href="{% url 'app_operaciones:comprar' inmueble.id %}"
+                <button type="button" class="btn btn-primary btn-lg btn-block">Comprar Ahora</button>
+              </a>
+              {%else%}
+                <button type="button" class="btn btn-primary btn-lg btn-block">Alquilar Ahora</button>
+              {%endif%}
+            {%endif%}
+          {%endfor%}
+      {%endif%}
     </td>
   </tr>
 </table>
@@ -254,4 +282,33 @@
 <button type="button" class="btn btn-primary btn-lg" style="margin:20px;background-color: #012e67">Volver</button>
 </a>
 </center>
+
+
+<script >
+  let favorito=document.getElementById("favorito");
+
+  window.addEventListener("load", () => {
+
+
+    
+    {%for f in favoritos%}
+       if ("{{f.oferta.id}}" == "{{inmueble.id}}" && "{{f.usuario.usuario.username}}" == "{{user.username}}"){
+          favorito.classList.replace("btn-light","btn-warning");
+          favorito.innerHTML = "Esta en tus favoritos"; 
+          favorito.disabled=true;
+       }
+    {% endfor %}
+
+
+
+  
+
+ 
+  })
+
+
+</script>
+
 {% endblock content %}
+
+

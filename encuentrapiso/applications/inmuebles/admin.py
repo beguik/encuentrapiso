@@ -48,7 +48,7 @@ admin.site.register(Inmueble,InmuebleAdmin)
 
 class FavoritosAdmin(admin.ModelAdmin):
 	list_display=(
-		'inmueble',
+		'oferta',
 		'usuario',
 		)
 	search_fields=(

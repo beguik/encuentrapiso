@@ -17,6 +17,7 @@
     <form action="" enctype="multipart/form-data" method="POST">
     {%csrf_token %} 
         <h2><b>Simulador Bancario:</b></h2>
+        <h1 style="font-size:10">*(todos los campos con asterico son obligatorios)</h1>
         <table  class="table">
             <tr>
                 <td colspan="3"style="text-align:center;">
@@ -26,27 +27,31 @@
             <tr>
                 <td>
                     <div class="form-group">
-                        <label>Capital</label>
-                        <input type="number"  class="form-control" name="capital" placeholder="{{respuesta.capital}}">                    
+                        <label><b style="font-size:10">*</b>Capital</label>
+                        <input type="number"  class="form-control" name="capital" id="capital"placeholder="{{respuesta.capital}}">  
+                                       
                     </div>
                 </td>
                 <td>
                     <div class="form-group">
-                        <label>Intereses (%)</label>
-                        <input type="number"  class="form-control" name="intereses" placeholder="{{respuesta.interes}}">
+                        <label><b style="font-size:10">*</b>Intereses(%)</label>
+                        <input type="number"  step="0.01"class="form-control" name="intereses" id="intereses" placeholder="{{respuesta.interes}}">
+                         
                     </div>
                 </td>
                 <td>
                     <div class="form-group">
-                        <label>Plazo (Años)</label>
-                        <input type="number"  class="form-control" name="plazo" placeholder="{{respuesta.plazo}}">
+                        <label><b style="font-size:10">*</b>Plazo (Años)</label>
+                        <input type="number"  class="form-control" id="años" name="plazo" placeholder="{{respuesta.plazo}}">
+                       
                     </div>
                 
                 </td> 
             </tr>
             <tr>
+                <p style="text-align:center; color:red; font-size:10">{{error}}
                 <td colspan="3"style="text-align:center">
-                     <button class="btn btn-primary"style="background-color: #012e67">Calcular</button>
+                     <button type="submit" class="btn btn-primary"id="calcular"style="background-color: #012e67">Calcular</button>
                 </td>
             </tr>
             <tr>
@@ -107,5 +112,7 @@
         {% endfor %}
     </tr>
 </table>
+
+
 
 {% endblock content %}

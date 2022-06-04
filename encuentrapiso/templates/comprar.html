@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+{% load static %}
+{% load humanize %}
+
+{% block title %}Encuentra Piso{% endblock %}
+
+{% block head %}
+ {% include 'cabecera.html' %}
+{% endblock head %}
+{% block content %}
+
+<p ><h3 style="text-align:center">La información del inmueble que quiere comprar es:</h3></p>
+<table style="margin:auto;margin-top:10px"width="90%">
+	<tr style="padding:10px">
+		<td width="100%" style="background-color:#c5dcf6; padding:20px 10px; margin:10px 10px">
+			<div align="center">
+				<img src={{oferta.inmueble.imagenPrincipal.url}} width="200px">
+				<img src={{oferta.inmueble.imagen1.url}} width="200px">
+				<img src={{oferta.inmueble.imagen2.url}} width="200px">
+				<img src={{oferta.inmueble.imagen3.url}} width="200px">
+				<img src={{oferta.inmueble.imagen4.url}} width="200px">
+				<hr/>
+			</div>
+			<div style="width:40%; margin:auto;" >
+				 <br/>
+			
+				Dirección: {{oferta.inmueble.direccion}}. CP: {{oferta.inmueble.codigo_postal}} {{oferta.inmueble.get_localizacion_display|upper}}
+				<br/>
+				Caracteríasicas: 
+				<ul>
+					<li>
+						{{oferta.inmueble.metros}} Metros Construidos
+					</li>
+					<li>
+						{{oferta.inmueble.planta}}ª Planta
+						{%if oferta.inmueble.ascensor%}
+							-- Con ascensor.
+						{%else%}
+							-- Sin ascensor.
+						{%endif%}
+					</li>
+					<li>
+						{{oferta.inmueble.get_habitacion_display}}
+					</li>
+					<li>
+						{{oferta.inmueble.wc}} Baños
+					</li>
+					<li>
+						Orientación {{oferta.inmueble.get_orientacion_display}}
+					</li>
+					<li>
+						Gastos de Comunidad: {{oferta.inmueble.comunidad}}
+					</li>
+					<li>
+						Año de Construcción: {{oferta.inmueble.construccion}}
+					</li>
+					{%if oferta.inmueble.terraza%}
+					<li>
+						Terraza
+					</li>
+					{%endif%}
+					{%if oferta.inmueble.patio%}
+					<li>
+						Patio
+					</li>
+					{%endif%}
+					<li>
+						{{oferta.inmueble.observacion}}
+					</li>
+					<li>
+						El precio del inmueble es: {{oferta.precio|floatformat:0|intcomma }}€
+					</li>
+				</ul>
+			</div>
+				<hr/>
+			<div style="width:75%; margin:auto; text-align:center" >
+				La inmobiliaria que presenta esta oferta es {{oferta.vendedor.empresa}} y la comisión por sus servicios será {{oferta.vendedor.empresa.comision}}% 
+			</div> 	
+			<div style="margin-top:20px; text-align:center">
+				Si está de acuerdo genere una solicitud, donde apareceran reflejados sus datos y los de la oferta y el agente encargado de esta oferta se pondrá en contacto con usted para indicarle como proceder. 
+			</div> 
+			<div style="margin-top:20px; text-align:center">
+				<form action="{% url 'app_operaciones:Pdf' %}" method="post">
+        			{% csrf_token %}
+        				<input id="oferta" name="oferta" type="hidden" value={{oferta.id}}>
+        				<input id="usuario" name="usuario" type="hidden" value={{user.id}}>
+
+						<button type="submit" id="solicitud" class="btn btn-primary btn-lg btn-block">Gernerar Solicitud</button>
+							
+ 
+
+						
+				</form>
+
+			</div> 
+		</td>
+    </tr>
+</table>
+
+
+
+<script >
+  let solicitud=document.getElementById("solicitud");
+
+  window.addEventListener("load", () => {
+
+    {%for v in ventas%}
+    console.log("for")
+       if ("{{v.comprador.usuario.id}}" == "{{user.id}}" && "{{v.oferta.id}}" == "{{oferta.id}}"){
+       	console.log("if")
+       		solicitud.setAttribute("type", "button");
+          solicitud.innerHTML = "Ya tiene una solicitud generada para esta oferta"; 
+          solicitud.disabled=true;
+       }
+    {% endfor %}
+ 
+  })
+
+
+</script>
+
+
+
+
+
+{% endblock content %}

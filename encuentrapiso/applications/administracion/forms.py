@@ -25,4 +25,5 @@ class CreacionUser(UserCreationForm):
 		model = User
 		fields = ('username', 'email', 'password1', 'password2')  
 		cliente = models.OneToOneField(User, on_delete=models.CASCADE)
-    
+
+

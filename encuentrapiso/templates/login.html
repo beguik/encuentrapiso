@@ -14,25 +14,30 @@
 
     </head>
     <body style="background-color:#012e67">
+        <div style="text-align:center">
+        <a href="{% url 'app_inmuebles:home'%}">
+                    <img id="logo" style="width:100px;padding:10px; margin-top:25px"src="{% static 'images/logo.png' %}">
+                    </a>
+        </div>
 
-        <p style="text-align:center;margin:40px; color:#ffffff">
+        <p style="text-align:center;margin:5px; color:#ffffff">
             <b>
                 Bienvenidos a Encuentra Piso
             </b>   
         </p>
-        <div style="width:40%; margin:40px auto;background-color: #ffffff; text-align:center">
-            <h2 class="cell" style="text-align:center;">Inicio de Sesión</h2>
+        <div style="width:40%; margin:10px auto;background-color: #ffffff; text-align:center; border-radius:5px">
+            <h4 style="text-align:center;">Inicio de Sesión</h4>
                 <form method="POST" style="margin:auto;padding-top:15px;width: 80%;">
                     {% csrf_token %}
 
-                    <label>Nombre Usuario:
+                    <label>Username:&nbsp;&nbsp;
                     </label>
-                    <br/>
+                   
                     {{form.username }} 
                     <br/>
                     <label>Contraseña: 
                     </label>
-                    <br/>
+                   
                     {{ form.password }}
                     <br/>
                     {% if form.non_field_errors %}
@@ -45,14 +50,15 @@
                     </div>
                 </form>
                 <hr/>
+                <h4>Regístrese</h4>
                 <a href="{% url 'app_administracion:registroCliente'%}">
                     <button class="btn btn-primary btn-lg" style="margin:20px 30px;background-color: #012e67">
-                    Registrese <br/>como Cliente
+                    &nbsp;Cliente&nbsp;
                     </button> 
                 </a>
 
                 <button class="btn btn-primary btn-lg" style="margin:20px 30px ;background-color: #012e67">
-                    Registrese<br/>como Vendedor
+                   Trabajador
                 </button> 
         </div> 
         <p style="text-align:center"> 

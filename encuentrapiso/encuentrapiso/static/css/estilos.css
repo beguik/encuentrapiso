@@ -42,7 +42,18 @@
 
 h2{
 	color:#012e67; 
-	padding-top:20px;
+	padding-top:10px;
+
+}
+h3{
+	color:#012e67; 
+	padding-top:10px;
+
+}
+
+h4{
+	color:#012e67; 
+	padding-top:10px;
 
 }
 
@@ -73,6 +84,7 @@ h2{
 	
 	padding: 0px 5px;
 }
+
 #foto{
 	position:relative;
 	display:inline-block;
@@ -86,4 +98,9 @@ h2{
   left: 85%;
   transform: translate(-50%, -50%);
 	
+}
+
+li{	
+	
+	padding: 10px;
 }

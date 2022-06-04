@@ -11,6 +11,12 @@ class Oferta(models.Model):
 	updated_at = models.DateTimeField(auto_now_add=True, null=True)
 	created_at = models.DateTimeField(auto_now_add=True, null=True)
 
+	def __str__(self):
+		return str(self.id)+"-"+str(self.inmueble.id)+" - "+str(self.precio)
+
+	def __gt__(self, oferta):
+		return self.precio > oferta.precio
+
 class Venta(models.Model):
 	oferta=models.ForeignKey("Oferta",verbose_name=("oferta"),on_delete=models.SET_NULL,null=True )
 	comprador=models.ForeignKey("administracion.Cliente", related_name="comprador",verbose_name=("comprador"),on_delete=models.SET_NULL,null=True )
@@ -27,7 +33,7 @@ class Venta(models.Model):
 
 
 	def __str__(self):
-		return str(self.inmueble.id)+" - "+str(self.comprador)+" - "+str(self.oferta.precio_final)
+		return str(self.oferta.inmueble.id)+" - "+str(self.comprador)+" - "+str(self.precio_final)
 
 
 class Alquiler(models.Model):

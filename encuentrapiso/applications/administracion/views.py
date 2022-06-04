@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth import login, authenticate
-from django.views.generic import View
+from django.views.generic import View, FormView
 from django.contrib import messages
 from .forms import *
 from .models import *
@@ -9,7 +9,8 @@ from .models import *
 
 class SignInView(LoginView):
 
-    template_name = 'login.html'
+	template_name = 'login.html'
+	
 
 class SignOutView(LogoutView):
     pass
