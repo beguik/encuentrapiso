@@ -15,6 +15,8 @@
 <h3>
 {%if contVentas %}
 Actualmente tienes {{contVentas}} solicitud de Venta
+{%else%}
+Actualmete no tiene ninguna solicitud de Venta
 {%endif%}
 </h3>
 </center>
@@ -32,17 +34,18 @@ Actualmente tienes {{contVentas}} solicitud de Venta
         		</td>
         		<td width="20%" align="center" style="background-color:#c5dcf6; padding:10px 10px">
         			<div>
-          				<p stytle="font-weight:bold;padding-button:15px"><u><b>{{v.oferta.inmueble.get_localizacion_display|upper}}</b></u></p>
-          				{{v.oferta.precio|floatformat:0|intcomma }}€<br/>
-          				{{v.oferta.inmueble.get_habitacion_display}}<br/>
-          				{{v.oferta.inmueble.metros}} mtrs<br/>
-          				Ref:EP{{o.id}}
+        				{{v.oferta.inmueble.direccion}} <br/>{{v.oferta.inmueble.codigo_postal}}
+          				({{v.oferta.inmueble.get_localizacion_display|upper}})<br/>
+          				{{v.precio_final|floatformat:0|intcomma }}€<br/>
+          				{{v.fecha|date:'d-M-Y' }}<br/>
+          				Ref:EP{{v.id}}
        				</div>  	 
 				</td>
 				<td width="20%" align="center" style="background-color:#c5dcf6; padding:10px 10px">
 					 <form action="" method="post">
 					 	{% csrf_token %}
-					 	<input id="fav" name="venta" type="hidden" value={{v.id}}>
+					 	<input id="venta" name="venta" type="hidden" value={{v.id}}>
+					 	<input id="user" name="user" type="hidden" value={{user.id}}>
 							<button type="submit" class="btn btn-danger" >Cancelar la Solicitud </button>
 					</form>
 
@@ -54,6 +57,52 @@ Actualmente tienes {{contVentas}} solicitud de Venta
 	</ol>
 	{% endfor %}
 </ul>
+<hr/>
+<center>
+<h3>
+{%if contAlquileres %}
+Actualmente tienes {{contAlquileres}} Alquileres Registrados
+{%else%}
+Actualmete no tiene ningún Alquiler Registrado. 
+{%endif%}
+</h3>
+</center>
+<ul>
+	{% for a in alquileres %}
+	<ol style="margin:20px">
+		<table style="margin:auto;"width="75%">
+			<tr style="padding:10px">
+				<td width="20%" align="center" style="background-color:#c5dcf6; padding:20px 10px; margin:10px 10px">
+					<div id="foto">
+    					<a href="{% url 'app_inmuebles:Info' a.oferta.id %}"class="text-decoration-none">
+    						<img src={{a.oferta.inmueble.imagenPrincipal.url}} width="200px">
+          				</a>
+        			</div>
+        		</td>
+        		<td width="20%" align="center" style="background-color:#c5dcf6; padding:10px 10px">
+        			<div>
+        				{{a.oferta.inmueble.direccion}} <br/>{{a.oferta.inmueble.codigo_postal}}
+          				({{a.oferta.inmueble.get_localizacion_display|upper}})<br/>
+          				{{a.precio_final|floatformat:0|intcomma }}€<br/>
+          				{{a.fecha|date:'d-M-Y' }}<br/>
+          				Ref:EP{{a.id}}
+       				</div>  	 
+				</td>
+				<td width="20%" align="center" style="background-color:#c5dcf6; padding:10px 10px">
+					 <form action="" method="post">
+					 	{% csrf_token %}
+					 	<input id="alquiler" name="alquiler" type="hidden" value={{a.id}}>
+					 	<input id="user" name="user" type="hidden" value={{user.id}}>
+							<button type="submit" class="btn btn-danger" >Cancelar Alquiler </button>
+					</form>
 
+				</td>
+        	</tr>
+   		</table>
+
+
+	</ol>
+	{% endfor %}
+</ul>
 
 {% endblock content %}

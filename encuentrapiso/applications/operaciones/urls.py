@@ -12,6 +12,8 @@ urlpatterns =[
 	path('comprar/<pk>',views.Comprar.as_view(), name="comprar"),
 	path('pdf/', views.exportarPdf, name="Pdf"),
 	path('operaciones/<int:id>/',views.Operaciones.as_view(),name="Operaciones"),
+	path('alquilar/<pk>', views.Alquilar.as_view(),name="Alquilar"),
+	path('alquilarPdf/', views.alquilarPdf, name="AlquilarPdf")
 
 
 ]

@@ -45,7 +45,8 @@ class Alquiler(models.Model):
 	
 
 	def _get_precio_final(self):
-		return (self.oferta.precio*self.meses)+self.oferta.precio
+		#el calculo será el precio por los meses, mas un mes de fianza y uno de comisión
+		return (float(self.oferta.precio)*float(self.meses))+(float(self.oferta.precio)*2)
 
 	precio_final = property(_get_precio_final)
 

@@ -4,6 +4,8 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.template.loader import render_to_string
 from django.views.generic import View
+from datetime import datetime, timedelta 
+from dateutil.relativedelta import relativedelta
 from applications.administracion.models import *
 from applications.inmuebles.choices import *
 from applications.inmuebles.models import *
@@ -131,7 +133,7 @@ def exportarPdf(request):
     #Comprobamos que la solicidud no está generada y si ya estuviera generada enviamos a las operaciones
     for v in vent:
         if v.oferta == oferta and v.comprador == cliente:
-            return redirect('/')
+            return redirect('/operaciones/'+usu)
 
 
     #generamos venta    
@@ -181,7 +183,144 @@ class Operaciones(View):
 
         return render(request,"operaciones.html",contexto)
     def post(self, request, id):
+        clientes=Cliente.objects.all()
+        trabajadores=Trabajador.objects.all()
+        #extraemos los datos del post en data
         
+        data=request.POST
+        iduser=data["user"]
+
+        if "venta" in request.POST:
+            idventa=data["venta"]
+            venta=Venta.objects.get(id=idventa)
+            venta.delete()
+
+        if "alquiler" in request.POST:
+            idalquiler=data["alquiler"]
+            alquiler=Alquiler.objects.get(id=idalquiler)
+            alquiler.delete()
+        
+        return redirect('/operaciones/'+str(id))
+
+class Alquilar(View):
+    def get(self, request,pk):
+        clientes=Cliente.objects.all()
+        trabajadores=Trabajador.objects.all()
+        # buscamos la oferta con la id enviada
+        oferta=Oferta.objects.get(id=pk)
+        #extraemos los alquileres
+        alquileres=Alquiler.objects.all()
+        lista=list()
+
+        #creamos una lista con los alquileres del inmueble solicidtado
+        for a in alquileres:
+            if a.oferta.inmueble == oferta.inmueble:
+                lista.append(a)
+
+        #contamos si hay mas de un alquiler de ese inmueble
+        contador=len(lista)
+        logs("contador",contador)
+        #si la lista no contiene resultados retornamos la página sin valores extras
+        if contador == 0:
+            calendario=datetime.now().strftime('%Y-%m-%d')
+            calendarioFin=datetime.today() + timedelta(days=20)
+            calFin=str(calendarioFin)[0:10]
+            logs("calendario",calendario)
+            logs("calendarioFin",calendarioFin)
+            return render(request,"alquilar.html",{"calendario":calendario,"calFin":calFin, "oferta":oferta,"clientes":clientes,"trabajadores":trabajadores})
+        
+        #si hay mas de 0 buscamos la fecha más alta 
+        else:
+            fecha=lista[0].fecha_entrada
+            meses=lista[0].meses
+            for l in lista:
+                if fecha<l.fecha_entrada:
+                    fecha=l.fecha_entrada
+                    meses=l.meses
+
+            fechaInicio=str(fecha)
+            fechaformato=fechaInicio[0:10]
+            fechaInicial = datetime.strptime(fechaformato, '%Y-%m-%d')
+            fechaFin=fechaInicial+relativedelta(months=meses)
+            #como en el template no se permite operar extraemos la fecha más los 20 días establecidos 
+            #para poder seleccionar la fecha de entrada del próximo alquiler
+            fechaFinPlantilla=fechaFin+relativedelta(days=20)
+            fechaFinFormato=str(fechaFin)[0:10]
+            fechaFinReserva=str(fechaFinPlantilla)[0:10]
+
+            return render(request,"alquilar.html",{"fechaFinReserva":fechaFinReserva,"fechaFinFormato":fechaFinFormato,"fechaFin":fechaFin, "alquileres":alquileres,"oferta":oferta,"clientes":clientes,"trabajadores":trabajadores})
+
+
+def alquilarPdf(request):
+    data=request.POST
+    usu=data['usuario']
+    of=data['oferta']
+    fecha=data['fecha']
+    meses=data['meses']
+    logs("dta",data)
+
+    fecha_inicio = datetime.strptime(fecha, '%Y-%m-%d')
+
+    oferta=Oferta.objects.get(id=of)
+    usuario=User.objects.get(id=usu)
+    cliente=Cliente.objects.get(usuario=usuario)
+    alq=Alquiler.objects.all()
+    
+    #controlamos que no pueda duplicarse el alquiler, si el inquilino ya tiene un alquiler que coincida con las fechas
+    #se le reenviara a su pagina de operaciones
+    lista=list()
+    for a in alq:
+        if a.oferta == oferta and a.inquilino == cliente:
+            lista.append(a)
+
+    if len(lista)>0:
+        l=lista[-1]
+        m=l.meses
+        fechaAnterior=l.fecha_entrada
+        fechaAnt=str(a.fecha_entrada)
+        fechFor=fechaAnt[0:10]
+        fechaAntFor=datetime.strptime(fechFor, '%Y-%m-%d')
+        fechaSalida=fechaAntFor+relativedelta(months=m)
+
+        fechNueva=datetime.strptime(fecha, '%Y-%m-%d')
+        
+        if fechaSalida > fechNueva:
+            logs("fechaSalida",fechaSalida)
+            logs("fechaNueva",fechNueva)
+            return redirect('/operaciones/'+usu)
+
+
+
+    alquiler=Alquiler.objects.create(oferta=oferta, inquilino=cliente, fecha_entrada=fecha_inicio, meses=meses)
+
+    #creamos contexto
+    contexto={'alquiler':alquiler,}
+
+    #renderizamos nuestro archivo_pdf.html y el contexto
+    html=render_to_string('alquiler_pdf.html',contexto)
+
+    #informamos al navegador que le vamos a pasar un pdf para que el navegador de el tratamiento oportuno
+    response=HttpResponse(content_type="application/pdf")
+    response["Content-Disposition"]="inline; archivo.pdf"
+
+    #establece las reglas de manejo de los estilos
+    font_config=FontConfiguration()
+
+    #el atributo base_url establece la ruta absoluta para poder cargar imagenes.
+    HTML(string=html, base_url=request.build_absolute_uri()).write_pdf(response, font_config=font_config)
+    
+    return response
+
+        
+
+
+
+
+
+
+
+
+
 
 
 #función para realizar log informativos

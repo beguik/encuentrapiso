@@ -147,11 +147,13 @@
         {% for c in clientes %}
             {% if c.usuario.username == user.username %}
               {%if inmueble.tipo == "2" %}
-              <a href="{% url 'app_operaciones:comprar' inmueble.id %}"
+              <a href="{% url 'app_operaciones:comprar' inmueble.id %}">
                 <button type="button" class="btn btn-primary btn-lg btn-block">Comprar Ahora</button>
               </a>
               {%else%}
+              <a href="{% url 'app_operaciones:Alquilar' inmueble.id %}">
                 <button type="button" class="btn btn-primary btn-lg btn-block">Alquilar Ahora</button>
+              </a>
               {%endif%}
             {%endif%}
           {%endfor%}
