@@ -83,7 +83,6 @@ class Inicio(View):
 
         return render(request,"home.html",{"datos":datos,"flag":flag,"contador":contador,"resultado":ofertas,"provincia":provincia,"habitaciones":habitaciones,"clientes":clientes,"trabajadores":trabajadores,})
  
-
 class Informacion(View):
     model=Inmueble
     
@@ -101,7 +100,6 @@ class Informacion(View):
         inmueble=Oferta.objects.get(id=pk)
         opciones=Oferta.objects.all().filter(activa=True)
         return render(request,"informacion.html",{"favoritos":favoritos,"inmueble":inmueble,"opciones":opciones,"clientes":clientes,"trabajadores":trabajadores,"venta":venta,"alquiler":alquiler})
-
 
 class Ventas(View):
     model=Inmueble
@@ -171,7 +169,6 @@ class Ventas(View):
 
         return render(request,"home.html",{"datos":datos,"flag":flag,"contador":contador,"resultado":ofertas,"provincia":provincia,"habitaciones":habitaciones,"clientes":clientes,"trabajadores":trabajadores,})    
 
-
 class Alquileres(View):
     model=Inmueble
     
@@ -235,12 +232,10 @@ class Alquileres(View):
         flag=False
         if contador== 0:
             flag= True
-            ofertas=Oferta.objects.all().filter(activa=True).filter(tipo=2).order_by("created_at")[:12]
+            ofertas=Oferta.objects.all().filter(activa=True).filter(tipo=1).order_by("created_at")[:12]
 
 
         return render(request,"home.html",{"datos":datos,"flag":flag,"contador":contador,"resultado":ofertas,"provincia":provincia,"habitaciones":habitaciones,"clientes":clientes,"trabajadores":trabajadores,})    
-
-
 
 def choices_search(search="",lista_choise=list()):
     
@@ -260,6 +255,7 @@ def lista_fuc(lista=list()):
     return lista_tupla
 
     #función para realizar log informativos
+    
 def logs(file="log",mensaje=""):
     escribir = open(file+".txt", "a")
     escribir.write(str(mensaje)+"\n")

@@ -1,0 +1,5 @@
+<QueryDict: {'csrfmiddlewaretoken': ['rOwPEdqrOvKFN0fp6PY0v7AL5ZxJDfFnou6c8H6CtcIDfFIEj5KHuLmPHYyR7HsF'], 'oferta': ['5'], 'usuario': ['2'], 'fecha': ['2022-06-07'], 'meses': ['2']}>
+<QueryDict: {'csrfmiddlewaretoken': ['y1vQFe2iJOuGmmbnfxXI89zLJyYt52mSSVq9ZleyYeScRQCkEc99DznMASG29ceQ'], 'oferta': ['5'], 'usuario': ['2'], 'fecha': ['2022-08-12'], 'meses': ['8']}>
+<QueryDict: {'csrfmiddlewaretoken': ['y1vQFe2iJOuGmmbnfxXI89zLJyYt52mSSVq9ZleyYeScRQCkEc99DznMASG29ceQ'], 'oferta': ['5'], 'usuario': ['2'], 'fecha': ['2022-08-12'], 'meses': ['8']}>
+<QueryDict: {'csrfmiddlewaretoken': ['y1vQFe2iJOuGmmbnfxXI89zLJyYt52mSSVq9ZleyYeScRQCkEc99DznMASG29ceQ'], 'oferta': ['5'], 'usuario': ['2'], 'fecha': ['2022-08-12'], 'meses': ['8']}>
+<QueryDict: {'csrfmiddlewaretoken': ['y1vQFe2iJOuGmmbnfxXI89zLJyYt52mSSVq9ZleyYeScRQCkEc99DznMASG29ceQ'], 'oferta': ['5'], 'usuario': ['2'], 'fecha': ['2022-08-12'], 'meses': ['8']}>

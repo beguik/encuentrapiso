@@ -1,4 +1,6 @@
 from django.db import models
+from datetime import datetime, timedelta 
+from dateutil.relativedelta import relativedelta
 
 
 class Oferta(models.Model):
@@ -21,6 +23,8 @@ class Venta(models.Model):
 	oferta=models.ForeignKey("Oferta",verbose_name=("oferta"),on_delete=models.SET_NULL,null=True )
 	comprador=models.ForeignKey("administracion.Cliente", related_name="comprador",verbose_name=("comprador"),on_delete=models.SET_NULL,null=True )
 	fecha= models.DateTimeField('Fecha', auto_now=False, auto_now_add=False, null=True,blank=True)
+	activa=models.BooleanField('Activo', default=True)
+	aprobada=models.BooleanField('Aprobada', default=False)
 	updated_at = models.DateTimeField(auto_now_add=True, null=True)
 	created_at = models.DateTimeField(auto_now_add=True, null=True)
 		
@@ -39,9 +43,13 @@ class Venta(models.Model):
 class Alquiler(models.Model):
 	oferta=models.ForeignKey("Oferta",verbose_name=("oferta"),on_delete=models.SET_NULL,null=True )
 	inquilino=models.ForeignKey("administracion.Cliente", related_name="inquilino",verbose_name=("inquilino"), null=True, on_delete=models.SET_NULL, )
-	fecha_entrada=models.DateTimeField('Fecha', auto_now=False, auto_now_add=False,blank=True,null=True,)
+	fecha_entrada=models.DateTimeField('Fecha', auto_now=False, auto_now_add=False)
 	meses=models.IntegerField('Meses',)
+	activa=models.BooleanField('Activo', default=True)
+	aprobada=models.BooleanField('Aprobada', default=False)
+	baja=models.BooleanField('Baja', default=False)
 	created_at = models.DateTimeField(auto_now_add=True, null=True)
+	updated_at = models.DateTimeField(auto_now_add=True, null=True)
 	
 
 	def _get_precio_final(self):
@@ -50,5 +58,15 @@ class Alquiler(models.Model):
 
 	precio_final = property(_get_precio_final)
 
+	def _get_fechabaja(self):
+		fechainicial=str(self.fecha_entrada)
+		fechainicialFormato=fechainicial[0:10]
+		fechaI=datetime.strptime(fechainicialFormato, '%Y-%m-%d')
+		fechaBaja=fechaI+relativedelta(months=self.meses)
+		return fechaBaja
+
+	fecha_fin=property(_get_fechabaja)
+
 	def __str__(self):
 		return str(self.oferta.inmueble.id)+" - "+str(self.inquilino)+" - "+str(self.precio_final)
+

@@ -1,0 +1,7 @@
+<QueryDict: {'csrfmiddlewaretoken': ['QCCVLeZQ754osjPclCBkjwmenfkXTgaBU2bRUZekAvNVkO5ACW31NPBqTPdGeRzI'], 'venta': [''], 'user': ['2']}>
+<QueryDict: {'csrfmiddlewaretoken': ['QCCVLeZQ754osjPclCBkjwmenfkXTgaBU2bRUZekAvNVkO5ACW31NPBqTPdGeRzI'], 'venta': [''], 'user': ['2']}>
+<QueryDict: {'csrfmiddlewaretoken': ['AkvfwYvRvLAbE5zyO7TKva5EQSe7EzneEK4bFJKlYbjIwAPW5rlrZtkQms7QZaMl'], 'venta': ['3'], 'user': ['2']}>
+<QueryDict: {'csrfmiddlewaretoken': ['EzzEB6HrGpe894oc2OrswoXxM4HFFspRIZ8AKRWV9PXF1zEAj8T90HcJiEAo03OY'], 'venta': ['3'], 'user': ['2']}>
+<QueryDict: {'csrfmiddlewaretoken': ['6YV3DedtLxhLosEc16EisYocYGJeezB6aouZMZsXeX0igXUAiq6ZWhDougCXza0d'], 'venta': ['3'], 'user': ['2']}>
+<QueryDict: {'csrfmiddlewaretoken': ['rTiuukAsEeEHHpQKaYX91FLiYDDbvR9IvjRqD5PW7EnezU68ripQvY0uudwUQsyP'], 'venta': ['3'], 'user': ['2']}>
+<QueryDict: {'csrfmiddlewaretoken': ['nS2Xkxu0VDUESxDN4Ix4nVro1eqVrWdcriBTtiJuo3DbK2Tbl2ZLReGAxOjEMxCj'], 'venta': ['3'], 'user': ['2']}>

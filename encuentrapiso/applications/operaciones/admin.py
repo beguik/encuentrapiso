@@ -28,6 +28,8 @@ class VentaAdmin(admin.ModelAdmin):
 		'comprador',
 		'precio_final',
 		'fecha',
+		'activa',
+		'aprobada',
 		)
 	search_fields=(
 		'oferta',
@@ -48,7 +50,11 @@ class AlquilerAdmin(admin.ModelAdmin):
 		'inquilino',
 		'fecha_entrada',
 		'meses',
+		'fecha_fin',
 		'precio_final',
+		'activa',
+		'aprobada',
+		'baja'
 		)
 	search_fields=(
 		'oferta'
@@ -63,3 +69,4 @@ class AlquilerAdmin(admin.ModelAdmin):
 		'fecha_entrada',
 		)
 admin.site.register(Alquiler,AlquilerAdmin)
+

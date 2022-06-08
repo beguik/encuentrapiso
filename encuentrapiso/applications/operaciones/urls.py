@@ -10,8 +10,10 @@ urlpatterns =[
 	path('favoritos/<int:id>/',views.Megusta.as_view(),name="Favoritos"),
 	path('addfavoritos/',views.AddFavorito, name="addFavorito"),
 	path('comprar/<pk>',views.Comprar.as_view(), name="comprar"),
-	path('pdf/', views.exportarPdf, name="Pdf"),
+	path('pdf/', views.comprarPdf, name="Pdf"),
 	path('operaciones/<int:id>/',views.Operaciones.as_view(),name="Operaciones"),
+	path('desactivarVenta/<int:id>/', views.desactivarVenta.as_view(),name="desactivarVenta"),
+	path('desactivarAlquiler/<int:id>/', views.desactivarAlquiler.as_view(),name="desactivarAlquiler"),
 	path('alquilar/<pk>', views.Alquilar.as_view(),name="Alquilar"),
 	path('alquilarPdf/', views.alquilarPdf, name="AlquilarPdf")
 

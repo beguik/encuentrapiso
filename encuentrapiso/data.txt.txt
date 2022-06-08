@@ -1,0 +1,5 @@
+<QueryDict: {'csrfmiddlewaretoken': ['H1YeYcsdJE8pdNGwXSA4g3YC81O4DRtixOPrFPyQ9VKeel75xPxW7uJPWFL5jdUL'], 'alquiler': ['1'], 'user': ['2']}>
+<QueryDict: {'csrfmiddlewaretoken': ['q21zwPTEA3LPbtFCynBzFyrGzBD1AgIBgPSMdsZh0knEc16b8kyrwZcTnfA2gC94'], 'alquiler': ['4'], 'user': ['2']}>
+<QueryDict: {'csrfmiddlewaretoken': ['M6w80ehx3kkxmyWTB1eHDkkDzL1XUsgSCTnlHRnatBWmn6nsbYbzuL5QnpYYAOHl'], 'alquiler': ['5'], 'user': ['2']}>
+<QueryDict: {'csrfmiddlewaretoken': ['xicj8OZy14r4jQJgOYciMmkuESz399qKn53wPr5brl3TkoaPoV9aDN5Hsww4PvRd'], 'alquiler': ['5'], 'user': ['2']}>
+<QueryDict: {'csrfmiddlewaretoken': ['ZLuCZqctEGe7kyEm6AsYB5gcPvqsIQV1PylPG3i64XQWl65VGxpQsw1pD9ntocmu'], 'alquiler': ['4'], 'user': ['2']}>

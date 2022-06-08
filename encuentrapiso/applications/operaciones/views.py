@@ -119,7 +119,7 @@ class Comprar(View):
         
         return render(request,"comprar.html",{"oferta":oferta,"ventas":ventas,"clientes":clientes,"trabajadores":trabajadores})
 
-def exportarPdf(request):
+def comprarPdf(request):
     #extraemos datos
     data=request.POST
     usu=data['usuario']
@@ -157,52 +157,8 @@ def exportarPdf(request):
     
     return response
 
-class Operaciones(View):
-
-    def get(self, request, id):
-        clientes=Cliente.objects.all()
-        trabajadores=Trabajador.objects.all()
-        #extraemos el usuario
-        user=User.objects.get(id=id)
-        cliente=Cliente.objects.get(usuario=user)
-        ventas=Venta.objects.filter(comprador=cliente)
-        alquileres=Alquiler.objects.filter(inquilino=cliente)
-        #mandamos un contador 
-        contVentas=len(ventas)
-        contAlquileres=len(alquileres)
-
-        #genero el contexto fuera 
-        contexto={
-        "clientes":clientes,
-        "trabajadores":trabajadores,
-        "ventas":ventas,
-        "contVentas":contVentas,
-        "alquileres":alquileres,
-        "contAlquileres":contAlquileres
-        }
-
-        return render(request,"operaciones.html",contexto)
-    def post(self, request, id):
-        clientes=Cliente.objects.all()
-        trabajadores=Trabajador.objects.all()
-        #extraemos los datos del post en data
-        
-        data=request.POST
-        iduser=data["user"]
-
-        if "venta" in request.POST:
-            idventa=data["venta"]
-            venta=Venta.objects.get(id=idventa)
-            venta.delete()
-
-        if "alquiler" in request.POST:
-            idalquiler=data["alquiler"]
-            alquiler=Alquiler.objects.get(id=idalquiler)
-            alquiler.delete()
-        
-        return redirect('/operaciones/'+str(id))
-
 class Alquilar(View):
+
     def get(self, request,pk):
         clientes=Cliente.objects.all()
         trabajadores=Trabajador.objects.all()
@@ -219,36 +175,29 @@ class Alquilar(View):
 
         #contamos si hay mas de un alquiler de ese inmueble
         contador=len(lista)
-        logs("contador",contador)
+
         #si la lista no contiene resultados retornamos la página sin valores extras
         if contador == 0:
             calendario=datetime.now().strftime('%Y-%m-%d')
             calendarioFin=datetime.today() + timedelta(days=20)
             calFin=str(calendarioFin)[0:10]
-            logs("calendario",calendario)
-            logs("calendarioFin",calendarioFin)
             return render(request,"alquilar.html",{"calendario":calendario,"calFin":calFin, "oferta":oferta,"clientes":clientes,"trabajadores":trabajadores})
         
         #si hay mas de 0 buscamos la fecha más alta 
         else:
-            fecha=lista[0].fecha_entrada
-            meses=lista[0].meses
+            fechaFin=lista[0].fecha_fin
             for l in lista:
-                if fecha<l.fecha_entrada:
-                    fecha=l.fecha_entrada
-                    meses=l.meses
+                if fechaFin<l.fecha_fin:
+                    fechaFin=l.fecha_fin
 
-            fechaInicio=str(fecha)
-            fechaformato=fechaInicio[0:10]
-            fechaInicial = datetime.strptime(fechaformato, '%Y-%m-%d')
-            fechaFin=fechaInicial+relativedelta(months=meses)
-            #como en el template no se permite operar extraemos la fecha más los 20 días establecidos 
-            #para poder seleccionar la fecha de entrada del próximo alquiler
+            
+            fechafinFormato=str(fechaFin)[0:10]
+            fechaFormtao=datetime.strptime(fechafinFormato, '%Y-%m-%d')
             fechaFinPlantilla=fechaFin+relativedelta(days=20)
-            fechaFinFormato=str(fechaFin)[0:10]
-            fechaFinReserva=str(fechaFinPlantilla)[0:10]
+            fechaFPlantilla=str(fechaFinPlantilla)[0:10]
+            logs("fecha",fechaFPlantilla)
 
-            return render(request,"alquilar.html",{"fechaFinReserva":fechaFinReserva,"fechaFinFormato":fechaFinFormato,"fechaFin":fechaFin, "alquileres":alquileres,"oferta":oferta,"clientes":clientes,"trabajadores":trabajadores})
+            return render(request,"alquilar.html",{"fechaFin":fechaFin,"fechafinFormato":fechafinFormato, "fechaFPlantilla":fechaFPlantilla, "alquileres":alquileres,"oferta":oferta,"clientes":clientes,"trabajadores":trabajadores})
 
 
 def alquilarPdf(request):
@@ -257,8 +206,7 @@ def alquilarPdf(request):
     of=data['oferta']
     fecha=data['fecha']
     meses=data['meses']
-    logs("dta",data)
-
+   
     fecha_inicio = datetime.strptime(fecha, '%Y-%m-%d')
 
     oferta=Oferta.objects.get(id=of)
@@ -268,28 +216,17 @@ def alquilarPdf(request):
     
     #controlamos que no pueda duplicarse el alquiler, si el inquilino ya tiene un alquiler que coincida con las fechas
     #se le reenviara a su pagina de operaciones
-    lista=list()
+    
+    flag=False
     for a in alq:
         if a.oferta == oferta and a.inquilino == cliente:
-            lista.append(a)
+            fechaC = str(fecha)[0:10]
+            fechaFC=str(a.fecha_fin)[0:10]
+            if fechaC <= fechaFC:
+                flag=True
 
-    if len(lista)>0:
-        l=lista[-1]
-        m=l.meses
-        fechaAnterior=l.fecha_entrada
-        fechaAnt=str(a.fecha_entrada)
-        fechFor=fechaAnt[0:10]
-        fechaAntFor=datetime.strptime(fechFor, '%Y-%m-%d')
-        fechaSalida=fechaAntFor+relativedelta(months=m)
-
-        fechNueva=datetime.strptime(fecha, '%Y-%m-%d')
-        
-        if fechaSalida > fechNueva:
-            logs("fechaSalida",fechaSalida)
-            logs("fechaNueva",fechNueva)
-            return redirect('/operaciones/'+usu)
-
-
+    if flag:
+        return redirect('/operaciones/'+usu)
 
     alquiler=Alquiler.objects.create(oferta=oferta, inquilino=cliente, fecha_entrada=fecha_inicio, meses=meses)
 
@@ -312,12 +249,83 @@ def alquilarPdf(request):
     return response
 
         
+class Operaciones(View):
 
+    def get(self, request, id):
+        clientes=Cliente.objects.all()
+        trabajadores=Trabajador.objects.all()
+        #extraemos el usuario
+        user=User.objects.get(id=id)
+        cliente=Cliente.objects.get(usuario=user)
+        ventas=Venta.objects.filter(comprador=cliente).filter(activa=True).filter(aprobada=False)
+        alquileres=Alquiler.objects.filter(inquilino=cliente).filter(activa=True).filter(aprobada=False)
+        ventasConfirmadas=Venta.objects.filter(comprador=cliente).filter(aprobada=True).filter(activa=True)
+        alquileresConfirmados=Alquiler.objects.filter(inquilino=cliente).filter(aprobada=True).filter(activa=True)
+        #mandamos un contador 
+        contVSolicitadas=len(ventas)
+        contASolicitados=len(alquileres)
+        contAaprobadas=len(alquileresConfirmados)
+        contVaprobadas=len(ventasConfirmadas)
 
+        #genero el contexto fuera 
+        contexto={
+        "clientes":clientes,
+        "trabajadores":trabajadores,
+        "ventas":ventas,
+        "contVSolicitadas":contVSolicitadas,
+        "alquileres":alquileres,
+        "contASolicitados":contASolicitados,
+        "ventasConfirmadas":ventasConfirmadas,
+        "alquileresConfirmados":alquileresConfirmados,
+        "contAaprobadas":contAaprobadas,
+        "contVaprobadas":contVaprobadas
+        }
 
+        return render(request,"operaciones.html",contexto)
 
+class desactivarVenta(View):
 
+    def get(self, request, id):
+        clientes=Cliente.objects.all()
+        trabajadores=Trabajador.objects.all()
+        venta=Venta.objects.get(id=id)
 
+        return render(request, "eliminar.html",{"venta":venta,"clientes":clientes,"trabajadores":trabajadores})
+
+    def post(self, request, id):
+        data=request.POST
+        iduser=data["user"]
+        idventa=data["venta"]
+        venta=Venta.objects.get(id=idventa)
+        venta.activa=False
+        venta.save()
+        
+        return redirect('/operaciones/'+str(iduser))
+
+class desactivarAlquiler(View):
+
+    def get(self, request, id):
+        clientes=Cliente.objects.all()
+        trabajadores=Trabajador.objects.all()
+        alquiler=Alquiler.objects.get(id=id)
+
+        return render(request, "eliminar.html",{"alquiler":alquiler,"clientes":clientes,"trabajadores":trabajadores})
+
+    def post(self, request, id):
+        data=request.POST
+        logs("data.txt",data)
+        iduser=data["user"]
+        idalquiler=data["alquiler"]
+        alquiler=Alquiler.objects.get(id=idalquiler)
+        if alquiler.aprobada==True:
+            alquiler.baja=True
+            alquiler.activa=False
+            alquiler.save()
+        else:
+            alquiler.activa=False
+            alquiler.save()
+        
+        return redirect('/operaciones/'+str(iduser))
 
 
 

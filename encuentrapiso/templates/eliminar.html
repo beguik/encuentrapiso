@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+{% load static %}
+{% load humanize %}
+{% block title %}Encuentra Piso{% endblock %}
+
+
+{% block head %}
+{% include 'cabecera.html' %}
+{% endblock head %}
+
+
+
+{% block content %}
+
+
+<div id="eliminar" class="card">
+	{%if venta %}
+		{% if venta.aprobada%}
+			<p style="text-align:center">
+			<b>Actualmente tiene esta venta aprobada,</b> su cancelación puede conllevar algunos gastos extras. <br/><br/>
+
+			Su agente de confianza {{venta.oferta.vendedor.nombre}} {{venta.oferta.vendedor.primer_apellido}} se pondrá en contacto con usted, con la mayor brevedad posible, para informarle del procedimiento.<br/><br/>
+
+			Si lo prefiere puede contactar usted con él, en el teléfono: {{venta.oferta.vendedor.telefono}}
+			</p>
+			<div style="text-align:center;">
+				<a href="{% url 'app_operaciones:Operaciones' user.id %}">
+					<button class="btn btn-primary">&nbsp;Volver&nbsp;</button>
+				</a>
+				<br/><br/>
+				<form action="" method="post">
+					{% csrf_token %}
+					<input id="venta" name="venta" type="hidden" value={{venta.id}}>
+					<input id="user" name="user" type="hidden" value={{user.id}}>
+					<button type="submit"class="btn btn-danger">&nbsp;Cancelar Venta&nbsp;</button>
+				</form>	
+			</div>
+		{%else%}
+			<p style="text-align:center">
+				¿Está seguro que quiere eliminar su solicitud de compra del inmuble situado en la {{venta.oferta.inmueble.direccion}}?<br/><br/>
+
+				Es posible que el agente que tramita esta oferta {{venta.oferta.vendedor}} se ponga en contacto con usted para conocer los motivos de su  decisión
+			</p>
+			<div style="text-align:center;">
+				<a href="{% url 'app_operaciones:Operaciones' user.id %}">
+					<button class="btn btn-primary">&nbsp;Volver&nbsp;</button>
+				</a>
+				<br/><br/>
+				<form action="" method="post">
+					{% csrf_token %}
+					<input id="venta" name="venta" type="hidden" value={{venta.id}}>
+					<input id="user" name="user" type="hidden" value={{user.id}}>
+					<button type="submit"class="btn btn-danger">&nbsp;Eliminar&nbsp;</button>
+				</form>	
+			</div>
+		{%endif%}
+	{%else%}
+		{%if alquiler.aprobada %}
+			<p style="text-align:center">
+				Este alquiler está aprobado, la modificación de las condiciones pueden generar gastos extras. 
+				Si quiere puede tramitar la baja del alquiler y {{venta.oferta.vendedor.nombre}} {{venta.oferta.vendedor.primer_apellido}} se pondrá en contacto con usted a la mayor brevedad posible para informarle del procedimiento.Si lo prefiere puede contactar usted con el, en el teléfono: {{venta.oferta.vendedor.telefono}}
+			<br/><br/>	
+			</p>
+			<div style="text-align:center;">
+				<a href="{% url 'app_operaciones:Operaciones' user.id %}">
+					<button class="btn btn-primary">&nbsp;Volver&nbsp;</button>
+				</a><br/><br/>
+				<form action="" method="post">
+				{% csrf_token %}
+					<input id="alquiler" name="alquiler" type="hidden" value={{alquiler.id}}>
+					<input id="user" name="user" type="hidden" value={{user.id}}>
+					<button type="submit"class="btn btn-danger">&nbsp;Eliminar&nbsp;</button>
+				</form>	
+			</div>
+		{%else%}
+			<p style="text-align:center">
+				¿Está seguro que quiere eliminar su solicitud de alquiler para el inmuble situado en la {{alquiler.oferta.inmueble.direccion}}?<br/><br/>
+
+				Es posible que el agente que tramita esta oferta {{alquiler.oferta.vendedor}} se ponga en contacto con usted para conocer los motivos de su  decisión
+			</p>
+			<div style="text-align:center;">
+				<a href="{% url 'app_operaciones:Operaciones' user.id %}">
+					<button class="btn btn-primary">&nbsp;Volver&nbsp;</button>
+				</a><br/><br/>
+				<form action="" method="post">
+				{% csrf_token %}
+					<input id="alquiler" name="alquiler" type="hidden" value={{alquiler.id}}>
+					<input id="user" name="user" type="hidden" value={{user.id}}>
+					<button type="submit"class="btn btn-danger">&nbsp;Eliminar&nbsp;</button>
+				</form>	
+			</div>
+		{%endif%}
+	
+
+
+{%endif%}
+
+</div>
+									
+											
+
+
+
+
+{% endblock content %}
