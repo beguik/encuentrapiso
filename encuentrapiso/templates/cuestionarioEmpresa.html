@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% load static %}
+{% load humanize %}
+
+{% block title %}Encuentra Piso{% endblock %}
+
+
+{% block head %}
+{% include 'cabecera.html' %}
+{% endblock head %}
+
+
+{% block content %}
+<center>
+<h3 style="width: 60%;margin: auto; padding-top:1em"> Para poder registrarse como trabajador debe pertenecer a una de nuestras empresas asociadas.<br/>Indíquenos a cual. </h3> 
+</center>
+<div id="registro" class="card">
+
+    <form action="" enctype="multipart/form-data" method="POST">
+        {%csrf_token %}               
+        <table id="tablaformularioemprea" width="100%">
+            <tr>
+                <td>
+                    <label>*Razón Social: </label>
+                    {{form.razon_social}}
+                    
+                </td>
+                <td>
+                    <label>**Codigo Acceso: </label>
+                    {{form.codigo}}
+                    
+                </td>
+            </tr>
+             
+            <tr>
+              
+                <td colspan="2" style="text-align:center">
+                    <p id="errores" style="text-align:right; padding-top:5px">
+                        <span id="errorCodigo"></span>
+                    </p>
+                    <h6 style="font-size:10;text-align:right;color:red">{{mensaje}}</h6>
+                    <h6 style="font-size:10;text-align:left">* Los campos son obligatorios</h6>
+                    <h6 style="font-size:10;text-align:left">**El código es un campo numércio de ocho dígitos</h6>
+                    <button class="btn btn-primary btn-lg" id="enviar" type="submit" 
+                    style= "background-color: #012e67">Enviar</button>
+                    
+                </td>
+            </tr>
+             
+        </table>
+       
+    </form>
+</div>
+
+
+<script type="text/javascript">
+    
+
+
+let codigo = document.getElementById("id_codigo");
+
+window.addEventListener("load", () => {
+ 
+    codigo.addEventListener("keypress", validarNumeros);
+    codigo.addEventListener("blur", validarCodigo);
+    
+})
+
+
+function validarNumeros(e) {
+  
+    let evento = e || event;
+    if (evento.which < 48 || evento.which > 57) {
+        e.preventDefault();
+    }
+}
+
+function validarCodigo(){
+    let expresion =/^[0-9]{8}$/;
+    let spam=document.getElementById("errorCodigo")
+     if (!expresion.test(codigo.value)) {
+        spam.innerHTML = "Debe introducir un código correcto";
+        codigo.focus();
+    } else{
+        spam.innerHTML = "";
+    }  
+}
+
+
+
+</script>
+
+{% endblock %}

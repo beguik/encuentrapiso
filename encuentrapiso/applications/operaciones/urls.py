@@ -15,7 +15,8 @@ urlpatterns =[
 	path('desactivarVenta/<int:id>/', views.desactivarVenta.as_view(),name="desactivarVenta"),
 	path('desactivarAlquiler/<int:id>/', views.desactivarAlquiler.as_view(),name="desactivarAlquiler"),
 	path('alquilar/<pk>', views.Alquilar.as_view(),name="Alquilar"),
-	path('alquilarPdf/', views.alquilarPdf, name="AlquilarPdf")
+	path('alquilarPdf/', views.alquilarPdf, name="AlquilarPdf"),
+	path('crearOferta/', views.CrearOferta.as_view(), name="CrearOferta"),
 
 
 ]

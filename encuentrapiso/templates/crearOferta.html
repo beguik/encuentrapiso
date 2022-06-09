@@ -1,0 +1,208 @@
+{% extends "base.html" %}
+{% load static %}
+{% load humanize %}
+{% block title %}Encuentra Piso{% endblock %}
+
+
+{% block head %}
+{% include 'cabecera.html' %}
+{% endblock head %}
+
+
+{% block content %}
+<div id="annadir" class="card" style="width: 90%; margin: auto; margin-top: 3%; border-radius:15px; border: solid 2px #919191; padding: 20px;">
+	<form action="." method="POST">
+        {%csrf_token %}
+		<table width="90%" style="margin:auto">
+			<tr>
+				<td style="padding:10px">
+					Propietario: 
+					<br/>{{formularioInmueble.propietario}}
+					<p id="errores">
+						<span id="errorPropietario"></span>
+					</p>
+				</td>
+				<td style="padding:10px">
+					Direccion:<br/> 
+					{{formularioInmueble.direccion}}
+					<p id="errores">
+						<span id="errorDireccion"></span>
+					</p>
+				</td>
+				<td style="padding:10px">
+					Localización:<br/>
+					{{formularioInmueble.localizacion}}
+					<p id="errores">
+						<span id="errorLocalizacion"></span>
+					</p>
+				</td>
+				<td style="padding:10px">
+					Código Postal: <br/>
+					{{formularioInmueble.codigo_postal}}
+					<p id="errores">
+						<span id="errorCodigoPostal"></span>
+					</p>
+				</td>
+			</tr>
+			<tr>
+				<td style="padding:10px">
+					Año Construcción:<br/>
+					{{formularioInmueble.construccion}}
+					<p id="errores">
+						<span id="errorConstruccion"></span>
+					</p>
+				</td>
+				<td style="padding:10px">
+					Metros: <br/>
+					{{formularioInmueble.metros}}
+					<p id="errores">
+						<span id="errorMetros"></span>
+					</p>
+				</td>
+				<td style="padding:10px">
+					Nº Habitaciones:<br/>
+					{{formularioInmueble.habitacion}}
+					<p id="errores">
+						<span id="errorHabitaciones"></span>
+					</p>
+				</td>
+				<td style="padding:10px">
+					Planta:<br/>
+					{{formularioInmueble.planta}}
+					<p id="errores">
+						<span id="errorPlanta"></span>
+					</p>
+				</td>
+			</tr>
+			<tr>
+				<td style="padding:10px">
+					Baños:<br/>
+					{{formularioInmueble.wc}}
+					<p id="errores">
+						<span id="errorWc"></span>
+					</p>
+				</td>
+				<td style="padding:10px">
+					Orientación:<br/>
+					{{formularioInmueble.orientacion}}
+					<p id="errores">
+						<span id="errorOrientacion"></span>
+					</p>
+				</td>
+				<td style="padding:10px">
+					Precio Comunidad:<br/>
+					{{formularioInmueble.comunidad}}
+					<p id="errores">
+						<span id="errorComunidad"></span>
+					</p>
+				</td>
+				<td style="padding:10px">
+					Ascensor: {{formularioInmueble.ascensor}}
+					Terraza: {{formularioInmueble.terraza}}
+					Patio:{{formularioInmueble.patio}}
+				</td>
+			</tr>
+			<tr>
+				<td colspan="4" style="padding:10px">
+					Observaciones:<br/>
+					{{formularioInmueble.observacion}}
+					<p id="errores">
+						<span id="errorObservaciones"></span>
+					</p>
+
+				</td>
+			</tr>
+			<tr>
+				<td colspan="4" style="text-align:center; padding:10px">
+					Fachada: 
+					{{formularioInmueble.imagenPrincipal}}
+					<p id="errores">
+						<span id="errorFoto"></span>
+					</p>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="4" style="text-align:center; padding:10px">
+					Imagen 1:
+					{{formularioInmueble.imagen1}}
+				</td>
+			</tr>
+			<tr>
+				<td colspan="4" style="text-align:center; padding:10px">
+					Imagen 2:
+					{{formularioInmueble.imagen2}}
+				</td>
+			</tr>
+			<tr>
+				<td colspan="4" style="text-align:center; padding:10px">
+					Imagen 3:
+					{{formularioInmueble.imagen3}}
+				</td>
+			</tr>
+			<tr>
+				<td colspan="4"style="text-align:center; padding:10px" >
+					Imagen 4:
+					{{formularioInmueble.imagen4}}
+				</td>
+			</tr>
+			<tr>
+				<td colspan="4"style="text-align:center; padding:10px" >
+					<button type="submit" class="btn btn-primary"> Crear Inmueble</button>
+				</td>
+			</tr>
+		</table>
+	</form>
+
+</div>
+
+
+
+
+
+<script> 
+
+let propietario=document.getElementById("id_propietario");
+let direccion=document.getElementById("id_direccion");
+let localizacion=document.getElementById("id_localizacion");
+let codigoPostal=document.getElementById("id_codigo_postal");
+let construccion=document.getElementById("id_construccion");
+let metros=document.getElementById("id_metros");
+let habitaciones=document.getElementById("id_habitacion");
+let planta=document.getElementById("id_planta");
+let wc=document.getElementById("id_wc");
+let orientacion=document.getElementById("id_orientacion");
+let comunidad=document.getElementById("id_comunidad");
+let terraza=document.getElementById("id_terraza");
+let ascensor=document.getElementById("id_ascensor");
+let patio=document.getElementById("id_patio");
+let observacion=document.getElementById("id_observacion");
+let imagen=document.getElementById("id_imagenPrincipal")
+
+window.addEventListener("load", () => {
+console.log("entra")
+	construccion.setAttribute("min","1900");
+	construccion.setAttribute("max","{{year}}");
+	metros.setAttribute("min", 10);
+	planta.setAttribute("min",0);
+	planta.setAttribute("max",40);
+	wc.setAttribute("min",0);
+	wc.setAttribute("max",20);
+	comunidad.setAttribute("min",0);
+	comunidad.setAttribute("step",0.01);
+	console.log("sale")
+
+})
+    
+
+</script>
+
+
+
+
+
+
+
+
+
+
+{% endblock content %}

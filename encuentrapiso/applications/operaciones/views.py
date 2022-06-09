@@ -9,6 +9,7 @@ from dateutil.relativedelta import relativedelta
 from applications.administracion.models import *
 from applications.inmuebles.choices import *
 from applications.inmuebles.models import *
+from applications.inmuebles.forms import *
 from weasyprint import HTML
 from weasyprint.text.fonts import FontConfiguration
 from .models import *
@@ -199,7 +200,6 @@ class Alquilar(View):
 
             return render(request,"alquilar.html",{"fechaFin":fechaFin,"fechafinFormato":fechafinFormato, "fechaFPlantilla":fechaFPlantilla, "alquileres":alquileres,"oferta":oferta,"clientes":clientes,"trabajadores":trabajadores})
 
-
 def alquilarPdf(request):
     data=request.POST
     usu=data['usuario']
@@ -247,7 +247,6 @@ def alquilarPdf(request):
     HTML(string=html, base_url=request.build_absolute_uri()).write_pdf(response, font_config=font_config)
     
     return response
-
         
 class Operaciones(View):
 
@@ -327,7 +326,24 @@ class desactivarAlquiler(View):
         
         return redirect('/operaciones/'+str(iduser))
 
+class CrearOferta(View):
 
+    def get(self,request):
+        clientes=Cliente.objects.all()
+        trabajadores=Trabajador.objects.all()
+        formularioInmueble= addInmueble()
+        fecha=datetime.now().strftime('%Y-%m-%d')
+        year=str(fecha)[:4]
+
+        
+    
+        return render (request, "crearOferta.html",{"year":year,"formularioInmueble":formularioInmueble,"clientes":clientes,"trabajadores":trabajadores})
+
+    def post(self,request):
+        clientes=Cliente.objects.all()
+        trabajadores=Trabajador.objects.all()
+        data=request.POST
+        logs("form",data)
 
 
 

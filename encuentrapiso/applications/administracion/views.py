@@ -63,13 +63,81 @@ class Registro(View):
 			return render(request,"registroCliente.html",{"form":form,"formDatos":formDatos})
 
 
+class CuestionarioEmpresa(View):
 
+	def get(self,request):
 
+		form=EncuestaEmpresa()
+		return render(request,"cuestionarioEmpresa.html",{"form":form,})
 
+	def post(self,request):
+		data=request.POST
+		razon_social=data['razon_social'].upper()
+		codigo=data['codigo']
+		empresas=Empresa.objects.all()
+		form=EncuestaEmpresa()
+		flag=False
+		for e in empresas:
+			if e.codigo==codigo:
+				flag=True 
+		if flag:
+			empresa=Empresa.objects.get(codigo=codigo)
+			if razon_social == empresa.razon_social.upper():
+				em=empresa.id
+				return redirect("/registroTrabajador/"+str(em))
+			else:
+				mensaje="Los datos no son correctos"
+				return render(request,"cuestionarioEmpresa.html",{"mensaje":mensaje,"form":form})
+		else:
+			mensaje="Los datos no son correctos"
+			return render(request,"cuestionarioEmpresa.html",{"mensaje":mensaje,"form":form})
 
+class RegistroTrabajador(View):
 
+	def get(self,request,id):
+		form=CreacionUser(request.POST)
+		formDatos=RegistroForm(request.POST,request.FILES)
+		empresa=Empresa.objects.get(id=id)
+		return render(request,"registroTrabajador.html",{"form":form, "formDatos":formDatos,"empresa":empresa})
 
+	def post(self,request,id):
+		form=CreacionUser(request.POST)
+		formDatos=RegistroForm(request.POST,request.FILES)
 
+		if form.is_valid():
+			if formDatos.is_valid():
+				empresa=Empresa.objects.get(id=id)
+				datos=formDatos.cleaned_data
+				dni =datos['dni']
+				nombre=datos['nombre']
+				primer_apellido=datos['primer_apellido']
+				segundo_apellido=datos['segundo_apellido']
+				telefono=datos['telefono']
+
+				if validarDni(dni):
+
+					if Trabajador.objects.filter(dni=dni).exists():
+						mensajedni="El DNI introducido ya existe"
+						return render(request,"registroTrabajador.html",{"form":form,"formDatos":formDatos, "mensajedni":mensajedni})
+
+					user=form.save()
+					nuevo=Trabajador(usuario=user, dni=dni, nombre=nombre, primer_apellido=primer_apellido, segundo_apellido=segundo_apellido,empresa=empresa, telefono=telefono)
+					nuevo.save()
+				
+					login(request, user)
+			
+					return redirect('/profesional/')
+				else: 
+					mensajedni="Compruebe que el dni sea correcto"
+					return render(request,"registroCliente.html",{"form":form,"formDatos":formDatos, "mensajedni":mensajedni})
+
+		
+		else:
+
+			
+			for msg in form.error_messages:
+				messages.error(request,form.error_messages[msg])
+			return render(request,"registroCliente.html",{"form":form,"formDatos":formDatos})
 
 
 #Función para validar dni
@@ -92,3 +160,10 @@ def validarDni(dni):
 			return False
 		else:
 			return True
+
+
+#función para realizar log informativos
+def logs(file="log",mensaje=""):
+    escribir = open(file+".txt", "a")
+    escribir.write(str(mensaje)+"\n")
+    escribir.close()

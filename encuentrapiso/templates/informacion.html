@@ -128,7 +128,10 @@
         <input id="oferta" name="oferta" type="hidden" value={{inmueble.id}}>
         <input id="usuario" name="usuario" type="hidden" value={{user.id}}>
          {% if user.is_authenticated %}
+         
          <button type="submit" id="favorito"class="btn btn-light" >Agregar a Favoritos </button>
+       
+
         {%endif%}
       </form>
     </td>
@@ -301,7 +304,12 @@
        }
     {% endfor %}
 
-
+  {%for t in trabajadores%}
+       if ("{{t.usuario.id}}" == "{{user.id}}"){
+          console.log("entra")
+          favorito.disabled=true;
+       }
+    {% endfor %}
 
   
 

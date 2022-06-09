@@ -27,3 +27,6 @@ class CreacionUser(UserCreationForm):
 		cliente = models.OneToOneField(User, on_delete=models.CASCADE)
 
 
+class EncuestaEmpresa (forms.Form):
+	razon_social=forms.CharField(max_length = 100,widget=forms.TextInput(attrs={'class': 'form-control'}))
+	codigo=forms.CharField(max_length = 8,widget=forms.TextInput(attrs={'class': 'form-control'}))

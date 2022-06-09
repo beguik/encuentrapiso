@@ -24,8 +24,7 @@ class Inicio(View):
         paginator=Paginator(ofertas,8)
         page_number=request.GET.get('page')
         resultado =paginator.get_page(page_number)
-        logs("prueba", ofertas)
-
+        
         return render(request,"home.html",{"provincia":provincia,"habitaciones":habitaciones, "ofertas":ofertas,"resultado":resultado,"clientes":clientes,"trabajadores":trabajadores} )
 
 
@@ -236,6 +235,16 @@ class Alquileres(View):
 
 
         return render(request,"home.html",{"datos":datos,"flag":flag,"contador":contador,"resultado":ofertas,"provincia":provincia,"habitaciones":habitaciones,"clientes":clientes,"trabajadores":trabajadores,})    
+
+class Profesional(View):
+    def get(self, request):
+        clientes=Cliente.objects.all()
+        trabajadores=Trabajador.objects.all()
+        ofertas=Oferta.objects.all().order_by('-created_at')[:20]
+
+        return render(request,"profesional.html",{"ofertas":ofertas, "clientes":clientes,"trabajadores":trabajadores} )
+
+
 
 def choices_search(search="",lista_choise=list()):
     
