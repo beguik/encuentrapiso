@@ -5,6 +5,12 @@ from .models import *
 class TexArea(forms.Textarea):
 	input_type="texarea"
 
+class TexInput(forms.TextInput):
+	input_text="texinput"
+
+class Select(forms.Select):
+	input_select="select"
+
 class addInmueble(forms.ModelForm):
 	class Meta: 
 		model=Inmueble
@@ -32,7 +38,20 @@ class addInmueble(forms.ModelForm):
 			]
 
 		widgets={
+				'propietario':Select(attrs={'class':'form-control'}),
+				'localizacion':Select(attrs={'class':'form-control'}),
 				'observacion':TexArea(attrs={'class':'form-control','rows':'10','cols':'5'}),
+				'direccion':TexInput(attrs={'class':'form-control'}),
+				'codigo_postal':TexInput( attrs={'class':'form-control'}),
+				'construccion':TexInput( attrs={'class':'form-control'}),
+				'metros':TexInput( attrs={'class':'form-control'}),
+				'habitacion':Select(attrs={'class':'form-control'}),
+				'planta':TexInput( attrs={'class':'form-control'}),
+				'wc':TexInput( attrs={'class':'form-control'}),
+				'orientacion':Select(attrs={'class':'form-control'}),
+				'comunidad':TexInput( attrs={'class':'form-control'}),
+
+				
 				}
 
 		labels={
