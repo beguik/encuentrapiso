@@ -1,0 +1,4 @@
+<MultiValueDict: {}>
+<MultiValueDict: {}>
+<MultiValueDict: {'imagenPrincipal': [<InMemoryUploadedFile: casa.png (image/png)>]}>
+<MultiValueDict: {'imagenPrincipal': [<InMemoryUploadedFile: casa.png (image/png)>]}>

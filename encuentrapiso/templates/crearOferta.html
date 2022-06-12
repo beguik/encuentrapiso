@@ -2,15 +2,16 @@
 {% load static %}
 {% load humanize %}
 {% block title %}Encuentra Piso{% endblock %}
-
-
 {% block head %}
 {% include 'cabecera.html' %}
 {% endblock head %}
 
 
 {% block content %}
-<div style="width:70%; margin:100px auto;">
+
+<div style="width:90%; margin:60px auto;">
+	<p style="text-align:center;font-size:15; color:green; padding-top:10px">{{mensajeRegistro}}</p>
+	<p style="text-align:center;font-size:15; color:red; padding-top:10px">{{error}}</p>
 	<div id="accordion" >
 		<div class="card">
 			<div class="card-header" id="headingOne">
@@ -23,7 +24,48 @@
 			<div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
 				<div class="card-body">
 					<div id="annadir" class="card" style="width: 90%; margin: auto; margin-top: 3%; border-radius:15px; border: solid 2px #919191; padding: 20px;">
-						form propietario
+						<p style="text-align:center; font-size:10; color:red">
+							{%for e in erroresPropietario%}
+								{{e}}<br/>
+							{%endfor%}
+						</p>
+						<form action="." enctype="multipart/form-data" method="POST">
+					        {%csrf_token %}
+							<table width="90%" style="margin:auto;d">
+								<tr>
+									
+									<td style="padding:1%">Nombre:<br/>{{formularioPropietario.nombre}}
+										<p class="errores">
+											<span id="errorNombre"></span>
+										</p>
+									</td>
+									<td style="padding:1%">Primer Apellido<br/>{{formularioPropietario.primer_apellido}}
+										<p class="errores">
+											<span id="errorPrimerApellido"></span>
+										</p>
+									</td>
+									<td style="padding:1%">Segundo Apellido <br/>{{formularioPropietario.segundo_apellido}}
+										<p class="errores">
+											<span id="errorSegundoApellido"></span>
+										</p>
+									</td>
+								</tr>
+								<tr>
+									<td style="padding:1%">DNI:<br/>{{formularioPropietario.dni}}
+										<p class="errores">
+											<span id="errordni">{{mensajedni}}</span>
+										</p>
+									</td>
+									<td  style="padding:1%">Telefono<br/>{{formularioPropietario.telefono}}
+										<p class="errores">
+											<span id="errorTelefono"></span>
+										</p>
+									</td>
+									<td style="padding:1%;padding-top:3%; "><button class="btn btn-primary btn-block">Crear Propietario</button></button></td>
+
+								</tr>
+							</table>
+						</form>
 					</div>
 				</div>
 			</div>
@@ -40,7 +82,12 @@
 			<div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
 				<div class="card-body">
 					<div id="annadir" class="card" style="width: 90%; margin: auto; margin-top: 3%; border-radius:15px; border: solid 2px #919191; padding: 20px;">
-						<form action="." method="POST">
+						<p style="text-align:center; font-size:10; color:red">
+							{%for e in erroresInmueble%}
+								{{e}}<br/>
+							{%endfor%}
+						</p>
+						<form action="." enctype="multipart/form-data" method="POST">
 					        {%csrf_token %}
 							<table width="90%" style="margin:auto">
 								<tr>
@@ -65,6 +112,8 @@
 											<span id="errorLocalizacion"></span>
 										</p>
 									</td>
+								</tr>
+								<tr>	
 									<td style="padding:10px">
 										Código Postal: <br/>
 										{{formularioInmueble.codigo_postal}}
@@ -72,8 +121,6 @@
 											<span id="errorCodigoPostal"></span>
 										</p>
 									</td>
-								</tr>
-								<tr>
 									<td style="padding:10px">
 										Año Construcción:<br/>
 										{{formularioInmueble.construccion}}
@@ -88,6 +135,8 @@
 											<span id="errorMetros"></span>
 										</p>
 									</td>
+								</tr>
+								<tr>
 									<td style="padding:10px">
 										Nº Habitaciones:<br/>
 										{{formularioInmueble.habitacion}}
@@ -102,8 +151,6 @@
 											<span id="errorPlanta"></span>
 										</p>
 									</td>
-								</tr>
-								<tr>
 									<td style="padding:10px">
 										Baños:<br/>
 										{{formularioInmueble.wc}}
@@ -111,6 +158,8 @@
 											<span id="errorWc"></span>
 										</p>
 									</td>
+								</tr>
+								<tr>
 									<td style="padding:10px">
 										Orientación:<br/>
 										{{formularioInmueble.orientacion}}
@@ -198,7 +247,45 @@
 			<div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
 				<div class="card-body">
 					<div id="annadir" class="card" style="width: 90%; margin: auto; margin-top: 3%; border-radius:15px; border: solid 2px #919191; padding: 20px;">
-						form Oferta
+						<p style="text-align:center; font-size:10; color:red">
+							{%for e in erroresOferta%}
+								{{e}}<br/>
+							{%endfor%}
+						</p>
+						<form action="." enctype="multipart/form-data" method="POST">
+					        {%csrf_token %}
+							<table width="90%" style="margin:auto;d">
+								<tr>
+									<td style="padding:1%">Inmueble:<br/>{{formularioOferta.inmueble}}
+										<p class="errores">
+											<span id="errorInmueble"></span>
+										</p>
+									</td>
+									<td style="padding:1%">Tipo: <i style="font-size:10"> (1 para Alquileres, 2 para Ventas)</i><br/>{{formularioOferta.tipo}}
+										<p class="errores">
+											<span id="errorTipo"></span>
+										</p>
+									</td>
+								</tr>
+								<tr>
+									<td style="padding:1%">Precio<br/>{{formularioOferta.precio}}
+										<p class="errores">
+											<span id="errorPrecio"></span>
+										</p>
+									</td>
+									<td style="padding:1%">Descuento:<br/>{{formularioOferta.descuento}}
+										<p class="errores">
+											<span id="errorDescuento"></span>
+										</p>
+									</td>
+								</tr>
+								<tr>
+									<td colspan="2" style="padding:1%;padding-top:3%;text-align:center">
+										 <input id="usuario" name="usuario" type="hidden" value={{user.id}}>
+										<button class="btn btn-primary">Crear Oferta</button></button></td>
+								</tr>
+							</table>
+						</form>
 					</div>
 				</div>
 			</div>
@@ -212,10 +299,13 @@
 </div>
 
 
-
-
-
 <script> 
+
+let nombre=document.getElementById("id_nombre");
+let primerApellido=document.getElementById("id_primer_apellido");
+let segundoApellido=document.getElementById("id_segundo_apellido");
+let dni=document.getElementById("id_dni");
+let telefono=document.getElementById("id_telefono");
 
 let codigoPostal=document.getElementById("id_codigo_postal");
 let construccion=document.getElementById("id_construccion");
@@ -230,7 +320,17 @@ let patio=document.getElementById("id_patio");
 let observacion=document.getElementById("id_observacion");
 let imagen=document.getElementById("id_imagenPrincipal")
 
+let tipo=document.getElementById("id_tipo");
+let precio=document.getElementById("id_precio");
+let descuento=document.getElementById("id_descuento")
+
 window.addEventListener("load", () => {
+	nombre.addEventListener("focusout",validarNombre);
+	primerApellido.addEventListener("focusout",validarPrimerApellido);
+	segundoApellido.addEventListener("focusout",validarSegundoApellido);
+	dni.addEventListener("focusout",validarDni);
+	telefono.addEventListener("keypress", validarNumeros);
+	telefono.addEventListener("focusout",validarTelefono);
 
 	codigoPostal.addEventListener("keypress", validarNumeros);
 	codigoPostal.addEventListener("focusout",validarCodigo)
@@ -242,12 +342,90 @@ window.addEventListener("load", () => {
 	wc.addEventListener("keypress", validarNumeros);
 	wc.addEventListener("focusout", validarWc);
 	comunidad.addEventListener("keypress", validarNumeros);
+
+	descuento.setAttribute("min",0);
+    descuento.setAttribute("max",100);
+    descuento.setAttribute("step",0.01);
+    precio.setAttribute("min",0);
+    precio.setAttribute("step",0.01);
+	tipo.addEventListener("focusout", validarTipo);
 	
 
 })
+
+function validarNombre(){
+    let expresion =/^[a-zA-ZÀ-ÿ\u00f1\u00d1\s]{2,20}$/;
+    let spam = document.getElementById("errorNombre"); 
+    if (!expresion.test(nombre.value)) {
+        spam.innerHTML = "Debe introducir un nombre correcto";
+        nombre.focus();
+    } else{
+        spam.innerHTML = "";
+    }   
+}
+
+function validarPrimerApellido(){
+    let expresion =/^[a-zA-ZÀ-ÿ\u00f1\u00d1\s]{2,20}$/;
+    let spam = document.getElementById("errorNombre"); 
+    if (!expresion.test(nombre.value)) {
+        spam.innerHTML = "Debe introducir un apellido correcto";
+        nombre.focus();
+    } else{
+        spam.innerHTML = "";
+    }   
+} 
+
+function validarSegundoApellido(){
+    let expresion =/^[a-zA-ZÀ-ÿ\u00f1\u00d1\s]{2,20}$/;
+    let spam = document.getElementById("errorNombre"); 
+    if (!expresion.test(nombre.value)) {
+        spam.innerHTML = "Debe introducir un apellido correcto";
+        nombre.focus();
+    } else{
+        spam.innerHTML = "";
+    }   
+ } 
+
+function validarDni(){
+ 
+    let expresion =/^\d{8}[a-zA-Z]{1}$/;
+    let spam = document.getElementById("errorDni"); 
+    if (!expresion.test(dni.value)) {
+        spam.innerHTML = "Debe introducir un numero de ocho digitos seguido de una letra";
+        dni.focus();
+    } else{
+        let numero;
+        let letra;
+        let clave;
+        numero=dni.value.substr(0,dni.value.length-1);
+        letra=dni.value.substr(dni.value.length-1,1);
+        letra=letra.toUpperCase();
+        numero=numero%23;
+        clave="TRWAGMYFPDXBNJZSQVHLCKET";
+        clave=clave.substring(numero,numero+1);
+        if(clave!=letra){
+            spam.innerHTML = "DNI incorrecto";
+            dni.focus();
+        }else{
+            spam.innerHTML = "";
+        }
+    }
     
+ }
+
+function validarTelefono(){
+    let expresion =/^[0-9]{9}$/;
+    let spam=document.getElementById("errortelefono")
+     if (!expresion.test(telefono.value)) {
+        spam.innerHTML = "Debe introducir un telefono correcto";
+        telefono.focus();
+    } else{
+        spam.innerHTML = "";
+    }  
+}
+
+
 function validarNumeros(e) {
-    console.log("entra")
     let evento = e || event;
     if (evento.which < 48 || evento.which > 57) {
         e.preventDefault();
@@ -291,6 +469,7 @@ function validarPlanta(){
     	span.innerHTML = "";
     	}
 } 
+
 function validarWc(){
     let span=document.getElementById("errorWc")
      if ((wc.value<0)|| (wc.value>20)){
@@ -302,14 +481,18 @@ function validarWc(){
 }  
 
 
+function validarTipo(){
+	let span=document.getElementById("errorTipo")
+	if ((tipo.value==1) || (tipo.value==2)){
+		span.innerHTML = "";
+	}
+	else{
+		span.innerHTML = "Solo se permiten los valores: 1 para Alquileres o 2 para Ventas";
+        wc.focus();
+	}
+}
+
 </script>
-
-
-
-
-
-
-
 
 
 

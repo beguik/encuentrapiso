@@ -18,7 +18,7 @@ class Inicio(View):
         habitaciones= lista_fuc(HABITACIONES_CHOICES)
         #limitamos la busqueda de inmuebles a 20 para no sobrecargar los recursos de la página
         #filtramos por activa y ordenamos por fecha de creación
-        ofertas=Oferta.objects.all().filter(activa=True).order_by("created_at")[:20]
+        ofertas=Oferta.objects.all().filter(activa=True).order_by("created_at")[:40]
 
         #paginación
         paginator=Paginator(ofertas,8)

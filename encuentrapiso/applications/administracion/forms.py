@@ -30,3 +30,12 @@ class CreacionUser(UserCreationForm):
 class EncuestaEmpresa (forms.Form):
 	razon_social=forms.CharField(max_length = 100,widget=forms.TextInput(attrs={'class': 'form-control'}))
 	codigo=forms.CharField(max_length = 8,widget=forms.TextInput(attrs={'class': 'form-control'}))
+
+class PropietarioForm(forms.Form):
+	dni=forms.CharField(max_length = 9,widget=forms.TextInput(attrs={'class': 'form-control'}))
+	nombre=forms.CharField(max_length = 15,widget=forms.TextInput(attrs={'class': 'form-control'}))
+	primer_apellido=forms.CharField(max_length = 30,widget=forms.TextInput(attrs={'class': 'form-control'}))
+	segundo_apellido=forms.CharField(max_length = 30,widget=forms.TextInput(attrs={'class': 'form-control'}))
+	telefono=forms.CharField(max_length = 9,widget=forms.TextInput(attrs={'class': 'form-control'}))
+
+

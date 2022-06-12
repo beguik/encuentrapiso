@@ -72,8 +72,11 @@ class Inmueble(models.Model):
 	updated_at = models.DateTimeField(auto_now_add=True, null=True)
 
 	def __str__(self):
-		referencia=str(self.id)+"-"+str(self.direccion)
+		referencia=str(self.get_localizacion_display())+"-"+str(self.direccion)
 		return referencia
+
+	class Meta:
+		ordering = ["localizacion","direccion"]
 
 class Favoritos(models.Model):
 	oferta=models.ForeignKey("operaciones.Oferta",on_delete=models.CASCADE)

@@ -17,6 +17,11 @@ urlpatterns =[
 	path('alquilar/<pk>', views.Alquilar.as_view(),name="Alquilar"),
 	path('alquilarPdf/', views.alquilarPdf, name="AlquilarPdf"),
 	path('crearOferta/', views.CrearOferta.as_view(), name="CrearOferta"),
+	path('gestion/<int:id>', views.Gestion.as_view(), name="Gestion"),
+	
+	
+
+
 
 
 ]

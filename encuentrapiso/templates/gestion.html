@@ -1,0 +1,472 @@
+{% extends "base.html" %}
+{% load static %}
+{% load humanize %}
+{% block title %}Encuentra Piso{% endblock %}
+{% block head %}
+{% include 'cabecera.html' %}
+{% endblock head %}
+
+{% block content %}
+
+<h3 style="text-align:center; margin-top:20px">Bienvenido {{user.username| capfirst}} revisa el estado de tus solicitudes:</h3>
+
+<div style="width:90%; margin:40px auto;">
+	<p style="text-align:center;font-size:15; color:green; padding-top:10px">{{mensajeRegistro}}</p>
+	<p style="text-align:center;font-size:15; color:red; padding-top:10px">{{error}}</p>
+	<div id="accordion" >
+		<div class="card">
+			<div class="card-header" id="headingOne">
+				<h5 class="mb-0">
+					<button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+						Solicitudes Pendientes
+					</button>
+				</h5>
+			</div>
+			<div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+				<div class="card-body">
+					<div id="annadir" class="card" style="width: 90%; margin: auto; margin-top: 3%; border-radius:15px; border: solid 2px #919191; padding: 20px;">
+						
+					<h3>Venta</h3>
+					<ul>
+						{%for v in ventasT%}
+						{%if v.activa and  not v.aprobada%}
+						<ol style="margin:30px">
+							<table style="margin:auto;"width="100%">
+								<tr style="padding:10px">
+									<td width="30%" align="center" style="background-color:#c5dcf6; padding:20px 10px; margin:10px 10px">
+										<div id="foto">
+    										<a href="{% url 'app_inmuebles:Info' v.oferta.id %}"class="text-decoration-none">
+    											<img src={{v.oferta.inmueble.imagenPrincipal.url}} width="200px">
+          									</a>
+        								</div>
+        							</td>
+        							<td rowspan="2" width="50%" align="center" style="background-color:#c5dcf6; padding:10px 10px">
+        								<div style="text-align:justify; margin-left:20px;">
+
+        									{{v.comprador.nombre}} {{v.comprador.primer_apellido}} se ha interesado por esta oferta el día:<br/>{{v.created_at}}<br/><br/>
+        									No dejes pasar la oportunidad de contactar con el/ella:<br/> Teléfono {{v.comprador.telefono}} <br/>
+
+        									Referencia de la solicitud: EP{{v.id}}
+
+          				 					<br/>
+       									</div>  	 
+									</td>
+								</tr>
+								<tr>
+									<td width="30%" align="center" style="background-color:#c5dcf6; padding:10px 10px;margin-button:20px">
+										<form action="" method="post">
+											{% csrf_token %}
+												<input id="aprobar" name="aprobar" type="hidden" value="True">
+												<input id="venta" name="venta" type="hidden" value={{v.id}}>
+								
+												<button type="submit"class="btn btn-success">&nbsp;Aprobar&nbsp;</button>
+										</form>
+										
+					 					<a href="#">
+											<button type="button" class="btn btn-danger" >Eliminar </button>
+										</a>
+									</td>
+        						</tr>
+   							</table>
+						</ol>
+						{%endif%}
+						{%endfor%}
+					</ul>
+						<hr/>
+					<h3>Alquiler</h3>
+					<ul>
+						{%for a in alquilerT%}
+						{%if a.activa and  not a.aprobada%}
+						<ol style="margin:30px">
+							<table style="margin:auto;"width="100%">
+								<tr style="padding:10px">
+									<td width="30%" align="center" style="background-color:#c5dcf6; padding:20px 10px; margin:10px 10px">
+										<div id="foto">
+    										<a href="{% url 'app_inmuebles:Info' a.oferta.id %}"class="text-decoration-none">
+    											<img src={{a.oferta.inmueble.imagenPrincipal.url}} width="200px">
+          									</a>
+        								</div>
+        							</td>
+        							<td rowspan="2" width="50%" align="center" style="background-color:#c5dcf6; padding:10px 10px">
+        								<div style="text-align:justify; margin-left:20px;">
+
+        									{{a.inquilino.nombre}} {{a.inquilino.primer_apellido}} se ha interesado por esta oferta el día:<br/>{{a.created_at}}<br/><br/>
+        									Entraría en la vivienda el día {{a.fecha_entrada}} con una duración de {{a.meses}} meses. <br/><br/>
+
+        									No dejes pasar la oportunidad de contactar con el/ella:<br/> Teléfono {{a.comprador.telefono}} <br/>
+
+        									Referencia de la solicitud: EP{{a.id}}
+
+          				 					<br/>
+       									</div>  	 
+									</td>
+								</tr>
+								<tr>
+									<td width="30%" align="center" style="background-color:#c5dcf6; padding:10px 10px;margin-button:20px">
+										<form action="" method="post">
+											{% csrf_token %}
+												<input id="aprobar" name="aprobar" type="hidden" value="True">
+												<input id="alquiler" name="alquiler" type="hidden" value={{a.id}}>
+								
+												<button type="submit"class="btn btn-success">&nbsp;Aprobar&nbsp;</button>
+										</form>
+					 					<a href="#">
+											<button type="button" class="btn btn-danger" >Eliminar </button>
+										</a>
+									</td>
+        						</tr>
+   							</table>
+						</ol>
+						{%endif%}
+						{%endfor%}
+					</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="card">
+			<div class="card-header" id="headingOne">
+				<h5 class="mb-0">
+					<button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+						Solicitudes Anuladas
+					</button>
+				</h5>
+			</div>
+			<div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+				<div class="card-body">
+					<div id="annadir" class="card" style="width: 90%; margin: auto; margin-top: 3%; border-radius:15px; border: solid 2px #919191; padding: 20px;">
+						
+						<h5 style="color: #012e67;">El cliente cambio de idea y ya no está intereado, pero es posible que aun quieras contactar con él. </h5>
+						<h3>Venta</h3>
+						<ul>
+						{%for v in ventasT%}
+							{%if  not v.activa and  not v.aprobada%}
+						<ol style="margin:30px">
+							<table style="margin:auto;"width="100%">
+								<tr style="padding:10px">
+									<td width="30%" align="center" style="background-color:#c5dcf6; padding:20px 10px; margin:10px 10px">
+										<div id="foto">
+    										<a href="{% url 'app_inmuebles:Info' v.oferta.id %}"class="text-decoration-none">
+    											<img src={{v.oferta.inmueble.imagenPrincipal.url}} width="200px">
+          									</a>
+        								</div>
+        							</td>
+        							<td rowspan="2" width="50%" align="center" style="background-color:#c5dcf6; padding:10px 10px">
+        								<div style="text-align:justify; margin-left:20px;">
+
+        									{{v.comprador.nombre}} {{v.comprador.primer_apellido}} se ha interesado por esta oferta el día:<br/>{{v.created_at}}<br/><br/>
+
+        									Ha indicado que ya no está interesado el día: {{v.updated_at}}
+
+        									No dejes pasar la oportunidad de contactar con el/ella:<br/> Teléfono {{v.comprador.telefono}} <br/>
+
+        									Referencia de la solicitud: EP{{v.id}}
+
+          				 					<br/>
+       									</div>  	 
+									</td>
+								</tr>
+								<tr>
+									<td width="30%" align="center" style="background-color:#c5dcf6; padding:10px 10px;margin-button:20px">
+										<form action="" method="post">
+											{% csrf_token %}
+												<input id="activar" name="activar" type="hidden" value="True">
+												<input id="venta" name="venta" type="hidden" value={{v.id}}>
+								
+												<button type="submit"class="btn btn-success">&nbsp;Volver a Activar&nbsp;</button>
+										</form>
+					 					<a href="#">
+											<button type="button" class="btn btn-danger" >Eliminar </button>
+										</a>
+									</td>
+        						</tr>
+   							</table>
+						</ol>
+						{%endif%}
+						{%endfor%}
+					</ul>
+					<hr/>
+					<h3>Alquiler</h3>
+					<ul>
+						{%for a in alquilerT%}
+							{%if not a.activa and  not a.aprobada%}
+						<ol style="margin:30px">
+							<table style="margin:auto;"width="100%">
+								<tr style="padding:10px">
+									<td width="30%" align="center" style="background-color:#c5dcf6; padding:20px 10px; margin:10px 10px">
+										<div id="foto">
+    										<a href="{% url 'app_inmuebles:Info' a.oferta.id %}"class="text-decoration-none">
+    											<img src={{a.oferta.inmueble.imagenPrincipal.url}} width="200px">
+          									</a>
+        								</div>
+        							</td>
+        							<td rowspan="2" width="50%" align="center" style="background-color:#c5dcf6; padding:10px 10px">
+        								<div style="text-align:justify; margin-left:20px;">
+
+        									{{a.inquilino.nombre}} {{a.inquilino.primer_apellido}} se ha interesado por esta oferta el día:<br/>{{a.created_at}}<br/><br/>
+
+        									Ha indicado que ya no está interesado el día: <br/>{{a.updated_at}}<br/><br/>
+
+        									No dejes pasar la oportunidad de contactar con el/ella:<br/> Teléfono {{a.inquilino.telefono}} <br/>
+
+        									Referencia de la solicitud: EP{{a.id}}
+
+          				 					<br/>
+       									</div>  	 
+									</td>
+								</tr>
+								<tr>
+									<td width="30%" align="center" style="background-color:#c5dcf6; padding:10px 10px;margin-button:20px">
+										<form action="" method="post">
+											{% csrf_token %}
+												<input id="activar" name="activar" type="hidden" value="True">
+												<input id="alquiler" name="alquiler" type="hidden" value={{a.id}}>
+								
+												<button type="submit"class="btn btn-success">&nbsp;Volver a Activar&nbsp;</button>
+										</form>
+					 					<a href="#">
+											<button type="button" class="btn btn-danger" >Eliminar </button>
+										</a>
+									</td>
+        						</tr>
+   							</table>
+						</ol>
+						{%endif%}
+						{%endfor%}
+					</ul>
+
+
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="card">
+			<div class="card-header" id="headingOne">
+				<h5 class="mb-0">
+					<button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+						Solicitudes Aprobadas
+					</button>
+				</h5>
+			</div>
+			<div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+				<div class="card-body">
+					<div id="annadir" class="card" style="width: 90%; margin: auto; margin-top: 3%; border-radius:15px; border: solid 2px #919191; padding: 20px;">
+					<h3>Venta</h3>
+					<ul>
+						{%for v in ventasT%}
+							{%if  v.activa and  v.aprobada%}
+						<ol style="margin:30px">
+							<table style="margin:auto;"width="100%">
+								<tr style="padding:10px">
+									<td width="30%" align="center" style="background-color:#c5dcf6; padding:20px 10px; margin:10px 10px">
+										<div id="foto">
+    										<a href="{% url 'app_inmuebles:Info' v.oferta.id %}"class="text-decoration-none">
+    											<img src={{v.oferta.inmueble.imagenPrincipal.url}} width="200px">
+          									</a>
+        								</div>
+        							</td>
+        							<td rowspan="2" width="50%" align="center" style="background-color:#c5dcf6; padding:10px 10px">
+        								<div style="text-align:justify; margin-left:20px;">
+
+        									{{v.comprador.nombre}} {{v.comprador.primer_apellido}} se ha interesado por esta oferta el día:<br/>{{v.created_at}}<br/><br/>
+        									El dia {{v.fecha}} se aprobó su solicitud.<br/><br/>
+        									Avísale del cambio en su expediente en el teléfono: {{v.comprador.telefono}} <br/>
+
+        									Referencia de la solicitud: EP{{v.id}}
+
+          				 					<br/>
+       									</div>  	 
+									</td>
+								</tr>
+								<tr>
+									<td width="30%" align="center" style="background-color:#c5dcf6; padding:10px 10px;margin-button:20px">
+										
+					 					<form action="" method="post">
+											{% csrf_token %}
+												<input id="desaprobar" name="desaprobar" type="hidden" value="False">
+												<input id="venta" name="venta" type="hidden" value={{v.id}}>
+								
+												<button type="submit"class="btn btn-danger">&nbsp;Desaprobar&nbsp;</button>
+										</form>
+									</td>
+        						</tr>
+   							</table>
+						</ol>
+						{%endif%}
+						{%endfor%}
+					</ul>
+						<hr/>
+					<h3>Alquiler</h3>
+					<ul>
+						{%for a in alquilerT%}
+						{%if  a.activa and  a.aprobada%}
+						<ol style="margin:30px">
+							<table style="margin:auto;"width="100%">
+								<tr style="padding:10px">
+									<td width="30%" align="center" style="background-color:#c5dcf6; padding:20px 10px; margin:10px 10px">
+										<div id="foto">
+    										<a href="{% url 'app_inmuebles:Info' a.oferta.id %}"class="text-decoration-none">
+    											<img src={{a.oferta.inmueble.imagenPrincipal.url}} width="200px">
+          									</a>
+        								</div>
+        							</td>
+        							<td rowspan="2" width="50%" align="center" style="background-color:#c5dcf6; padding:10px 10px">
+        								<div style="text-align:justify; margin-left:20px;">
+
+        									Se ha aprobado el alquiler para {{a.inquilino.nombre}} {{a.inquilino.primer_apellido}} con entrada en la vivienda el día: <br/>
+        									{{a.fecha_entrada}} <br/>y salida el:<br/>
+        									{{a.fecha_fin}}<br/><br/>
+
+        									No dejes pasar la oportunidad de contactar con el/ella:<br/> Teléfono {{a.comprador.telefono}} <br/>
+
+        									Referencia de la solicitud: EP{{a.id}}
+
+          				 					<br/>
+       									</div>  	 
+									</td>
+								</tr>
+								<tr>
+									<td width="30%" align="center" style="background-color:#c5dcf6; padding:10px 10px;margin-button:20px">
+					 					<form action="" method="post">
+											{% csrf_token %}
+												<input id="desaprobar" name="desaprobar" type="hidden" value="False">
+												<input id="alquiler" name="alquiler" type="hidden" value={{a.id}}>
+								
+												<button type="submit"class="btn btn-danger">&nbsp;Desaprobar&nbsp;</button>
+										</form>
+									</td>
+        						</tr>
+   							</table>
+						</ol>
+						{%endif%}
+						{%endfor%}
+					</ul>
+						
+
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="card">
+			<div class="card-header" id="headingOne">
+				<h5 class="mb-0">
+					<button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+						Pendientes de Cancelación
+					</button>
+				</h5>
+			</div>
+			<div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+				<div class="card-body">
+					<div id="annadir" class="card" style="width: 90%; margin: auto; margin-top: 3%; border-radius:15px; border: solid 2px #919191; padding: 20px;">
+						
+						<h5 style="color: #012e67;">El cliente aún sabiendo que su solicitud está aprobada ha decidido cancelarla, se le han informado que puede conllevar gastos extras. </h5>
+						<h3>Venta</h3>
+						<ul>
+						{%for v in ventasT%}
+							{%if  not v.activa and  v.aprobada%}
+						<ol style="margin:30px">
+							<table style="margin:auto;"width="100%">
+								<tr style="padding:10px">
+									<td width="30%" align="center" style="background-color:#c5dcf6; padding:20px 10px; margin:10px 10px">
+										<div id="foto">
+    										<a href="{% url 'app_inmuebles:Info' v.oferta.id %}"class="text-decoration-none">
+    											<img src={{v.oferta.inmueble.imagenPrincipal.url}} width="200px">
+          									</a>
+        								</div>
+        							</td>
+        							<td rowspan="2" width="50%" align="center" style="background-color:#c5dcf6; padding:10px 10px">
+        								<div style="text-align:justify; margin-left:20px;">
+
+        									{{v.comprador.nombre}} {{v.comprador.primer_apellido}} aun conociendo que su decisión puede conllevar gastos extras ha decidido solicitar la cancelación de esta operación.
+
+
+        									Fecha de esta modificación: {{v.updated_at}}
+
+        									No dejes pasar la oportunidad de contactar con el/ella:<br/> Teléfono {{v.comprador.telefono}} <br/>
+
+        									Referencia de la solicitud: EP{{v.id}}
+
+          				 					<br/>
+       									</div>  	 
+									</td>
+								</tr>
+								<tr>
+									<td width="30%" align="center" style="background-color:#c5dcf6; padding:10px 10px;margin-button:20px">
+										<form action="" method="post">
+											{% csrf_token %}
+												<input id="activar" name="activar" type="hidden" value="True">
+												<input id="venta" name="venta" type="hidden" value={{v.id}}>
+								
+												<button type="submit"class="btn btn-success">&nbsp;Volver a Activar&nbsp;</button>
+										</form>
+					 					<a href="#">
+											<button type="button" class="btn btn-danger" >Eliminar </button>
+										</a>
+									</td>
+        						</tr>
+   							</table>
+						</ol>
+						{%endif%}
+						{%endfor%}
+					</ul>
+					<hr/>
+					<h3>Alquiler</h3>
+					<ul>
+						{%for a in alquilerT%}
+							{%if  a.baja %}
+						<ol style="margin:30px">
+							<table style="margin:auto;"width="100%">
+								<tr style="padding:10px">
+									<td width="30%" align="center" style="background-color:#c5dcf6; padding:20px 10px; margin:10px 10px">
+										<div id="foto">
+    										<a href="{% url 'app_inmuebles:Info' a.oferta.id %}"class="text-decoration-none">
+    											<img src={{a.oferta.inmueble.imagenPrincipal.url}} width="200px">
+          									</a>
+        								</div>
+        							</td>
+        							<td rowspan="2" width="50%" align="center" style="background-color:#c5dcf6; padding:10px 10px">
+        								<div style="text-align:justify; margin-left:20px;">
+
+        									{{a.inquilino.nombre}} {{a.inquilino.primer_apellido}} aun sabiendo que esta decisión puede conllevar gastos extras, ha solicitado la baja de esta operación. 
+
+        									Fecha en que ha indicado su decisión: <br/>{{a.updated_at}}<br/><br/>
+
+        									No dejes pasar la oportunidad de contactar con el/ella:<br/> Teléfono {{a.inquilino.telefono}} <br/>
+
+        									Referencia de la solicitud: EP{{a.id}}
+
+          				 					<br/>
+       									</div>  	 
+									</td>
+								</tr>
+								<tr>
+									<td width="30%" align="center" style="background-color:#c5dcf6; padding:10px 10px;margin-button:20px">
+										<form action="" method="post">
+											{% csrf_token %}
+												<input id="activar" name="activar" type="hidden" value="True">
+												<input id="alquiler" name="alquiler" type="hidden" value={{a.id}}>
+								
+												<button type="submit"class="btn btn-success">&nbsp;Volver a Activar&nbsp;</button>
+										</form>
+					 					<a href="#">
+											<button type="button" class="btn btn-danger" >Eliminar </button>
+										</a>
+									</td>
+        						</tr>
+   							</table>
+						</ol>
+						{%endif%}
+						{%endfor%}
+					</ul>
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock content %}

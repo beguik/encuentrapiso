@@ -36,10 +36,7 @@
         						<div class="dropdown-menu" aria-labelledby="navbarDropdown">
           							<a class="dropdown-item" style="color:#012e67" href="{% url 'app_operaciones:Operaciones' user.id %}">Mis Operaciones</a>
 
-
-
           							<a class="dropdown-item" style="color:#012e67"href="{% url 'app_operaciones:Favoritos' user.id %}">Mis Favoritos</a>
-
 
           							<div class="dropdown-divider"style="color:#012e67"></div>
           							<a class="dropdown-item" style="color:#012e67"href="{% url 'app_administracion:logout' %}">Cerrar Sesión</a>
@@ -64,21 +61,12 @@
           						<a class="dropdown-item" style="color:#012e67"href="{% url 'app_administracion:logout' %}">Cerrar Sesión</a>
        				 		</div>
         				{% endif %}
-
-
-					
 					{%else%}
 						<a href="{% url 'app_administracion:login'%}">
 						Registrate <br/> <br/>Inicia Sesión <br/>
 
 					 {%endif%}
-
-
-
-
-					
 				</td>
-						
 			</tr>
 		</table>
 	</div>
