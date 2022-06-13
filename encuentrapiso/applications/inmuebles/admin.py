@@ -3,6 +3,8 @@ from .models import *
 from applications.administracion.models import*
 from django.utils.html import format_html
 
+#Configuración del panel de Administración de Django para los modelos:
+#Inmueble, Favoritos.
 
 class InmuebleAdmin(admin.ModelAdmin):
 	list_display=(

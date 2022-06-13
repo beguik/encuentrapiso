@@ -13,9 +13,11 @@ class Oferta(models.Model):
 	updated_at = models.DateTimeField(auto_now_add=True, null=True)
 	created_at = models.DateTimeField(auto_now_add=True, null=True)
 
+	#nombre que tomará el modelo cuando no se especifique que datos se extraen de él. 
 	def __str__(self):
 		return str(self.id)+"-"+str(self.inmueble.id)+" - "+str(self.precio)
 
+	#ordenación
 	def __gt__(self, oferta):
 		return self.precio > oferta.precio
 
@@ -27,15 +29,15 @@ class Venta(models.Model):
 	aprobada=models.BooleanField('Aprobada', default=False)
 	updated_at = models.DateTimeField(auto_now_add=True, null=True)
 	created_at = models.DateTimeField(auto_now_add=True, null=True)
-		
+	
+	#campo calculado	
 	def _get_importe(self):
 		precio_descuento=self.oferta.precio-((self.oferta.precio*self.oferta.descuento)/100)
 		precio_final= precio_descuento+((self.oferta.precio*self.oferta.vendedor.empresa.comision)/100)
 		return precio_final
-	
 	precio_final = property(_get_importe)
 
-
+	#nombre que tomará el modelo cuando no se especifique que datos se extraen de él. 
 	def __str__(self):
 		return str(self.oferta.inmueble.id)+" - "+str(self.comprador)+" - "+str(self.precio_final)
 
@@ -51,22 +53,22 @@ class Alquiler(models.Model):
 	created_at = models.DateTimeField(auto_now_add=True, null=True)
 	updated_at = models.DateTimeField(auto_now_add=True, null=True)
 	
-
+	#campo calculado
 	def _get_precio_final(self):
 		#el calculo será el precio por los meses, mas un mes de fianza y uno de comisión
 		return (float(self.oferta.precio)*float(self.meses))+(float(self.oferta.precio)*2)
-
 	precio_final = property(_get_precio_final)
 
+	#campo calculado
 	def _get_fechabaja(self):
 		fechainicial=str(self.fecha_entrada)
 		fechainicialFormato=fechainicial[0:10]
 		fechaI=datetime.strptime(fechainicialFormato, '%Y-%m-%d')
 		fechaBaja=fechaI+relativedelta(months=self.meses)
 		return fechaBaja
-
 	fecha_fin=property(_get_fechabaja)
 
+	#nombre que tomará el modelo cuando no se especifique que datos se extraen de él. 
 	def __str__(self):
 		return str(self.oferta.inmueble.id)+" - "+str(self.inquilino)+" - "+str(self.precio_final)
 

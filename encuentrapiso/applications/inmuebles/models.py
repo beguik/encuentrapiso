@@ -71,10 +71,12 @@ class Inmueble(models.Model):
 	created_at = models.DateTimeField(auto_now_add=True, null=True)
 	updated_at = models.DateTimeField(auto_now_add=True, null=True)
 
+	#nombre que tomará el modelo cuando no se especifique que datos se extraen de él. 
 	def __str__(self):
 		referencia=str(self.get_localizacion_display())+"-"+str(self.direccion)
 		return referencia
 
+	#ordenación
 	class Meta:
 		ordering = ["localizacion","direccion"]
 
@@ -82,6 +84,7 @@ class Favoritos(models.Model):
 	oferta=models.ForeignKey("operaciones.Oferta",on_delete=models.CASCADE)
 	usuario=models.ForeignKey("administracion.Cliente",on_delete=models.CASCADE)
 
+	#nombre que tomará el modelo cuando no se especifique que datos se extraen de él. 
 	def __str__(self):
 		referencia=str(self.oferta)+"-"+str(self.usuario)
 		return referencia

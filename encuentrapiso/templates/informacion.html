@@ -5,7 +5,7 @@
 {% block title %}Encuentra Piso{% endblock %}
 
 {% block head %}
- {% include 'cabecera.html' %}
+{% include 'cabecera.html' %}
 {% endblock head %}
 {% block content %}
 
@@ -14,9 +14,9 @@
 
   {%if inmueble.tipo == "2" %}
   <h2>Piso en venta en {{inmueble.inmueble.get_localizacion_display|upper}}</h2>
-  
+
   {%else%}
-<h2>Piso en alquiler en {{inmueble.inmueble.get_localizacion_display|upper}}</h2>
+  <h2>Piso en alquiler en {{inmueble.inmueble.get_localizacion_display|upper}}</h2>
   {%endif%}
 </div>
 
@@ -26,13 +26,13 @@
   <tr>
     <td colspan="3">
       <a target="_self" href="{{inmueble.inmueble.imagenPrincipal.url}}">
-        <img src="{{inmueble.inmueble.imagenPrincipal.url}}" width="600px"alt="{{inmueble.direccion}}" />
+        <img src="{{inmueble.inmueble.imagenPrincipal.url}}" width="600px" alt="{{inmueble.direccion}}" />
       </a>
     </td>
     <td>
       <table>
         <tr>
-          <td style="padding:10px;" ><u>CARACTERÍSTICAS: </u></td>
+          <td style="padding:10px;"><u>CARACTERÍSTICAS: </u></td>
         </tr>
         <tr>
           <td style="padding:2px;"> {{inmueble.inmueble.planta}}ª Planta</td>
@@ -58,27 +58,27 @@
         <tr>
           <td style="padding:2px;">Ascensor:
             {%if inmueble.inmueble.ascensor%}
-              Si
+            Si
             {%else%}
-              No
+            No
             {%endif%}
           </td>
         </tr>
         <tr>
           <td style="padding:2px;">Terraza:
-              {%if inmueble.inmueble.terraza%}
-              Si
+            {%if inmueble.inmueble.terraza%}
+            Si
             {%else%}
-              No
+            No
             {%endif%}
           </td>
         </tr>
         <tr>
           <td style="padding:2px;">Patio:
-              {%if inmueble.inmueble.patio%}
-              Si
+            {%if inmueble.inmueble.patio%}
+            Si
             {%else%}
-              No
+            No
             {%endif%}
           </td>
         </tr>
@@ -91,75 +91,75 @@
             EP{{inmueble.id}}
           </td>
         </tr>
-                    
+
       </table>
 
-      </td>
+    </td>
   </tr>
   <tr>
     <td style="width:25%;">
       <a target="_self" href="{{inmueble.inmueble.imagen1.url}}">
-        <img src="{{inmueble.inmueble.imagen1.url}}" width="200px"alt="{{inmueble.direccion}}" />
+        <img src="{{inmueble.inmueble.imagen1.url}}" width="200px" alt="{{inmueble.direccion}}" />
       </a>
     </td>
     <td style="width:25%;">
       <a target="_self" href="{{inmueble.inmueble.imagen2.url}}">
-        <img src="{{inmueble.inmueble.imagen2.url}}" width="200px"alt="{{inmueble.direccion}}" />
+        <img src="{{inmueble.inmueble.imagen2.url}}" width="200px" alt="{{inmueble.direccion}}" />
       </a>
     </td>
     <td style="width:25%;">
       <a target="_self" href="{{inmueble.inmueble.imagen3.url}}">
-        <img src="{{inmueble.inmueble.imagen3.url}}" width="200px"alt="{{inmueble.direccion}}" />
+        <img src="{{inmueble.inmueble.imagen3.url}}" width="200px" alt="{{inmueble.direccion}}" />
       </a>
     </td>
     <td style="width:25%;">
       <a target="_self" href="{{inmueble.inmueble.imagen4.url}}">
-        <img src="{{inmueble.inmueble.imagen4.url}}" width="200px"alt="{{inmueble.direccion}}" />
+        <img src="{{inmueble.inmueble.imagen4.url}}" width="200px" alt="{{inmueble.direccion}}" />
       </a>
     </td>
   </tr>
   <tr>
     <td colspan="3">
-      Más información:<br/><br/> {{inmueble.inmueble.observacion}}
-    </td>  
+      Más información:<br /><br /> {{inmueble.inmueble.observacion}}
+    </td>
     <td>
       <form action="{% url 'app_operaciones:addFavorito' %}" method="post">
         {% csrf_token %}
         <input id="oferta" name="oferta" type="hidden" value={{inmueble.id}}>
         <input id="usuario" name="usuario" type="hidden" value={{user.id}}>
-         {% if user.is_authenticated %}
-         
-         <button type="submit" id="favorito"class="btn btn-light" >Agregar a Favoritos </button>
-       
+        {% if user.is_authenticated %}
+
+        <button type="submit" id="favorito" class="btn btn-light">Agregar a Favoritos </button>
+
 
         {%endif%}
       </form>
     </td>
   </tr>
   <tr>
-    <td colspan="4" style="text-align:center"> 
-      Contactar para más información:<br/>
-      <b>{{inmueble.vendedor.nombre}}</b>:{{inmueble.vendedor.telefono}}<br/>
+    <td colspan="4" style="text-align:center">
+      Contactar para más información:<br />
+      <b>{{inmueble.vendedor.nombre}}</b>:{{inmueble.vendedor.telefono}}<br />
       Inmobiliaria {{inmueble.vendedor.empresa|upper}}
     </td>
   </tr>
 
   <tr>
-    <td colspan="4" style="text-align:center"> 
+    <td colspan="4" style="text-align:center">
       {% if user.is_authenticated %}
-        {% for c in clientes %}
-            {% if c.usuario.username == user.username %}
-              {%if inmueble.tipo == "2" %}
-              <a href="{% url 'app_operaciones:comprar' inmueble.id %}">
-                <button type="button" class="btn btn-primary btn-lg btn-block">Comprar Ahora</button>
-              </a>
-              {%else%}
-              <a href="{% url 'app_operaciones:Alquilar' inmueble.id %}">
-                <button type="button" class="btn btn-primary btn-lg btn-block">Alquilar Ahora</button>
-              </a>
-              {%endif%}
-            {%endif%}
-          {%endfor%}
+      {% for c in clientes %}
+      {% if c.usuario.username == user.username %}
+      {%if inmueble.tipo == "2" %}
+      <a href="{% url 'app_operaciones:comprar' inmueble.id %}">
+        <button type="button" class="btn btn-primary btn-lg btn-block">Comprar Ahora</button>
+      </a>
+      {%else%}
+      <a href="{% url 'app_operaciones:Alquilar' inmueble.id %}">
+        <button type="button" class="btn btn-primary btn-lg btn-block">Alquilar Ahora</button>
+      </a>
+      {%endif%}
+      {%endif%}
+      {%endfor%}
       {%endif%}
     </td>
   </tr>
@@ -167,116 +167,116 @@
 
 <hr>
 {%if inmueble.tipo == "1" %}
-  <div style="text-align:center">
-    <b style="color:#012e67">Quizás le interese también estos alquileres:<b/><br/><br/>
-  </div>
+<div style="text-align:center">
+  <b style="color:#012e67">Quizás le interese también estos alquileres:<b /><br /><br />
+</div>
 
-  {%for o in opciones%}
-    {%if o.inmueble.localizacion == inmueble.inmueble.localizacion and o.tipo == "1" %}
-      {% if not o.inmueble.id == inmueble.inmueble.id%}
-   
-        <div style="text-align:center">
-          <table width="50%" id="info" style="margin:10px auto;">
-            <tr>
-              <td width="25%" style="text-align:right">
-                <a href="{% url 'app_inmuebles:Info' o.id %}"class="text-decoration-none">
-                  <img src={{o.inmueble.imagenPrincipal.url}} width="300px">
-                </a>
-              </td> 
-              <td style="text-align:center">
-                <h4>{{o.inmueble.get_localizacion_display|upper}}</h4>
-                    {{o.inmueble.planta}}ª Planta <br/>
-                    {{o.inmueble.get_habitacion_display}} <br/>
-                    {{o.inmueble.wc}} Baños <br/>
-                    Precio: <b>{{o.precio|floatformat:0|intcomma }}€</b><br/>
-                    {{o.referencia}}
-                    Referencia:EP{{o.id}}
-              </td> 
-            </tr>
-          </table>
-        </div>
-      {%endif%}
-    {%endif%}
-  {%endfor%}
-  <div style="text-align:center">
-    <table width="50%" id="info" style="margin:10px auto;">
-      <tr>
-        <td width="25%" style="text-align:right">
-          <a href="{% url 'app_inmuebles:Info' alquiler.id %}"class="text-decoration-none">
-            <img src={{alquiler.inmueble.imagenPrincipal.url}} width="300px">
-          </a>
-        </td> 
-        <td style="text-align:center">
-          <h4>{{alquiler.inmueble.get_localizacion_display|upper}}</h4>
-              {{alquiler.inmueble.planta}}ª Planta <br/>
-              {{alquiler.inmueble.get_habitacion_display}} <br/>
-              {{alquiler.inmueble.wc}} Baños <br/>
-              Precio: <b>{{alquiler.precio|floatformat:0|intcomma }}€</b><br/>
-              {{alquiler.referencia}}
-              Referencia:EP{{alquiler.id}}
-        </td> 
-      </tr>
-    </table>
-  </div>
+{%for o in opciones%}
+{%if o.inmueble.localizacion == inmueble.inmueble.localizacion and o.tipo == "1" %}
+{% if not o.inmueble.id == inmueble.inmueble.id%}
+
+<div style="text-align:center">
+  <table width="50%" id="info" style="margin:10px auto;">
+    <tr>
+      <td width="25%" style="text-align:right">
+        <a href="{% url 'app_inmuebles:Info' o.id %}" class="text-decoration-none">
+          <img src={{o.inmueble.imagenPrincipal.url}} width="300px">
+        </a>
+      </td>
+      <td style="text-align:center">
+        <h4>{{o.inmueble.get_localizacion_display|upper}}</h4>
+        {{o.inmueble.planta}}ª Planta <br />
+        {{o.inmueble.get_habitacion_display}} <br />
+        {{o.inmueble.wc}} Baños <br />
+        Precio: <b>{{o.precio|floatformat:0|intcomma }}€</b><br />
+        {{o.referencia}}
+        Referencia:EP{{o.id}}
+      </td>
+    </tr>
+  </table>
+</div>
+{%endif%}
+{%endif%}
+{%endfor%}
+<div style="text-align:center">
+  <table width="50%" id="info" style="margin:10px auto;">
+    <tr>
+      <td width="25%" style="text-align:right">
+        <a href="{% url 'app_inmuebles:Info' alquiler.id %}" class="text-decoration-none">
+          <img src={{alquiler.inmueble.imagenPrincipal.url}} width="300px">
+        </a>
+      </td>
+      <td style="text-align:center">
+        <h4>{{alquiler.inmueble.get_localizacion_display|upper}}</h4>
+        {{alquiler.inmueble.planta}}ª Planta <br />
+        {{alquiler.inmueble.get_habitacion_display}} <br />
+        {{alquiler.inmueble.wc}} Baños <br />
+        Precio: <b>{{alquiler.precio|floatformat:0|intcomma }}€</b><br />
+        {{alquiler.referencia}}
+        Referencia:EP{{alquiler.id}}
+      </td>
+    </tr>
+  </table>
+</div>
 
 {%else %}
-  <div style="text-align:center">
-    <b style="color:#012e67">Quizás le interese también estos pisos en venta:<b/><br/><br/>
-  </div>
+<div style="text-align:center">
+  <b style="color:#012e67">Quizás le interese también estos pisos en venta:<b /><br /><br />
+</div>
 
-  {%for o in opciones%}
-    {%if o.inmueble.localizacion == inmueble.inmueble.localizacion and o.tipo == "2" %}
-      {% if not o.inmueble.id == inmueble.inmueble.id%}
-   
-        <div style="text-align:center">
-          <table width="50%" id="info" style="margin:10px auto;">
-            <tr>
-              <td width="25%" style="text-align:right">
-                <a href="{% url 'app_inmuebles:Info' o.id %}"class="text-decoration-none">
-                  <img src={{o.inmueble.imagenPrincipal.url}} width="300px">
-                </a>
-              </td> 
-              <td style="text-align:center">
-                <h4>{{o.inmueble.get_localizacion_display|upper}}</h4>
-                    {{o.inmueble.planta}}ª Planta <br/>
-                    {{o.inmueble.get_habitacion_display}} <br/>
-                    {{o.inmueble.wc}} Baños <br/>
-                    Precio: <b>{{o.precio|floatformat:0|intcomma }}€</b><br/>
-                    {{o.referencia}}
-                    Referencia:EP{{0.id}}
-              </td> 
-            </tr>
-          </table>
-        </div>
-      {%endif%}
-    {%endif%}
-  {%endfor%}
-  <div style="text-align:center">
-    <table width="50%" id="info" style="margin:10px auto;">
-      <tr>
-        <td width="25%" style="text-align:right">
-          <a href="{% url 'app_inmuebles:Info' venta.id %}"class="text-decoration-none">
-            <img src={{venta.inmueble.imagenPrincipal.url}} width="300px">
-          </a>
-        </td> 
-        <td style="text-align:center">
-          <h4>{{venta.inmueble.get_localizacion_display|upper}}</h4>
-              {{venta.inmueble.planta}}ª Planta <br/>
-              {{venta.inmueble.get_habitacion_display}} <br/>
-              {{venta.inmueble.wc}} Baños <br/>
-              Precio: <b>{{venta.precio|floatformat:0|intcomma }}€</b><br/>
-              {{venta.referencia}}
-              Referencia:EP{{venta.id}}
-        </td> 
-      </tr>
-    </table>
-  </div>
+{%for o in opciones%}
+{%if o.inmueble.localizacion == inmueble.inmueble.localizacion and o.tipo == "2" %}
+{% if not o.inmueble.id == inmueble.inmueble.id%}
+
+<div style="text-align:center">
+  <table width="50%" id="info" style="margin:10px auto;">
+    <tr>
+      <td width="25%" style="text-align:right">
+        <a href="{% url 'app_inmuebles:Info' o.id %}" class="text-decoration-none">
+          <img src={{o.inmueble.imagenPrincipal.url}} width="300px">
+        </a>
+      </td>
+      <td style="text-align:center">
+        <h4>{{o.inmueble.get_localizacion_display|upper}}</h4>
+        {{o.inmueble.planta}}ª Planta <br />
+        {{o.inmueble.get_habitacion_display}} <br />
+        {{o.inmueble.wc}} Baños <br />
+        Precio: <b>{{o.precio|floatformat:0|intcomma }}€</b><br />
+        {{o.referencia}}
+        Referencia:EP{{0.id}}
+      </td>
+    </tr>
+  </table>
+</div>
+{%endif%}
+{%endif%}
+{%endfor%}
+<div style="text-align:center">
+  <table width="50%" id="info" style="margin:10px auto;">
+    <tr>
+      <td width="25%" style="text-align:right">
+        <a href="{% url 'app_inmuebles:Info' venta.id %}" class="text-decoration-none">
+          <img src={{venta.inmueble.imagenPrincipal.url}} width="300px">
+        </a>
+      </td>
+      <td style="text-align:center">
+        <h4>{{venta.inmueble.get_localizacion_display|upper}}</h4>
+        {{venta.inmueble.planta}}ª Planta <br />
+        {{venta.inmueble.get_habitacion_display}} <br />
+        {{venta.inmueble.wc}} Baños <br />
+        Precio: <b>{{venta.precio|floatformat:0|intcomma }}€</b><br />
+        {{venta.referencia}}
+        Referencia:EP{{venta.id}}
+      </td>
+    </tr>
+  </table>
+</div>
 
 
 
 
 {%endif%}
-<hr/>
+<hr />
 
 
 
@@ -284,41 +284,39 @@
 
 <center>
   <a href="{% url 'app_inmuebles:home'%}">
-<button type="button" class="btn btn-primary btn-lg" style="margin:20px;background-color: #012e67">Volver</button>
-</a>
+    <button type="button" class="btn btn-primary btn-lg" style="margin:20px;background-color: #012e67">Volver</button>
+  </a>
 </center>
 
 
-<script >
-  let favorito=document.getElementById("favorito");
+<script>
+  let favorito = document.getElementById("favorito");
 
   window.addEventListener("load", () => {
 
 
-    
-    {%for f in favoritos%}
-       if ("{{f.oferta.id}}" == "{{inmueble.id}}" && "{{f.usuario.usuario.username}}" == "{{user.username}}"){
-          favorito.classList.replace("btn-light","btn-warning");
-          favorito.innerHTML = "Esta en tus favoritos"; 
-          favorito.disabled=true;
-       }
+
+    {%for f in favoritos %}
+    if ("{{f.oferta.id}}" == "{{inmueble.id}}" && "{{f.usuario.usuario.username}}" == "{{user.username}}") {
+      favorito.classList.replace("btn-light", "btn-warning");
+      favorito.innerHTML = "Esta en tus favoritos";
+      favorito.disabled = true;
+    }
     {% endfor %}
 
-  {%for t in trabajadores%}
-       if ("{{t.usuario.id}}" == "{{user.id}}"){
-          console.log("entra")
-          favorito.disabled=true;
-       }
+    {%for t in trabajadores %}
+    if ("{{t.usuario.id}}" == "{{user.id}}") {
+      console.log("entra")
+      favorito.disabled = true;
+    }
     {% endfor %}
 
-  
 
- 
+
+
   })
 
 
 </script>
 
 {% endblock content %}
-
-

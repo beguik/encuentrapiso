@@ -1,16 +1,16 @@
 {% extends "base.html" %}
 {% load static %}
 {% load humanize %}
-
 {% block title %}Encuentra Piso{% endblock %}
-
 {% block head %}
- {% include 'cabecera.html' %}
+{% include 'cabecera.html' %}
 {% endblock head %}
 {% block content %}
 
-<p ><h3 style="text-align:center">La información del inmueble que quiere alquilar es:</h3></p>
-<table style="margin:auto;margin-top:10px"width="90%">
+<p>
+<h3 style="text-align:center">La información del inmueble que quiere alquilar es:</h3>
+</p>
+<table style="margin:auto;margin-top:10px" width="90%">
 	<tr style="padding:10px">
 		<td width="100%" style="background-color:#c5dcf6; padding:20px 10px; margin:10px 10px">
 			<div align="center">
@@ -19,14 +19,15 @@
 				<img src={{oferta.inmueble.imagen2.url}} width="200px">
 				<img src={{oferta.inmueble.imagen3.url}} width="200px">
 				<img src={{oferta.inmueble.imagen4.url}} width="200px">
-				<hr/>
+				<hr />
 			</div>
-			<div style="width:40%; margin:auto;" >
-				 <br/>
-			
-				Dirección: {{oferta.inmueble.direccion}}. CP: {{oferta.inmueble.codigo_postal}} {{oferta.inmueble.get_localizacion_display|upper}}
-				<br/>
-				Caracteríasicas: 
+			<div style="width:40%; margin:auto;">
+				<br />
+
+				Dirección: {{oferta.inmueble.direccion}}. CP: {{oferta.inmueble.codigo_postal}}
+				{{oferta.inmueble.get_localizacion_display|upper}}
+				<br />
+				Caracteríasicas:
 				<ul>
 					<li>
 						{{oferta.inmueble.metros}} Metros Construidos
@@ -34,9 +35,9 @@
 					<li>
 						{{oferta.inmueble.planta}}ª Planta
 						{%if oferta.inmueble.ascensor%}
-							-- Con ascensor.
+						-- Con ascensor.
 						{%else%}
-							-- Sin ascensor.
+						-- Sin ascensor.
 						{%endif%}
 					</li>
 					<li>
@@ -62,127 +63,147 @@
 						{{oferta.inmueble.observacion}}
 					</li>
 					<li>
-						El precio del inmueble es: {{oferta.precio|floatformat:0|intcomma }}€ al mes, más {{oferta.precio|floatformat:0|intcomma }}€ en concepto de fianza. 
+						El precio del inmueble es: {{oferta.precio|floatformat:0|intcomma }}€ al mes, más
+						{{oferta.precio|floatformat:0|intcomma }}€ en concepto de fianza.
 					</li>
 				</ul>
 			</div>
-				<hr/>
-			<div style="width:75%; margin:auto; text-align:center" >
-				
-			</div> 	
-			<div   style="margin-top:20px; text-align:center">
+			<hr />
+			<div style="width:75%; margin:auto; text-align:center">
+
+			</div>
+			<div style="margin-top:20px; text-align:center">
 				<span id="alquiler"></span>
-			</div> 
+			</div>
 			<div style="margin-top:20px; text-align:center">
 				{%if fechaFin %}
 				Este piso se encuentra <b>alquilado</b> hasta el <u> {{fechaFin}}</u>.
 				<p style="text-align:justify; margin:20px">
-				 
-				<br/> <br/>Si lo desea puede reservar su alquiler por el periodo deseado a partir de esa fecha y dentro de los 20 días posteriores. La inmobiliaria que presenta esta oferta es {{oferta.vendedor.empresa}} y la comisión por sus servicios será {{oferta.precio|floatformat:0|intcomma }}€, el equivalente a un mes de alquiler. Esta web sólo contempla alquileres de larga duración si desea información adicional u otras opciones de contratación no dude en ponerse en contacto con el agente que gestiona esta oferta: </p>
-				<p style="text-align:center">{{oferta.vendedor}}, telefono: {{oferta.vendedor.telefono}}</p>
-					<form action="{% url 'app_operaciones:AlquilarPdf' %}" method="post">
-        			{% csrf_token %}
-        				<input id="oferta" name="oferta" type="hidden" value={{oferta.id}}>
-        				<input id="usuario" name="usuario" type="hidden" value={{user.id}}>
-        				<table id="tablaAlquiler" width="40%" style="margin:auto">
-        						<tr>
-        							<td>*Fecha de Entrada<br/>
-        								<span id="errorFecha" class="errores"></span>
-        							</td>
-        							<td>*Meses<br>
-        								<span id="errorMeses" class="errores"></span>
-        							</td>
-        						</tr>
-        						<tr>
-        							<td>
-        								<input type="date" class="form-control" name="fecha" id="fecha" min="{{fechafinFormato}}" max="{{fechaFPlantilla}}">
-        							</td>
-        							<td>
-        								<input type="number" id="meses" name="meses"class="form-control" min="1" max="12">
-        							</td>
-        						</tr>
-        						<tr><td colspan="2"><p style="font-size:10; text-align:left">*Campos Requeridos</p></td></tr>
-        				</table>
-        				
-        				<br/>
-        				<p style="width:40%; margin:auto; text-align:justify">Al continuar se le generará un documento, que podrá descargar, con toda la información del alquiler y el agente correspondiente se pondrá en contacto con usted para informarle de como proceder. <br/><br/></p>
 
-						<button  id="realizarAlquiler" class="btn btn-primary btn-lg btn-block">Solicitar Alquiler</button>
-					</form>
+					<br /> <br />Si lo desea puede reservar su alquiler por el periodo deseado a partir de esa fecha y
+					dentro de los 20 días posteriores. La inmobiliaria que presenta esta oferta es
+					{{oferta.vendedor.empresa}} y la comisión por sus servicios será
+					{{oferta.precio|floatformat:0|intcomma }}€, el equivalente a un mes de alquiler. Esta web sólo
+					contempla alquileres de larga duración si desea información adicional u otras opciones de
+					contratación no dude en ponerse en contacto con el agente que gestiona esta oferta:
+				</p>
+				<p style="text-align:center">{{oferta.vendedor}}, telefono: {{oferta.vendedor.telefono}}</p>
+				<form action="{% url 'app_operaciones:AlquilarPdf' %}" method="post">
+					{% csrf_token %}
+					<input id="oferta" name="oferta" type="hidden" value={{oferta.id}}>
+					<input id="usuario" name="usuario" type="hidden" value={{user.id}}>
+					<table id="tablaAlquiler" width="40%" style="margin:auto">
+						<tr>
+							<td>*Fecha de Entrada<br />
+								<span id="errorFecha" class="errores"></span>
+							</td>
+							<td>*Meses<br>
+								<span id="errorMeses" class="errores"></span>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<input type="date" class="form-control" name="fecha" id="fecha"
+									min="{{fechafinFormato}}" max="{{fechaFPlantilla}}">
+							</td>
+							<td>
+								<input type="number" id="meses" name="meses" class="form-control" min="1" max="12">
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2">
+								<p style="font-size:10; text-align:left">*Campos Requeridos</p>
+							</td>
+						</tr>
+					</table>
+
+					<br />
+					<p style="width:40%; margin:auto; text-align:justify">Al continuar se le generará un documento, que
+						podrá descargar, con toda la información del alquiler y el agente correspondiente se pondrá en
+						contacto con usted para informarle de como proceder. <br /><br /></p>
+
+					<button id="realizarAlquiler" class="btn btn-primary btn-lg btn-block">Solicitar Alquiler</button>
+				</form>
 
 				{%else%}
 				<p style="text-align:justify; margin:20px">
-				<br/> <br/>Si lo desea puede reservar su alquiler con fecha de entrada en los próximos 20 días por el periodo deseado. La inmobiliaria que presenta esta oferta es {{oferta.vendedor.empresa}} y la comisión por sus servicios será {{oferta.precio|floatformat:0|intcomma }}€, el equivalente a un mes de alquiler. Esta web sólo contempla alquileres de larga duración si desea información adicional u otras opciones de contratación no dude en ponerse en contacto con el agente que gestiona esta oferta: </p>
+					<br /> <br />Si lo desea puede reservar su alquiler con fecha de entrada en los próximos 20 días por
+					el periodo deseado. La inmobiliaria que presenta esta oferta es {{oferta.vendedor.empresa}} y la
+					comisión por sus servicios será {{oferta.precio|floatformat:0|intcomma }}€, el equivalente a un mes
+					de alquiler. Esta web sólo contempla alquileres de larga duración si desea información adicional u
+					otras opciones de contratación no dude en ponerse en contacto con el agente que gestiona esta
+					oferta:
+				</p>
 				<p style="text-align:center">{{oferta.vendedor}}, telefono: {{oferta.vendedor.telefono}}</p>
-					<form action="{% url 'app_operaciones:AlquilarPdf' %}" method="post">
-        			{% csrf_token %}
-        				<input id="oferta" name="oferta" type="hidden" value={{oferta.id}}>
-        				<input id="usuario" name="usuario" type="hidden" value={{user.id}}>
-        				<table id="tablaAlquiler" width="40%" style="margin:auto">
-        						<tr>
-        							<td>*Fecha de Entrada<br/>
-        								<span id="errorFecha" class="errores"></span>
-        							</td>
-        							<td>*Meses<br>
-        								<span id="errorMeses" class="errores"></span>
-        							</td>
-        						</tr>
-        						<tr>
-        							<td>
-        								<input type="date" class="form-control" name="fecha" id="fecha" min="{{calendario}}" max="{{calFin}}">
-        							</td>
-        							<td>
-        								<input type="number" id="meses" name="meses"class="form-control" min="1" max="12">
-        							</td>
-        						</tr>
-        						<tr><td colspan="2"><p style="font-size:10; text-align:left">*Campos Requeridos</p></td></tr>
-        				</table>
-        				
-        				<br/>
-        				<p style="width:40%; margin:auto; text-align:justify">Al continuar se le generará un documento, que podrá descargar, con toda la información del alquiler y el agente correspondiente se pondrá en contacto con usted para informarle de como proceder. <br/><br/></p>
+				<form action="{% url 'app_operaciones:AlquilarPdf' %}" method="post">
+					{% csrf_token %}
+					<input id="oferta" name="oferta" type="hidden" value={{oferta.id}}>
+					<input id="usuario" name="usuario" type="hidden" value={{user.id}}>
+					<table id="tablaAlquiler" width="40%" style="margin:auto">
+						<tr>
+							<td>*Fecha de Entrada<br />
+								<span id="errorFecha" class="errores"></span>
+							</td>
+							<td>*Meses<br>
+								<span id="errorMeses" class="errores"></span>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<input type="date" class="form-control" name="fecha" id="fecha" min="{{calendario}}"
+									max="{{calFin}}">
+							</td>
+							<td>
+								<input type="number" id="meses" name="meses" class="form-control" min="1" max="12">
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2">
+								<p style="font-size:10; text-align:left">*Campos Requeridos</p>
+							</td>
+						</tr>
+					</table>
 
-						<button  id="realizarAlquiler" class="btn btn-primary btn-lg btn-block">Solicitar Alquiler</button>
-					</form>
+					<br />
+					<p style="width:40%; margin:auto; text-align:justify">Al continuar se le generará un documento, que
+						podrá descargar, con toda la información del alquiler y el agente correspondiente se pondrá en
+						contacto con usted para informarle de como proceder. <br /><br /></p>
+
+					<button id="realizarAlquiler" class="btn btn-primary btn-lg btn-block">Solicitar Alquiler</button>
+				</form>
 
 				{%endif%}
 
-			</div> 
+			</div>
 		</td>
-    </tr>
+	</tr>
 </table>
-<script >
-  let fecha=document.getElementById("fecha");
-  let meses=document.getElementById("meses");
-  let alquiler=document.getElementById("realizarAlquiler")
+<script>
+	let fecha = document.getElementById("fecha");
+	let meses = document.getElementById("meses");
+	let alquiler = document.getElementById("realizarAlquiler")
 
-  window.addEventListener("load", () => {
-  	alquiler.addEventListener("click", validar); 
-  })
-function validar(e){
-	let evento=e || event;
-	let flag=false;
+	window.addEventListener("load", () => {
+		alquiler.addEventListener("click", validar);
+	})
+	function validar(e) {
+		let evento = e || event;
+		let flag = false;
 
-	if(fecha.value==""){
-		document.getElementById("errorFecha").innerHTML = "Campo Requerido";
-		flag=true
+		if (fecha.value == "") {
+			document.getElementById("errorFecha").innerHTML = "Campo Requerido";
+			flag = true
+		}
+		if (meses.value == "") {
+			document.getElementById("errorMeses").innerHTML = "Campo Requerido";
+			flag = true
+		}
+		if (flag) {
+			console.log("entra")
+			e.preventDefault();
+			fecha.focus();
+		}
 	}
-	if (meses.value==""){
-		document.getElementById("errorMeses").innerHTML = "Campo Requerido";
-		flag=true
-	}
-	if(flag){
-		console.log("entra")
-		e.preventDefault();
-		fecha.focus();
-	}
-}
-
-
-
-
-
-
-
 </script>
 
 {% endblock content %}

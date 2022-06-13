@@ -1,45 +1,48 @@
 {% load static %}
 
 <html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="{% static 'css/estilos.css' %}">
 
-        
-        <title>
-            {% block title %}{% endblock title %}
-        </title>
-        {% block head %}{% endblock head %}
-        {%load bootstrap4%}
-        {%bootstrap_css%}
-    </head>
-    <body>
-     
-       {% block content %} 
-            
-       {% endblock content %}
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{% static 'css/estilos.css' %}">
 
-  
-        <script type="text/javascript" src="{{ STATIC_URL }} /static/jquery-3.6.0.min.js"></script> 
-        {%bootstrap_javascript jquery='full'%}
-       
-    </body>
-    <footer>
 
-        
-        <div class="container-mx-0" id="cabecera-fondo">
-    <div class="container" id="cabecera-frente" style="text-align:center; margin-top:5em">
-       
-        <spam id="texto">
+    <title>
+        {% block title %}{% endblock title %}
+    </title>
+    {% block head %}{% endblock head %}
+    {%load bootstrap4%}
+    {%bootstrap_css%}
+</head>
 
-        Realizado por: Belén María Guijarro Cubero<br/>
-        Proyecto Fin de Ciclo de Desarrollo Aplicaciones WEB<br/>
-        Instituto Trassierra Córdoba. 
-        </spam>
-</div>
-</div>
-    </footer>
+<body>
+
+    {% block content %}
+
+    {% endblock content %}
+
+
+    <script type="text/javascript" src="{{ STATIC_URL }} /static/jquery-3.6.0.min.js"></script>
+    {%bootstrap_javascript jquery='full'%}
+
+</body>
+<footer>
+
+
+    <div class="container-mx-0" id="cabecera-fondo">
+        <div class="container" id="cabecera-frente" style="text-align:center; margin-top:5em">
+
+            <spam id="texto">
+
+                Realizado por: Belén María Guijarro Cubero<br />
+                Proyecto Fin de Ciclo de Desarrollo Aplicaciones WEB<br />
+                Instituto Trassierra Córdoba.
+            </spam>
+        </div>
+    </div>
+</footer>
+
 </html>

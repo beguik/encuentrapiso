@@ -2,7 +2,8 @@
 
 <!doctype html>
 <html lang="es">
-    <head>
+
+<head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Solicitud de Compra</title>
@@ -12,6 +13,7 @@
             size: "A4";
             margin: 1.0cm 1.5cm 3.5cm 1.5cm;
         }
+
         body {
             width: 100% !important;
             height: 100%;
@@ -21,33 +23,44 @@
             font-family: 'Roboto', sans-serif;
             line-height: 1.65;
             -webkit-font-smoothing: antialiased;
-            -webkit-text-size-adjust: none; 
+            -webkit-text-size-adjust: none;
         }
     </style>
 </head>
-    <body>
 
-        <img src="{% static 'images/logo.png'%}" style="width: 100px"/>
-        
-        <div style="padding-top: 10%; width:70%; margin:auto">
-        	
-        	<h3 style="text-align:center">Solicitud de Reserva de Compra</h3> <br/>
-        	
-        	<p style="text-align:center" >D. Dª: {{venta.comprador.nombre|capfirst}} {{venta.comprador.primer_apellido|capfirst}} {{venta.comprador.segundo_apellido|capfirst}}, con DNI: {{venta.comprador.dni}} </p><br/>
-        	<p style="text-align:center; color:#012e67;"><b>SOLICITA:</b></p> 
+<body>
+
+    <img src="{% static 'images/logo.png'%}" style="width: 100px" />
+
+    <div style="padding-top: 10%; width:70%; margin:auto">
+
+        <h3 style="text-align:center">Solicitud de Reserva de Compra</h3> <br />
+
+        <p style="text-align:center">D. Dª: {{venta.comprador.nombre|capfirst}}
+            {{venta.comprador.primer_apellido|capfirst}} {{venta.comprador.segundo_apellido|capfirst}}, con DNI:
+            {{venta.comprador.dni}} </p><br />
+        <p style="text-align:center; color:#012e67;"><b>SOLICITA:</b></p>
 
 
-        	<p style="text-align:justify">La compra del inmueble situado en la dirección: {{venta.oferta.inmueble.direccion}}.({{venta.oferta.inmueble.get_localizacion_display|upper}}) por un precio final de {{venta.precio_final|floatformat:0}}€ impuestos incluidos. Solicita por tanto los sercicios de la empresa "{{venta.oferta.vendedor.empresa.razon_social}}", la cual a través de esta solicitud se compromete a contactar con el/la interesado/a a través de {{venta.oferta.vendedor.nombre|capfirst}} {{venta.oferta.vendedor.primer_apellido}} {{venta.oferta.vendedor.segundo_apellido}} trabajador de dicha empresa.</p> 
+        <p style="text-align:justify">La compra del inmueble situado en la dirección:
+            {{venta.oferta.inmueble.direccion}}.({{venta.oferta.inmueble.get_localizacion_display|upper}}) por un precio
+            final de {{venta.precio_final|floatformat:0}}€ impuestos incluidos. Solicita por tanto los sercicios de la
+            empresa "{{venta.oferta.vendedor.empresa.razon_social}}", la cual a través de esta solicitud se compromete a
+            contactar con el/la interesado/a a través de {{venta.oferta.vendedor.nombre|capfirst}}
+            {{venta.oferta.vendedor.primer_apellido}} {{venta.oferta.vendedor.segundo_apellido}} trabajador de dicha
+            empresa.</p>
 
         <div style="padding-top: 5%;padding-left: 10%;">
-            Agradecemos su Confianza <br/>
-            <br/>
+            Agradecemos su Confianza <br />
+            <br />
 
-            <p style="text-align:right">Su solicitud queda registrada con fecha {{venta.created_at|date:'d-M-Y'}} <br/>Referencia de la operacion: EC{{venta.id}}</p>
+            <p style="text-align:right">Su solicitud queda registrada con fecha {{venta.created_at|date:'d-M-Y'}}
+                <br />Referencia de la operacion: EC{{venta.id}}</p>
         </div>
 
         <div style="padding-top: 25%;float:right;">
-                <img src="{% static 'images/logo.png'%}" style="width: 100px"/>
+            <img src="{% static 'images/logo.png'%}" style="width: 100px" />
         </div>
-    </body>
+</body>
+
 </html>

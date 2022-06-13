@@ -3,6 +3,9 @@ from .models import *
 from applications.administracion.models import *
 from applications.inmuebles.models import *
 
+#Configuración del panel de Administración de Django para los modelos:
+#Oferta, Venta, Alquiler.
+
 class OfertaAdmin(admin.ModelAdmin):
 	list_display=(
 		'id',

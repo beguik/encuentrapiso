@@ -1,3 +1,7 @@
+#este archivo engloba los campos choices del modelo inmueble, 
+#para que sea mas fácil de trabajar con ellos en las vistas. 
+
+
 PROVINCE_CHOICES =(
 		('01', 'Alaba'), ('02', 'Albacete'), ('03', 'Alicante'), 
 		('04', 'Almería'), ('05', 'Ávila'), ('06', 'Badajoz'), 

@@ -8,6 +8,8 @@ class Empresa(models.Model):
     razon_social=models.CharField('Razon Social', max_length=100)
     comision=models.DecimalField('Comisión', max_digits=4, decimal_places=2, default=3)
     codigo=models.CharField('Codigo',max_length=10)
+    
+    #nombre que tomará el modelo cuando no se especifique que datos se extraen de él. 
     def __str__(self):
         return self.nombre_empresa
 
@@ -19,6 +21,7 @@ class Cliente(models.Model):
     segundo_apellido = models.CharField('2ºApellido', max_length=50)
     telefono= PhoneNumberField(blank=True)
 
+    #nombre que tomará el modelo cuando no se especifique que datos se extraen de él. 
     def __str__(self): 
         return self.primer_apellido+" "+self.segundo_apellido+", "+self.nombre
 
@@ -31,6 +34,7 @@ class Trabajador(models.Model):
     empresa = models.ForeignKey("Empresa", verbose_name=("Empresa"), on_delete=models.CASCADE, blank=True, null=True)
     telefono= PhoneNumberField(blank=True)
 
+    #nombre que tomará el modelo cuando no se especifique que datos se extraen de él. 
     def __str__(self): 
         return self.primer_apellido+" "+self.segundo_apellido+", "+self.nombre
 
@@ -42,6 +46,6 @@ class Propietario(models.Model):
     segundo_apellido = models.CharField('2ºApellido', max_length=50)
     telefono= PhoneNumberField(blank=True)
 
-
+    #nombre que tomará el modelo cuando no se especifique que datos se extraen de él. 
     def __str__(self): 
         return self.primer_apellido+" "+self.segundo_apellido+", "+self.nombre

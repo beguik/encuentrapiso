@@ -5,12 +5,14 @@
 {% block title %}Encuentra Piso{% endblock %}
 
 {% block head %}
- {% include 'cabecera.html' %}
+{% include 'cabecera.html' %}
 {% endblock head %}
 {% block content %}
 
-<p ><h3 style="text-align:center">La información del inmueble que quiere comprar es:</h3></p>
-<table style="margin:auto;margin-top:10px"width="90%">
+<p>
+<h3 style="text-align:center">La información del inmueble que quiere comprar es:</h3>
+</p>
+<table style="margin:auto;margin-top:10px" width="90%">
 	<tr style="padding:10px">
 		<td width="100%" style="background-color:#c5dcf6; padding:20px 10px; margin:10px 10px">
 			<div align="center">
@@ -19,14 +21,15 @@
 				<img src={{oferta.inmueble.imagen2.url}} width="200px">
 				<img src={{oferta.inmueble.imagen3.url}} width="200px">
 				<img src={{oferta.inmueble.imagen4.url}} width="200px">
-				<hr/>
+				<hr />
 			</div>
-			<div style="width:40%; margin:auto;" >
-				 <br/>
-			
-				Dirección: {{oferta.inmueble.direccion}}. CP: {{oferta.inmueble.codigo_postal}} {{oferta.inmueble.get_localizacion_display|upper}}
-				<br/>
-				Caracteríasicas: 
+			<div style="width:40%; margin:auto;">
+				<br />
+
+				Dirección: {{oferta.inmueble.direccion}}. CP: {{oferta.inmueble.codigo_postal}}
+				{{oferta.inmueble.get_localizacion_display|upper}}
+				<br />
+				Caracteríasicas:
 				<ul>
 					<li>
 						{{oferta.inmueble.metros}} Metros Construidos
@@ -34,9 +37,9 @@
 					<li>
 						{{oferta.inmueble.planta}}ª Planta
 						{%if oferta.inmueble.ascensor%}
-							-- Con ascensor.
+						-- Con ascensor.
 						{%else%}
-							-- Sin ascensor.
+						-- Sin ascensor.
 						{%endif%}
 					</li>
 					<li>
@@ -72,49 +75,45 @@
 					</li>
 				</ul>
 			</div>
-				<hr/>
-			<div style="width:75%; margin:auto; text-align:center" >
-				La inmobiliaria que presenta esta oferta es {{oferta.vendedor.empresa}} y la comisión por sus servicios será {{oferta.vendedor.empresa.comision}}% 
-			</div> 	
+			<hr />
+			<div style="width:75%; margin:auto; text-align:center">
+				La inmobiliaria que presenta esta oferta es {{oferta.vendedor.empresa}} y la comisión por sus servicios
+				será {{oferta.vendedor.empresa.comision}}%
+			</div>
 			<div style="margin-top:20px; text-align:center">
-				Si está de acuerdo genere una solicitud, donde apareceran reflejados sus datos y los de la oferta y el agente encargado de esta oferta se pondrá en contacto con usted para indicarle como proceder. 
-			</div> 
+				Si está de acuerdo genere una solicitud, donde apareceran reflejados sus datos y los de la oferta y el
+				agente encargado de esta oferta se pondrá en contacto con usted para indicarle como proceder.
+			</div>
 			<div style="margin-top:20px; text-align:center">
 				<form action="{% url 'app_operaciones:Pdf' %}" method="post">
-        			{% csrf_token %}
-        				<input id="oferta" name="oferta" type="hidden" value={{oferta.id}}>
-        				<input id="usuario" name="usuario" type="hidden" value={{user.id}}>
+					{% csrf_token %}
+					<input id="oferta" name="oferta" type="hidden" value={{oferta.id}}>
+					<input id="usuario" name="usuario" type="hidden" value={{user.id}}>
 
-						<button type="submit" id="solicitud" class="btn btn-primary btn-lg btn-block">Gernerar Solicitud</button>
-							
- 
-
-						
+					<button type="submit" id="solicitud" class="btn btn-primary btn-lg btn-block">Gernerar
+						Solicitud</button>
 				</form>
 
-			</div> 
+			</div>
 		</td>
-    </tr>
+	</tr>
 </table>
+<script>
+	let solicitud = document.getElementById("solicitud");
 
+	window.addEventListener("load", () => {
 
+		{%for v in ventas %}
+		console.log("for")
+		if ("{{v.comprador.usuario.id}}" == "{{user.id}}" && "{{v.oferta.id}}" == "{{oferta.id}}") {
+			console.log("if")
+			solicitud.setAttribute("type", "button");
+			solicitud.innerHTML = "Ya tiene una solicitud generada para esta oferta";
+			solicitud.disabled = true;
+		}
+		{% endfor %}
 
-<script >
-  let solicitud=document.getElementById("solicitud");
-
-  window.addEventListener("load", () => {
-
-    {%for v in ventas%}
-    console.log("for")
-       if ("{{v.comprador.usuario.id}}" == "{{user.id}}" && "{{v.oferta.id}}" == "{{oferta.id}}"){
-       	console.log("if")
-       		solicitud.setAttribute("type", "button");
-          solicitud.innerHTML = "Ya tiene una solicitud generada para esta oferta"; 
-          solicitud.disabled=true;
-       }
-    {% endfor %}
- 
-  })
+	})
 
 
 </script>

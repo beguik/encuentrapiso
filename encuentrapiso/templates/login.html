@@ -1,73 +1,78 @@
 {% load static %}
 {% load humanize %}
 <html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="{% static 'css/estilos.css' %}">
-        {%load bootstrap4%}
-        {%bootstrap_css%}
 
-        <title>Encuentra Piso</title>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{% static 'css/estilos.css' %}">
+    {%load bootstrap4%}
+    {%bootstrap_css%}
 
-    </head>
-    <body style="background-color:#012e67">
-        <div style="text-align:center">
+    <title>Encuentra Piso</title>
+
+</head>
+
+<body style="background-color:#012e67">
+    <div style="text-align:center">
         <a href="{% url 'app_inmuebles:home'%}">
-                    <img id="logo" style="width:100px;padding:10px; margin-top:25px"src="{% static 'images/logo.png' %}">
-                    </a>
-        </div>
+            <img id="logo" style="width:100px;padding:10px; margin-top:25px" src="{% static 'images/logo.png' %}">
+        </a>
+    </div>
 
-        <p style="text-align:center;margin:5px; color:#ffffff">
-            <b>
-                Bienvenidos a Encuentra Piso
-            </b>   
-        </p>
-        <div style="width:40%; margin:10px auto;background-color: #ffffff; text-align:center; border-radius:5px">
-            <h4 style="text-align:center;">Inicio de Sesión</h4>
-                <form method="POST" style="margin:auto;padding-top:15px;width: 80%;">
-                    {% csrf_token %}
+    <p style="text-align:center;margin:5px; color:#ffffff">
+        <b>
+            Bienvenidos a Encuentra Piso
+        </b>
+    </p>
+    <div style="width:40%; margin:10px auto;background-color: #ffffff; text-align:center; border-radius:5px">
+        <h4 style="text-align:center;">Inicio de Sesión</h4>
+        <form method="POST" style="margin:auto;padding-top:15px;width: 80%;">
+            {% csrf_token %}
 
-                    <label>Username:&nbsp;&nbsp;
-                    </label>
-                   
-                    {{form.username }} 
-                    <br/>
-                    <label>Contraseña: 
-                    </label>
-                   
-                    {{ form.password }}
-                    <br/>
-                    {% if form.non_field_errors %}
-                        {% for error in form.non_field_errors %}
-                            <p id="errores">Por favor, introduzca un nombre de usuario y clave correctos.<br/> Observe que ambos campos pueden ser sensibles a mayúsculas.</p>
-                        {% endfor %}
-                    {% endif %}
-                    <div class:"form-control">
-                        <input type="submit" name="submit" class="btn btn-primary btn-lg" value="Iniciar Sesión" style="margin:30px auto;background-color: #012e67">
-                    </div>
-                </form>
-                <hr/>
-                <h4>Regístrese</h4>
-                <a href="{% url 'app_administracion:registroCliente'%}">
-                    <button class="btn btn-primary btn-lg" style="margin:20px 30px;background-color: #012e67">
-                    &nbsp;Cliente&nbsp;
-                    </button> 
-                </a>
-                <a href="{% url 'app_administracion:cuestionarioEmpresa' %}">
-                <button class="btn btn-primary btn-lg" style="margin:20px 30px ;background-color: #012e67">
-                   Trabajador
-                </button> 
-            </a>
-        </div> 
-        <p style="text-align:center"> 
-            <a href="{% url 'app_inmuebles:home'%}">
-                <button type="button" class="btn btn-primary btn-lg" style=";background-color: #ffffff; color:#012e67">
+            <label>Username:&nbsp;&nbsp;
+            </label>
+
+            {{form.username }}
+            <br />
+            <label>Contraseña:
+            </label>
+
+            {{ form.password }}
+            <br />
+            {% if form.non_field_errors %}
+            {% for error in form.non_field_errors %}
+            <p id="errores">Por favor, introduzca un nombre de usuario y clave correctos.<br /> Observe que ambos campos
+                pueden ser sensibles a mayúsculas.</p>
+            {% endfor %}
+            {% endif %}
+            <div class:"form-control">
+                <input type="submit" name="submit" class="btn btn-primary btn-lg" value="Iniciar Sesión"
+                    style="margin:30px auto;background-color: #012e67">
+            </div>
+        </form>
+        <hr />
+        <h4>Regístrese</h4>
+        <a href="{% url 'app_administracion:registroCliente'%}">
+            <button class="btn btn-primary btn-lg" style="margin:20px 30px;background-color: #012e67">
+                &nbsp;Cliente&nbsp;
+            </button>
+        </a>
+        <a href="{% url 'app_administracion:cuestionarioEmpresa' %}">
+            <button class="btn btn-primary btn-lg" style="margin:20px 30px ;background-color: #012e67">
+                Trabajador
+            </button>
+        </a>
+    </div>
+    <p style="text-align:center">
+        <a href="{% url 'app_inmuebles:home'%}">
+            <button type="button" class="btn btn-primary btn-lg" style=";background-color: #ffffff; color:#012e67">
                 Volver
-                </button>
-            </a>
-        </p>
-    </body>
+            </button>
+        </a>
+    </p>
+</body>
+
 </html>

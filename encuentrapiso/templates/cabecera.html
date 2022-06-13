@@ -5,70 +5,76 @@
 			<tr>
 				<td style="width:20%; ">
 					<a href="{% url 'app_inmuebles:home'%}">
-  					<img id="logo" style="width:100px;padding:10px"src="{% static 'images/logo.png' %}">
-  					</a>
-  				</td>
+						<img id="logo" style="width:100px;padding:10px" src="{% static 'images/logo.png' %}">
+					</a>
+				</td>
 				<td id="tdcabecera">
 					<a href="{% url 'app_inmuebles:Ventas'%}">
 						Venta
-					</a>	
+					</a>
 				</td>
-				
-				<td id="tdcabecera" >
+
+				<td id="tdcabecera">
 					<a href="{% url 'app_inmuebles:Alquileres'%}">
 						Alquiler
 					</a>
 				</td>
 
-				<td id="tdcabecera" >
+				<td id="tdcabecera">
 					<a href="{% url 'app_operaciones:Simulador'%}">
-						Simulador<br/> Bancario</td>
-					</a>
-				<td id="tdcabecera" ></td>
+						Simulador<br /> Bancario
+				</td>
+				</a>
+				<td id="tdcabecera"></td>
 				<td id="tdcabecera">
 					{% if user.is_authenticated %}
 
-					 <div class="nav-link dropdown-toggle"id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
-					 	Bienvenido@ {{user.username|capfirst}}
-        			</div>
-        				{% for c in clientes %}
-            				{% if c.usuario.username == user.username %}
-        						<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          							<a class="dropdown-item" style="color:#012e67" href="{% url 'app_operaciones:Operaciones' user.id %}">Mis Operaciones</a>
+					<div class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown"
+						aria-haspopup="true" aria-expanded="false">
+						Bienvenido@ {{user.username|capfirst}}
+					</div>
+					{% for c in clientes %}
+					{% if c.usuario.username == user.username %}
+					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+						<a class="dropdown-item" style="color:#012e67"
+							href="{% url 'app_operaciones:Operaciones' user.id %}">Mis Operaciones</a>
 
-          							<a class="dropdown-item" style="color:#012e67"href="{% url 'app_operaciones:Favoritos' user.id %}">Mis Favoritos</a>
+						<a class="dropdown-item" style="color:#012e67"
+							href="{% url 'app_operaciones:Favoritos' user.id %}">Mis Favoritos</a>
 
-          							<div class="dropdown-divider"style="color:#012e67"></div>
-          							<a class="dropdown-item" style="color:#012e67"href="{% url 'app_administracion:logout' %}">Cerrar Sesión</a>
-       				 			</div>
-       				 		{%endif%}
-       				 	{%endfor%}
-       				 	{% for t in trabajadores %}
-            				{% if t.usuario.username == user.username %}
-        						<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          							<a class="dropdown-item" style="color:#012e67" href="{% url 'app_inmuebles:Profesional' %}">Mi Panel</a>
-          							<a class="dropdown-item" style="color:#012e67"href="#">Crear Ofertas</a>
-          							<div class="dropdown-divider"style="color:#012e67"></div>
-          							<a class="dropdown-item" style="color:#012e67"href="{% url 'app_administracion:logout' %}">Cerrar Sesión</a>
-       				 			</div>
-       				 		{%endif%}
-       				 	{%endfor%}
+						<div class="dropdown-divider" style="color:#012e67"></div>
+						<a class="dropdown-item" style="color:#012e67"
+							href="{% url 'app_administracion:logout' %}">Cerrar Sesión</a>
+					</div>
+					{%endif%}
+					{%endfor%}
+					{% for t in trabajadores %}
+					{% if t.usuario.username == user.username %}
+					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+						<a class="dropdown-item" style="color:#012e67" href="{% url 'app_inmuebles:Profesional' %}">Mi
+							Panel</a>
+						<div class="dropdown-divider" style="color:#012e67"></div>
+						<a class="dropdown-item" style="color:#012e67"
+							href="{% url 'app_administracion:logout' %}">Cerrar Sesión</a>
+					</div>
+					{%endif%}
+					{%endfor%}
 
-       				  	{% if user.is_staff %}
-            				<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          						<a class="dropdown-item" style="color:#012e67"href="/admin/">Panel de Administración</a>
-          						<div class="dropdown-divider"style="color:#012e67"></div>
-          						<a class="dropdown-item" style="color:#012e67"href="{% url 'app_administracion:logout' %}">Cerrar Sesión</a>
-       				 		</div>
-        				{% endif %}
+					{% if user.is_staff %}
+					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+						<a class="dropdown-item" style="color:#012e67" href="/admin/">Panel de Administración</a>
+						<div class="dropdown-divider" style="color:#012e67"></div>
+						<a class="dropdown-item" style="color:#012e67"
+							href="{% url 'app_administracion:logout' %}">Cerrar Sesión</a>
+					</div>
+					{% endif %}
 					{%else%}
-						<a href="{% url 'app_administracion:login'%}">
-						Registrate <br/> <br/>Inicia Sesión <br/>
+					<a href="{% url 'app_administracion:login'%}">
+						Registrate <br /> <br />Inicia Sesión <br />
 
-					 {%endif%}
+						{%endif%}
 				</td>
 			</tr>
 		</table>
 	</div>
 </div>
-

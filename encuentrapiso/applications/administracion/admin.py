@@ -1,7 +1,8 @@
 from django.contrib import admin
 from .models import *
 
-
+#Configuración del panel de Administración de Django para los modelos:
+#Empresa, Propietario, Cliente y Trabajador.
 
 class EmpresaAdmin(admin.ModelAdmin):
 	list_display=(

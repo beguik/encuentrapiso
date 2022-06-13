@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load static %}
+{% load humanize %}
+{% block title %}Encuentra Piso{% endblock %}
+{% block head %}
+{% include 'cabecera.html' %}
+{% endblock head %}
+{% block content %}
+
+<div id="eliminar" class="card">
+	<p style="text-align:center">
+		Esta acción no podrá deshacerse, esta seguro que quiere elimniarla:
+		<br /><br />
+		- Dirección: {{alquiler.oferta.inmueble.direccion}}<br />
+		- Cliente: {{alquiler.inquilino}}<br />
+		- Fecha de Entrada:{{alquiler.fecha_entrada}}<br />
+		- Fecha de Salida:{{alquiler.fecha_fin}}<br /><br />
+		{%if alquiler.aprobada%}
+		- Esta operación se encuentra aprobada.
+		{%else%}
+		- Esta operación no está aprobada aún.
+		{%endif%}
+		<br /><br />
+	</p>
+	<div style="text-align:center;">
+		<a href="{% url 'app_operaciones:Gestion' user.id %}">
+			<button class="btn btn-primary">&nbsp;Volver&nbsp;</button>
+		</a><br /><br />
+		<form action="" method="post">
+			{% csrf_token %}
+			<input id="alquiler" name="alquiler" type="hidden" value={{alquiler.id}}>
+			<input id="user" name="user" type="hidden" value={{user.id}}>
+			<button type="submit" class="btn btn-danger">&nbsp;Eliminar&nbsp;</button>
+		</form>
+	</div>
+
+</div>
+
+{% endblock content %}

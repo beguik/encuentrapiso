@@ -2,6 +2,9 @@ from django import forms
 from django.contrib.auth.models import User
 from .models import *
 
+#Formulario para añadir ofertas, defino las clases TexInput y Select 
+#para poder darle formato en los templates. 
+
 class NumberInput(forms.NumberInput):
 	input_type: 'number'
 

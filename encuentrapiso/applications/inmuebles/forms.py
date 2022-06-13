@@ -2,6 +2,9 @@ from django import forms
 from django.contrib.auth.models import User
 from .models import *
 
+#Formulario para añadir inmuebles, defino las clases TexArea, TexInput y Select 
+#para poder darle formato en los templates. 
+
 class TexArea(forms.Textarea):
 	input_type="texarea"
 

@@ -16,8 +16,7 @@ from weasyprint.text.fonts import FontConfiguration
 from .models import *
 from .forms import *
 
-
-
+#Esta clase nos lleva a la pestaña de simulación del pago de una hipoteca 
 class Simulador(View):
     
     def get(self, request):
@@ -68,6 +67,7 @@ class Simulador(View):
                 
         return render(request, "simulador.html",{"respuesta":respuesta, "cuota":cuota, "oportunidades":oportunidades,"clientes":clientes,"trabajadores":trabajadores})
 
+#Esta clase nos manda a la pestaña de favoritos accesible solo desde el cliente
 class Megusta(View):
 
     def get(self, request, id):
@@ -90,11 +90,12 @@ class Megusta(View):
         fav=data['fav']
         #buscamos el favorito con la id enviada
         favorito=Favoritos.objects.get(id=fav)
-        #borramos
+        #borramos -- al no tratarse de una operación especialmente relevante y que puede deshacerse facilmente no generamos pantalla de confirmación. 
         favorito.delete()
         #redireccionamos a la misma página
         return redirect('/favoritos/'+str(id))
 
+#función que nos permite añadir a favoritos, está función será accesible solo desde el cliente
 def AddFavorito(request):
     
     #recogemos los datos del post
@@ -109,7 +110,11 @@ def AddFavorito(request):
     Favoritos.objects.create( oferta=oferta,usuario=usuario)
     #devolvemos en la misa dirección
     return redirect('/info/'+str(of))
-    
+   
+#Esta clase genera una solicitud de Compra.
+#Creará una Venta con el campo activo a True y el aprobado a False.
+#Esta clase será solo accesible desde el cliene
+#pero afectara al panel de administración del Trabajador.  
 class Comprar(View):
 
     def get(self, request,pk):
@@ -122,6 +127,7 @@ class Comprar(View):
         
         return render(request,"comprar.html",{"oferta":oferta,"ventas":ventas,"clientes":clientes,"trabajadores":trabajadores})
 
+#Esta función genara un pdf con todos los datos de la Venta. 
 def comprarPdf(request):
     #extraemos datos
     data=request.POST
@@ -137,7 +143,6 @@ def comprarPdf(request):
     for v in vent:
         if v.oferta == oferta and v.comprador == cliente:
             return redirect('/operaciones/'+usu)
-
    
     #generamos venta    
     venta=Venta.objects.create(oferta=oferta, comprador=cliente)
@@ -160,6 +165,10 @@ def comprarPdf(request):
     
     return response
 
+#Esta clase genera una solicitud de Alquiler.
+#Creará un Alquiler con el campo activo a True y el aprobado a False y baja a False, tal como se define en el modelo. 
+#Esta clase será solo accesible desde el cliene
+#pero afectara al panel de administración del Trabajador.  
 class Alquilar(View):
 
     def get(self, request,pk):
@@ -202,6 +211,7 @@ class Alquilar(View):
 
             return render(request,"alquilar.html",{"fechaFin":fechaFin,"fechafinFormato":fechafinFormato, "fechaFPlantilla":fechaFPlantilla, "alquileres":alquileres,"oferta":oferta,"clientes":clientes,"trabajadores":trabajadores})
 
+#Esta función genara un pdf con todos los datos del Alquiler.
 def alquilarPdf(request):
     data=request.POST
     usu=data['usuario']
@@ -250,6 +260,8 @@ def alquilarPdf(request):
     
     return response
         
+#Esta clase presenta un listado de todas las operaciones del cliente
+#En el template se filtrará por solicitudes pendientes o aprobadas.       
 class Operaciones(View):
 
     def get(self, request, id):
@@ -284,6 +296,9 @@ class Operaciones(View):
 
         return render(request,"operaciones.html",contexto)
 
+#El cliente no podrá nunca eliminar una solicitud de Venta o de Alquiler
+#En el caso de que ya no este interesado podrá desctivar la solicitud lo que quedará reflejado en el panel del Trabjador
+#Solo el trabajdor podrá eliminar la solicitud. 
 class desactivarVenta(View):
 
     def get(self, request, id):
@@ -298,6 +313,7 @@ class desactivarVenta(View):
         iduser=data["user"]
         idventa=data["venta"]
         venta=Venta.objects.get(id=idventa)
+        #modifico el atributo activo y guardo el objeto Venta. 
         venta.activa=False
         venta.save()
         
@@ -317,6 +333,9 @@ class desactivarAlquiler(View):
         iduser=data["user"]
         idalquiler=data["alquiler"]
         alquiler=Alquiler.objects.get(id=idalquiler)
+
+        #filtro en este caso por si el alquiler ya está aprobado 
+        #modifico los atributos y guardo.  
         if alquiler.aprobada==True:
             alquiler.baja=True
             alquiler.activa=False
@@ -327,18 +346,21 @@ class desactivarAlquiler(View):
         
         return redirect('/operaciones/'+str(iduser))
 
+#Esta clase contempla mucha información puesto que para crear una oferta primero debe existir el inmueble y para crear un inmueble debe existir el propietario
 class CrearOferta(View):
 
     def get(self,request):
+       
         clientes=Cliente.objects.all()
         trabajadores=Trabajador.objects.all()
+
+        #se mandan los formularios de creacion de oferta, inmueble y propietario al template
         formularioInmueble= addInmueble()
         formularioPropietario=PropietarioForm()
         formularioOferta=addOferta()
         fecha=datetime.now().strftime('%Y-%m-%d')
         year=str(fecha)[:4]
 
-    
         return render (request, "crearOferta.html",{"formularioOferta":formularioOferta,"formularioPropietario":formularioPropietario,"year":year,"formularioInmueble":formularioInmueble,"clientes":clientes,"trabajadores":trabajadores})
 
     def post(self,request):
@@ -352,9 +374,13 @@ class CrearOferta(View):
         validaciones=[]
         
 
-
         data=request.POST
+        #recogemos los datos del post y filtramos, si hay propietario se crea
         if 'propietario' in data:
+            #Si hay propietario se va a crear un inmueble. 
+            
+            #aunque en el cliente se han validado todos los campos se vuelven a comprobar aquí 
+            #para que cuando se inserten en la base de datos no haya problemas
             erroresInmueble=[]
             
             propietario=data['propietario']
@@ -434,7 +460,7 @@ class CrearOferta(View):
                 validaciones.append(False)
                 erroresInmueble.append("Debe rellenar el campo observaciones con los elementos más destacados del inmueble")
 
-            
+            #el request.Files me permite cargar las imagenes.
             if "imagenPrincipal" in request.FILES:
                 handle_uploaded_file(request.FILES['imagenPrincipal'])
                 imagenPrincipal=f"imagenes/{request.FILES['imagenPrincipal'].name}"
@@ -442,11 +468,13 @@ class CrearOferta(View):
                 validaciones.append(False)
                 erroresInmueble.append("La imagen principal del inmueble es requerida")
             
-
+            #los campos anteriores son obligarios por lo que una vez terminada con imagen principal 
+            #se comprueba si ha habido errores y si los hay se devuelve a la pantalla con la informacion
             if False in validaciones:
                 error="Revise los errores ocurridos en la pestaña correspondiente."
                 return render(request, "crearOferta.html",{"formularioOferta":formularioOferta,"formularioPropietario":formularioPropietario,"error":error,"erroresInmueble":erroresInmueble,"year":year,"formularioInmueble":formularioInmueble,"clientes":clientes,"trabajadores":trabajadores})
 
+            #si las siguientes estan en el request se recogen sino se pone la imagen por defecto. 
             if "imagen1" in request.FILES:
                 handle_uploaded_file(request.FILES['imagen1'])
                 imagen1=f"imagenes/{request.FILES['imagen1'].name}"
@@ -471,7 +499,7 @@ class CrearOferta(View):
             else:
                 imagen4="imagenes/pordefecto.png"
 
-            
+            #con todos los datos se crea el inmueble. 
             Inmueble.objects.create(propietario=pro, direccion=direccion, localizacion=localizacion,
             codigo_postal=cp, metros=metros, habitacion=habitacion, planta=planta, wc=wc,
             orientacion=orientacion, construccion=construccion, comunidad=comunidad, ascensor=ascensor,
@@ -479,12 +507,14 @@ class CrearOferta(View):
             imagen2=imagen2, imagen3=imagen3, imagen4=imagen4 )
             
             mensajeRegistro= "Inmueble Creado Correctamente"
-
+            #se envia a la misma pantalla y se informa de que se ha creado correctamente.
             return render(request, "crearOferta.html",{"formularioOferta":formularioOferta,"formularioPropietario":formularioPropietario,"mensajeRegistro":mensajeRegistro,"year":year,"formularioInmueble":formularioInmueble,"clientes":clientes,"trabajadores":trabajadores})
 
         if 'dni' in data:
             erroresPropietario=[] 
             dni=data['dni']
+            #si hay dni se va a crear un propietario
+            #igualmente se validan los campos y si todo es correcto se crea, sino se nos devuelve a la pantalla con el error corespondiente. 
 
             if validarDni(dni):
                 if Propietario.objects.filter(dni=dni).exists():
@@ -527,6 +557,7 @@ class CrearOferta(View):
         if 'inmueble' in data:
             
             erroresOferta=[]
+            #si hay un inmueble se va a crear una oferta y se realizan las mismas validaciones anteriores.
 
             usuario=data['usuario']
             user=User.objects.get(id=usuario)
@@ -538,6 +569,10 @@ class CrearOferta(View):
                 erroresOferta.append("Debe seleccionar un inmueble")
             else:
                 inmueb=Inmueble.objects.get(id=inmueble)
+                #comprobamos que el inmueble no este desactivado
+                if not inmueb.activo:
+                    validaciones.append(False)
+                    erroresOferta.append("El inmueble no se encuentra activo actualmente.")
 
             precio=data['precio']  
             try:
@@ -571,6 +606,7 @@ class CrearOferta(View):
             mensajeRegistro="Oferta creada correctamente. "
             return render(request, "crearOferta.html",{"formularioOferta":formularioOferta,"formularioPropietario":formularioPropietario,"mensajeRegistro":mensajeRegistro,"year":year,"formularioInmueble":formularioInmueble,"clientes":clientes,"trabajadores":trabajadores})
 
+#Con esta vista el Trabajador podrá ver las nuevas solicitudes, aprobarlas, eliminarlas y revisarlas. 
 class Gestion(View):
 
     def get(self, request,id):
@@ -578,6 +614,7 @@ class Gestion(View):
         trabajadores=Trabajador.objects.all()
         user=User.objects.get(id=id)
         trabajador=Trabajador.objects.get(usuario=user)
+        #creamos dos listas con las ventas y alquileres correspondientes al trabajador registrado
         ventasT=[]
         alquilerT=[]
 
@@ -591,7 +628,6 @@ class Gestion(View):
             if a.oferta.vendedor == trabajador:
                 alquilerT.append(a)
         
-
         return render(request, "gestion.html",{"alquilerT":alquilerT,"ventasT":ventasT,"clientes":clientes,"trabajadores":trabajadores})
 
     def post(self,request,id):
@@ -603,14 +639,19 @@ class Gestion(View):
         alquilerT=[]
 
         data=request.POST
-        logs('data', data)
         
-
+        #recibe los datos del formulario para aprobar
         if 'aprobar' in data:
 
             if 'venta' in data:
                 venta=data['venta']
                 vent=Venta.objects.get(id=venta)
+                #desactivamos el inmueble
+                idinmueble=vent.oferta.inmueble.id
+                inmueble=Inmueble.objects.get(id=idinmueble)
+                inmueble.activo=False 
+                inmueble.save()
+                #aprobamos la venta
                 vent.aprobada=True
                 vent.save()
 
@@ -620,11 +661,18 @@ class Gestion(View):
                 alq.aprobada=True
                 alq.save()
 
+        #recibe los datos del formulario para desaprobar
         if 'desaprobar' in data:
 
             if 'venta' in data:
                 venta=data['venta']
                 vent=Venta.objects.get(id=venta)
+                #activamos el inmueble
+                idinmueble=vent.oferta.inmueble.id
+                inmueble=Inmueble.objects.get(id=idinmueble)
+                inmueble.activo=True 
+                inmueble.save()
+                #desaprobamos la venta.
                 vent.aprobada=False
                 vent.save()
 
@@ -634,6 +682,9 @@ class Gestion(View):
                 alq.aprobada=False
                 alq.save()
 
+        #recibe los datos del formulario para volver a activar 
+        #todas las solicitudes se activan por defecto al crearse pero un cliente puede desactivarla
+        #el trabajador por tanto tendrá la opcion de volver a activarla. 
         if 'activar' in data:
 
             if 'venta' in data:
@@ -650,9 +701,6 @@ class Gestion(View):
                 alq.baja=False
                 alq.save()
 
-            
-
-
         ventas=Venta.objects.all()
         for v in ventas:
             if v.oferta.vendedor == trabajador:
@@ -666,7 +714,44 @@ class Gestion(View):
 
         return render(request, "gestion.html",{"alquilerT":alquilerT,"ventasT":ventasT,"clientes":clientes,"trabajadores":trabajadores})
 
+#Las dos clases siguientes: EliminarV y EliminarA
+#presenta una pantalla de confirmación para que la eliminación de una solicitud no se realice por error. 
+class EliminarV(View):
+    def get(self,request,id):
+        clientes=Cliente.objects.all()
+        trabajadores=Trabajador.objects.all()
+        venta=Venta.objects.get(id=id)
 
+        return render(request, "gestionEliminarV.html",{"venta":venta,"clientes":clientes,"trabajadores":trabajadores})
+
+    def post(self, request, id):
+        data=request.POST
+        iduser=data["user"]
+
+        if 'venta' in data:
+            venta=data['venta']
+            vent=Venta.objects.get(id=venta)
+            vent.delete()
+        return redirect('/gestion/'+str(iduser))
+
+class EliminarA(View):
+    def get(self,request,id):
+        clientes=Cliente.objects.all()
+        trabajadores=Trabajador.objects.all()
+        alquiler=Alquiler.objects.get(id=id)
+
+        return render(request, "gestionEliminarA.html",{"alquiler":alquiler,"clientes":clientes,"trabajadores":trabajadores})
+
+    def post(self, request, id):
+        data=request.POST
+        iduser=data["user"]
+
+        if 'alquiler' in data:
+            alquiler=data['alquiler']
+            alq=Alquiler.objects.get(id=alquiler)
+            alq.delete()
+        
+        return redirect('/gestion/'+str(iduser))
 
 #Función para validar dni
 def validarDni(dni):
@@ -695,7 +780,8 @@ def handle_uploaded_file(f):
         for chunk in f.chunks():
             destination.write(chunk)
 
-#función para realizar log informativos
+#Esta función nos ha permitido en la parte de pruebas realizar logs informativos
+#para depurar el código. 
 def logs(file="log",mensaje=""):
     escribir = open(file+".txt", "a")
     escribir.write(str(mensaje)+"\n")
