@@ -27,118 +27,116 @@
 			<div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
 				<div class="card-body">
 					<center>
-						<h3>
-							{%if contVSolicitadas %}
-							Actualmente tienes {{contVSolicitadas}} solicitud de Venta
-							{%else%}
-							Actualmete no tiene ninguna solicitud de Venta
-							{%endif%}
-						</h3>
-					</center>
-					<ul>
-						{% for v in ventas %}
-						<ol style="margin:30px">
-							<table style="margin:auto;" width="100%">
-								<tr style="padding:10px">
-									<td width="20%" align="center"
-										style="background-color:#c5dcf6; padding:20px 10px; margin:10px 10px">
-										<div id="foto">
-											<a href="{% url 'app_inmuebles:Info' v.oferta.id %}"
-												class="text-decoration-none">
-												<img src={{v.oferta.inmueble.imagenPrincipal.url}} width="200px">
-											</a>
-										</div>
-									</td>
-									<td rowspan="2" width="50%" align="center"
-										style="background-color:#c5dcf6; padding:10px 10px">
-										<div style="text-align:justify">
-											Solicitud de Reserva del inmueble con dirección
-											en:<br />{{v.oferta.inmueble.direccion}} {{v.oferta.inmueble.codigo_postal}}
-											({{v.oferta.inmueble.get_localizacion_display|upper}})<br /><br />
-											Fecha de Reserva: {{v.created_at}}<br />
-											Precio original de la oferta:
-											{{v.oferta.precio|floatformat:0|intcomma}}€<br />
-											Precio final de la oferta: <b>{{v.precio_final|floatformat:0|intcomma
-												}}€</b>
-											<h6 style="font-size:10">(aplicados los descuentos y la comión de la
-												inmobiliaria)</h6><br />
+						{%if contVSolicitadas %}
+						<h3>Actualmente tienes {{contVSolicitadas}} solicitud de Venta</h3>
+						<ul>
+							{% for v in ventas %}
+							<ol style="margin:30px">
+								<table style="margin:auto;" width="100%">
+									<tr style="padding:10px">
+										<td width="20%" align="center"
+											style="background-color:#c5dcf6; padding:20px 10px; margin:10px 10px">
+											<div id="foto">
+												<a href="{% url 'app_inmuebles:Info' v.oferta.id %}"
+													class="text-decoration-none">
+													<img src={{v.oferta.inmueble.imagenPrincipal.url}} width="200px">
+												</a>
+											</div>
+										</td>
+										<td rowspan="2" width="50%" align="center"
+											style="background-color:#c5dcf6; padding:10px 10px">
+											<div style="text-align:justify">
+												Solicitud de Reserva del inmueble con dirección
+												en:<br />{{v.oferta.inmueble.direccion}} {{v.oferta.inmueble.codigo_postal}}
+												({{v.oferta.inmueble.get_localizacion_display|upper}})<br /><br />
+												Fecha de Reserva: {{v.created_at}}<br />
+												Precio original de la oferta:
+												{{v.oferta.precio|floatformat:0|intcomma}}€<br />
+												Precio final de la oferta: <b>{{v.precio_final|floatformat:0|intcomma
+													}}€</b>
+												<h6 style="font-size:10">(aplicados los descuentos y la comión de la
+													inmobiliaria)</h6><br />
 
-											Si usted quiere más información puede contactar con: <br />
-											{{v.oferta.vendedor.nombre}} {{v.oferta.vendedor.primer_apellido}}, de
-											{{v.oferta.vendedor.empresa}} al telefono {{v.oferta.vendedor.telefono}}
-											indicandole la siguiente referencia: EP{{v.id}}
-											<br />
-										</div>
-									</td>
-								</tr>
-								<td width="20%" align="center" style="background-color:#c5dcf6; padding:10px 10px">
+												Si usted quiere más información puede contactar con: <br />
+												{{v.oferta.vendedor.nombre}} {{v.oferta.vendedor.primer_apellido}}, de
+												{{v.oferta.vendedor.empresa}} al telefono {{v.oferta.vendedor.telefono}}
+												indicandole la siguiente referencia: EP{{v.id}}
+												<br />
+											</div>
+										</td>
+									</tr>
+									<td width="20%" align="center" style="background-color:#c5dcf6; padding:10px 10px">
 
-									<a href="{% url 'app_operaciones:desactivarVenta' v.id %}">
-										<button type="button" class="btn btn-danger">Ya no me interesa </button>
-									</a>
-								</td>
-								</tr>
-							</table>
-						</ol>
+										<a href="{% url 'app_operaciones:desactivarVenta' v.id %}">
+											<button type="button" class="btn btn-danger">Ya no me interesa </button>
+										</a>
+									</td>
+									</tr>
+								</table>
+							</ol>
 						{% endfor %}
-					</ul>
+						</ul>
+						{%else%}
+						<h3>Actualmete no tiene ninguna solicitud de Venta</h3>
+						{%endif%}
+					</center>
 					<hr />
 					<center>
 						<h3>
 							{%if contASolicitados %}
 							Actualmente tienes {{contASolicitados}} Alquileres Solicitados
+							<ul>
+							{% for a in alquileres %}
+								<ol style="margin:30px">
+									<table style="margin:auto;" width="100%">
+										<tr style="padding:10px">
+											<td width="20%" align="center"
+											style="background-color:#c5dcf6; padding:20px 10px; margin:10px 10px">
+												<div id="foto">
+													<a href="{% url 'app_inmuebles:Info' a.oferta.id %}"
+													class="text-decoration-none">
+														<img src={{a.oferta.inmueble.imagenPrincipal.url}} width="200px">
+													</a>
+												</div>
+											</td>
+											<td rowspan="2" width="50%" align="center"
+											style="background-color:#c5dcf6; padding:10px 10px">
+												<div style="text-align:justify">
+													Solicitud de Alquiler del inmueble con dirección en:<br />{{a.oferta.inmueble.direccion}} {{a.oferta.inmueble.codigo_postal}}
+													({{a.oferta.inmueble.get_localizacion_display|upper}})
+													<br /><br />
+													Fecha de Reserva: {{a.created_at}}<br />
+													Precio mes: {{a.oferta.precio|floatformat:0|intcomma}}€<br />
+													Alquiler solicitado para: {{a.meses}} meses<br />
+													Fecha de Fin Alquiler: {{a.fecha_fin}}
+													Precio final de la oferta: <b>{{a.precio_final|floatformat:0|intcomma}}€</b>
+													<h6 style="font-size:10">(aplicados los descuentos y la comión de la
+													inmobiliaria)
+													</h6><br />
+
+													Si usted quiere más información puede contactar con: <br />
+													{{a.oferta.vendedor.nombre}} {{a.oferta.vendedor.primer_apellido}}, de
+													{{a.oferta.vendedor.empresa}} al telefono {{a.oferta.vendedor.telefono}}
+													indicandole la siguiente referencia: EP{{a.id}}
+													<br />
+												</div>
+											</td>
+										</tr>
+											<td width="20%" align="center" style="background-color:#c5dcf6; padding:10px 10px">
+												<a href="{% url 'app_operaciones:desactivarAlquiler' a.id %}">
+													<button type="button" class="btn btn-danger">Ya no me interesa </button>
+											</td>
+										</tr>
+									</table>
+								</ol>
+							{% endfor %}
+							</ul>
 							{%else%}
 							Actualmete no tiene ningún Alquiler Solicitado.
 							{%endif%}
 						</h3>
 					</center>
-					<ul>
-						{% for a in alquileres %}
-						<ol style="margin:30px">
-							<table style="margin:auto;" width="100%">
-								<tr style="padding:10px">
-									<td width="20%" align="center"
-										style="background-color:#c5dcf6; padding:20px 10px; margin:10px 10px">
-										<div id="foto">
-											<a href="{% url 'app_inmuebles:Info' a.oferta.id %}"
-												class="text-decoration-none">
-												<img src={{a.oferta.inmueble.imagenPrincipal.url}} width="200px">
-											</a>
-										</div>
-									</td>
-									<td rowspan="2" width="50%" align="center"
-										style="background-color:#c5dcf6; padding:10px 10px">
-										<div style="text-align:justify">
-											Solicitud de Alquiler del inmueble con dirección
-											en:<br />{{a.oferta.inmueble.direccion}} {{a.oferta.inmueble.codigo_postal}}
-											({{a.oferta.inmueble.get_localizacion_display|upper}})<br /><br />
-											Fecha de Reserva: {{a.created_at}}<br />
-											Precio mes: {{a.oferta.precio|floatformat:0|intcomma}}€<br />
-											Alquiler solicitado para: {{a.meses}} meses<br />
-											Fecha de Fin Alquiler: {{a.fecha_fin}}
-											Precio final de la oferta: <b>{{a.precio_final|floatformat:0|intcomma
-												}}€</b>
-											<h6 style="font-size:10">(aplicados los descuentos y la comión de la
-												inmobiliaria)</h6><br />
-
-											Si usted quiere más información puede contactar con: <br />
-											{{a.oferta.vendedor.nombre}} {{a.oferta.vendedor.primer_apellido}}, de
-											{{a.oferta.vendedor.empresa}} al telefono {{a.oferta.vendedor.telefono}}
-											indicandole la siguiente referencia: EP{{a.id}}
-											<br />
-										</div>
-									</td>
-								</tr>
-								<td width="20%" align="center" style="background-color:#c5dcf6; padding:10px 10px">
-									<a href="{% url 'app_operaciones:desactivarAlquiler' a.id %}">
-										<button type="button" class="btn btn-danger">Ya no me interesa </button>
-
-								</td>
-								</tr>
-							</table>
-						</ol>
-						{% endfor %}
-					</ul>
+					
 				</div>
 			</div>
 		</div>
@@ -156,116 +154,112 @@
 					<center>
 						<h3>
 							{%if contVaprobadas %}
-							Actualmente tienes {{contVaprobadas}} Ventas Aprobadas
+							Actualmente tienes {{contVaprobadas}} Ventas Aprobadas</h3>
+							<ul>
+							{% for v in ventasConfirmadas %}
+								<ol style="margin:30px">
+									<table style="margin:auto;" width="100%">
+										<tr style="padding:10px">
+											<td width="20%" align="center"style="background-color:#c5dcf6; padding:20px 10px; margin:10px 10px">
+												<div id="foto">
+													<a href="{% url 'app_inmuebles:Info' v.oferta.id %}"
+														class="text-decoration-none">
+														<img src={{v.oferta.inmueble.imagenPrincipal.url}} width="200px">
+													</a>
+												</div>
+											</td>
+											<td rowspan="2" width="50%" align="center" style="background-color:#c5dcf6; padding:10px 10px">
+												<div style="text-align:justify">
+													Solicitud de Reserva <b>Aprobada</b>para el inmueble con dirección
+													en:<br />{{v.oferta.inmueble.direccion}} {{v.oferta.inmueble.codigo_postal}}
+													({{v.oferta.inmueble.get_localizacion_display|upper}})<br /><br />
+													Fecha de Reserva: {{v.created_at}}<br />
+													Precio original de la oferta:
+													{{v.oferta.precio|floatformat:0|intcomma}}€<br />
+													Precio final de la oferta: <b>{{v.precio_final|floatformat:0|intcomma}}€</b>
+													<h6 style="font-size:10">(aplicados los descuentos y la comión de la inmobiliaria)</h6><br />
+
+													Si usted quiere más información puede contactar con: <br />
+													{{v.oferta.vendedor.nombre}} {{v.oferta.vendedor.primer_apellido}}, de
+													{{v.oferta.vendedor.empresa}} al telefono {{v.oferta.vendedor.telefono}}
+													indicandole la siguiente referencia: EP{{v.id}}
+													<br />
+												</div>
+											</td>
+										</tr>
+										<tr>
+											<td width="20%" align="center" style="background-color:#c5dcf6; padding:10px 10px">
+												<a href="{% url 'app_operaciones:desactivarVenta' v.id %}">
+													<button type="button" class="btn btn-danger">Ya no me interesa </button>
+												</a>
+											</td>
+										</tr>
+									</table>
+								</ol>
+								{% endfor %}
+							</ul>
 							{%else%}
-							Actualmente no tiene ninguna Venta Aprobada
+						<h3>Actualmente no tiene ninguna Venta Aprobada
 							{%endif%}
 						</h3>
 					</center>
-					<ul>
-						{% for v in ventasConfirmadas %}
-						<ol style="margin:30px">
-							<table style="margin:auto;" width="100%">
-								<tr style="padding:10px">
-									<td width="20%" align="center"
-										style="background-color:#c5dcf6; padding:20px 10px; margin:10px 10px">
-										<div id="foto">
-											<a href="{% url 'app_inmuebles:Info' v.oferta.id %}"
-												class="text-decoration-none">
-												<img src={{v.oferta.inmueble.imagenPrincipal.url}} width="200px">
-											</a>
-										</div>
-									</td>
-									<td rowspan="2" width="50%" align="center"
-										style="background-color:#c5dcf6; padding:10px 10px">
-										<div style="text-align:justify">
-											Solicitud de Reserva <b>Aprobada</b>para el inmueble con dirección
-											en:<br />{{v.oferta.inmueble.direccion}} {{v.oferta.inmueble.codigo_postal}}
-											({{v.oferta.inmueble.get_localizacion_display|upper}})<br /><br />
-											Fecha de Reserva: {{v.created_at}}<br />
-											Precio original de la oferta:
-											{{v.oferta.precio|floatformat:0|intcomma}}€<br />
-											Precio final de la oferta: <b>{{v.precio_final|floatformat:0|intcomma
-												}}€</b>
-											<h6 style="font-size:10">(aplicados los descuentos y la comión de la
-												inmobiliaria)</h6><br />
-
-											Si usted quiere más información puede contactar con: <br />
-											{{v.oferta.vendedor.nombre}} {{v.oferta.vendedor.primer_apellido}}, de
-											{{v.oferta.vendedor.empresa}} al telefono {{v.oferta.vendedor.telefono}}
-											indicandole la siguiente referencia: EP{{v.id}}
-											<br />
-										</div>
-									</td>
-								</tr>
-								<td width="20%" align="center" style="background-color:#c5dcf6; padding:10px 10px">
-
-									<a href="{% url 'app_operaciones:desactivarVenta' v.id %}">
-										<button type="button" class="btn btn-danger">Ya no me interesa </button>
-									</a>
-								</td>
-								</tr>
-							</table>
-						</ol>
-						{% endfor %}
-					</ul>
+					
 					<hr />
 					<center>
 						<h3>
 							{%if contAaprobadas %}
 							Actualmente tienes {{contAaprobadas}} Alquiler Aprobado
+							<ul>
+							{% for a in alquileresConfirmados %}
+								<ol style="margin:30px">
+									<table style="margin:auto;" width="100%">
+										<tr style="padding:10px">
+											<td width="20%" align="center" style="background-color:#c5dcf6; padding:20px 10px; margin:10px 10px">
+												<div id="foto">
+													<a href="{% url 'app_inmuebles:Info' a.oferta.id %}"class="text-decoration-none">
+														<img src={{a.oferta.inmueble.imagenPrincipal.url}} width="200px">
+													</a>
+												</div>
+											</td>
+											<td rowspan="2" width="50%" align="center" style="background-color:#c5dcf6; padding:10px 10px">
+												<div style="text-align:justify">
+													Solicitud de Alquiler del inmueble con dirección
+													en:<br />{{a.oferta.inmueble.direccion}} {{a.oferta.inmueble.codigo_postal}}
+													({{a.oferta.inmueble.get_localizacion_display|upper}})<br /><br />
+													Fecha de Reserva: {{a.created_at}}<br />
+													Precio mes: {{a.oferta.precio|floatformat:0|intcomma}}€<br />
+													Alquiler solicitado para: {{a.meses}} meses<br />
+													Fecha de Fin Alquiler: {{a.fecha_fin}}
+													Precio final de la oferta: <b>{{a.precio_final|floatformat:0|intcomma}}€</b>
+
+													<h6 style="font-size:10">(aplicados los descuentos y la comión de lainmobiliaria)</h6><br />
+
+													Si usted quiere más información puede contactar con: <br />
+													{{a.oferta.vendedor.nombre}} {{a.oferta.vendedor.primer_apellido}}, de
+													{{a.oferta.vendedor.empresa}} al telefono {{a.oferta.vendedor.telefono}}
+													indicandole la siguiente referencia: EP{{a.id}}
+													<br />
+												</div>
+											</td>
+										</tr>
+										<tr>
+											<td width="20%" align="center" style="background-color:#c5dcf6; padding:10px 10px">
+												<a href="{% url 'app_operaciones:desactivarAlquiler' a.id %}">
+													<button type="button" class="btn btn-danger">Cancelar el alquiler 
+													</button>
+												</a>
+											</td>
+										</tr>
+									</table>
+								</ol>
+								{% endfor %}
+							</ul>
 							{%else%}
 							Actualmete no tiene ningún Alquiler Aprobado.
 							{%endif%}
 						</h3>
 					</center>
-					<ul>
-						{% for a in alquileresConfirmados %}
-						<ol style="margin:30px">
-							<table style="margin:auto;" width="100%">
-								<tr style="padding:10px">
-									<td width="20%" align="center"
-										style="background-color:#c5dcf6; padding:20px 10px; margin:10px 10px">
-										<div id="foto">
-											<a href="{% url 'app_inmuebles:Info' a.oferta.id %}"
-												class="text-decoration-none">
-												<img src={{a.oferta.inmueble.imagenPrincipal.url}} width="200px">
-											</a>
-										</div>
-									</td>
-									<td rowspan="2" width="50%" align="center"
-										style="background-color:#c5dcf6; padding:10px 10px">
-										<div style="text-align:justify">
-											Solicitud de Alquiler del inmueble con dirección
-											en:<br />{{a.oferta.inmueble.direccion}} {{a.oferta.inmueble.codigo_postal}}
-											({{a.oferta.inmueble.get_localizacion_display|upper}})<br /><br />
-											Fecha de Reserva: {{a.created_at}}<br />
-											Precio mes: {{a.oferta.precio|floatformat:0|intcomma}}€<br />
-											Alquiler solicitado para: {{a.meses}} meses<br />
-											Fecha de Fin Alquiler: {{a.fecha_fin}}
-											Precio final de la oferta: <b>{{a.precio_final|floatformat:0|intcomma
-												}}€</b>
-											<h6 style="font-size:10">(aplicados los descuentos y la comión de la
-												inmobiliaria)</h6><br />
-
-											Si usted quiere más información puede contactar con: <br />
-											{{a.oferta.vendedor.nombre}} {{a.oferta.vendedor.primer_apellido}}, de
-											{{a.oferta.vendedor.empresa}} al telefono {{a.oferta.vendedor.telefono}}
-											indicandole la siguiente referencia: EP{{a.id}}
-											<br />
-										</div>
-									</td>
-								</tr>
-								<td width="20%" align="center" style="background-color:#c5dcf6; padding:10px 10px">
-									<a href="{% url 'app_operaciones:desactivarAlquiler' a.id %}">
-										<button type="button" class="btn btn-danger">Cancelar el alquiler </button>
-
-								</td>
-								</tr>
-							</table>
-						</ol>
-						{% endfor %}
-					</ul>
+					
 				</div>
 			</div>
 		</div>

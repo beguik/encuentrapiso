@@ -625,7 +625,7 @@ class Gestion(View):
 
         alquileres=Alquiler.objects.all()
         for a in alquileres:
-            if a.oferta.vendedor == trabajador:
+            if a.oferta.vendedor  == trabajador:
                 alquilerT.append(a)
         
         return render(request, "gestion.html",{"alquilerT":alquilerT,"ventasT":ventasT,"clientes":clientes,"trabajadores":trabajadores})
